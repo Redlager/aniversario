@@ -20,4 +20,10 @@ character. Keep the character centered and aligned to the bottom of each frame.
 The loader reads animation and frame details from
 `../characterSpriteSheets.ts`. Vite includes only PNG files actually present,
 so missing art uses the generated placeholders without failed network requests.
-No final art is included yet.
+Renzo's current `idle.png` and `appear.png` are provisional sheets derived from
+`renzo/renzo.png`; frames repeat the available pose and are not final animation
+art.
+El Parcial's `patrol.png` is a 4-frame sheet adapted from the supplied
+`el-parcial/parcial vivo.png` artwork.
+Its `defeat.png` is adapted from `el-parcial/parcial muerto.png`, keeping the
+same frame dimensions and visual scale as the patrol sheet.

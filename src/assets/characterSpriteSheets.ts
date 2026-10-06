@@ -11,7 +11,11 @@ export interface CharacterSpriteSheet {
 }
 
 export const characterSpriteSheetUrls = import.meta.glob<string>(
-  './characters/**/*.png',
+  [
+    './characters/**/*.png',
+    '!./characters/el-parcial/parcial vivo.png',
+    '!./characters/el-parcial/parcial muerto.png',
+  ],
   { eager: true, query: '?url', import: 'default' },
 );
 

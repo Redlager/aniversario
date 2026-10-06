@@ -51,11 +51,12 @@ export class LevelCompletePanel {
       .setDepth(42);
     if (this.scene.anims.exists('vicky-idle')) vicky.play('vicky-idle');
 
-    this.scene.add
-      .image(width / 2 + 100, height / 2 - 10, 'renzo')
+    const renzo = this.scene.add
+      .sprite(width / 2 + 100, height / 2 - 10, 'renzo')
       .setScale(1.5)
       .setScrollFactor(0)
       .setDepth(42);
+    if (this.scene.anims.exists('renzo-idle')) renzo.play('renzo-idle');
     this.scene.add
       .text(width / 2, height / 2 - 28, '♥     ♥     ♥', {
         fontFamily: 'Trebuchet MS, Arial, sans-serif',
