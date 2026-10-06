@@ -4,6 +4,7 @@ import {
   characterSpriteSheetUrls,
 } from '../assets/characterSpriteSheets';
 import { levelArtAssets, levelArtUrls } from '../assets/levelArt';
+import type { PetVisual } from '../levels/LevelTypes';
 
 export class BootScene extends Phaser.Scene {
   constructor() {
@@ -51,6 +52,8 @@ export class BootScene extends Phaser.Scene {
     this.createPlaceholderTexture('checkpoint', 0x6b9ce8, 34, 48);
     this.createPlaceholderTexture('npc', 0xf0a66b, 36, 48);
     this.createPhoneTexture();
+    this.createElevatorTexture();
+    this.createPetTextures();
     this.createPlaceholderTexture('exit', 0x54b889, 40, 56);
     this.createAnimations();
     this.scene.start('Menu');
@@ -140,6 +143,99 @@ export class BootScene extends Phaser.Scene {
     graphics.fillStyle(0xd34f91);
     graphics.fillCircle(22, 9, 3);
     graphics.generateTexture('phone-interaction', 32, 46);
+    graphics.destroy();
+  }
+
+  private createElevatorTexture(): void {
+    const graphics = this.make.graphics({ x: 0, y: 0 });
+    graphics.fillStyle(0x5f5964);
+    graphics.fillRect(2, 1, 54, 50);
+    graphics.fillStyle(0xb6b4b8);
+    graphics.fillRect(6, 5, 46, 42);
+    graphics.fillStyle(0x78737d);
+    graphics.fillRect(28, 5, 2, 42);
+    graphics.fillStyle(0xffd88a);
+    graphics.fillCircle(48, 9, 2);
+    graphics.generateTexture('elevator-interaction', 58, 52);
+    graphics.destroy();
+  }
+
+  private createPetTextures(): void {
+    this.createPetTexture('panchito', 0x9f4d32, 0xd17b48, 60, 38);
+    this.createPetTexture('oliver', 0xf4f0e9, 0x545460, 44, 36);
+    this.createPetTexture('rex', 0xc89b69, 0x55545a, 72, 52);
+    this.createPetTexture('silvestre', 0x888994, 0x62636d, 44, 36);
+    this.createPetTexture('peach', 0xf3e7d2, 0x765064, 44, 36);
+    this.createPetTexture('chocolatin', 0x70452f, 0x4a3028, 54, 40);
+  }
+
+  private createPetTexture(
+    pet: PetVisual,
+    furColor: number,
+    detailColor: number,
+    width: number,
+    height: number,
+  ): void {
+    const graphics = this.make.graphics({ x: 0, y: 0 });
+    const isCat = pet === 'oliver' || pet === 'silvestre' || pet === 'peach';
+    const isLargeDog = pet === 'rex';
+    const bodyY = isLargeDog ? 21 : 15;
+    const bodyHeight = isLargeDog ? 20 : pet === 'panchito' ? 13 : 15;
+    const bodyX = pet === 'panchito' ? 5 : 8;
+    const bodyWidth = width - bodyX - 12;
+
+    graphics.fillStyle(furColor);
+    graphics.fillRoundedRect(bodyX, bodyY, bodyWidth, bodyHeight, 6);
+    graphics.fillCircle(width - 13, bodyY + 3, isLargeDog ? 13 : 10);
+    graphics.fillRect(bodyX + 5, bodyY + bodyHeight - 1, 5, height - bodyY - bodyHeight + 1);
+    graphics.fillRect(bodyX + bodyWidth - 10, bodyY + bodyHeight - 1, 5, height - bodyY - bodyHeight + 1);
+
+    if (isCat) {
+      graphics.fillStyle(furColor);
+      graphics.fillPoints(
+        [
+          new Phaser.Math.Vector2(width - 22, 9),
+          new Phaser.Math.Vector2(width - 20, 1),
+          new Phaser.Math.Vector2(width - 14, 8),
+          new Phaser.Math.Vector2(width - 8, 1),
+          new Phaser.Math.Vector2(width - 6, 10),
+        ],
+        true,
+      );
+      graphics.fillStyle(detailColor);
+      if (pet === 'oliver') graphics.fillRect(bodyX + 3, bodyY + 2, 12, 7);
+      if (pet === 'peach') {
+        graphics.fillRect(width - 22, 9, 15, 13);
+        graphics.fillRect(width - 21, 2, 5, 8);
+        graphics.fillRect(width - 10, 2, 5, 8);
+      }
+      graphics.fillCircle(width - 16, 14, 1.5);
+      graphics.fillCircle(width - 10, 14, 1.5);
+      graphics.lineStyle(4, detailColor);
+      graphics.beginPath();
+      graphics.moveTo(bodyX + 4, bodyY + 5);
+      graphics.lineTo(2, bodyY - 2);
+      graphics.strokePath();
+    } else {
+      graphics.fillStyle(detailColor);
+      if (pet === 'panchito') {
+        graphics.fillRoundedRect(width - 22, 3, 8, 16, 4);
+        graphics.fillRect(18, height - 8, 5, 8);
+      } else {
+        graphics.fillPoints(
+          [
+            new Phaser.Math.Vector2(width - 24, 15),
+            new Phaser.Math.Vector2(width - 20, 2),
+            new Phaser.Math.Vector2(width - 13, 16),
+          ],
+          true,
+        );
+        graphics.fillRect(19, height - 11, 6, 11);
+      }
+      graphics.fillCircle(width - 10, bodyY + 3, 2);
+    }
+
+    graphics.generateTexture(`pet-${pet}`, width, height);
     graphics.destroy();
   }
 

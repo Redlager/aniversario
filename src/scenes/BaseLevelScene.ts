@@ -4,7 +4,12 @@ import { Player } from '../entities/Player';
 import { DialogBox } from '../ui/DialogBox';
 import { LevelHud } from '../ui/LevelHud';
 import { LevelCompletePanel } from '../ui/LevelCompletePanel';
-import { PlayerProgress, type DecorationConfig, type LevelConfig } from '../levels/LevelTypes';
+import {
+  PlayerProgress,
+  type DecorationConfig,
+  type LevelConfig,
+  type PetVisual,
+} from '../levels/LevelTypes';
 import { levels } from '../levels/levelRegistry';
 
 interface LevelStartData {
@@ -142,7 +147,31 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     }
 
     const graphics = this.add.graphics();
-    if (this.level.world.backgroundStyle === 'sunset') {
+    if (this.level.world.backgroundStyle === 'apartment') {
+      graphics.fillStyle(0xe7e0df);
+      graphics.fillRect(0, 0, width, height * 0.78);
+      graphics.fillStyle(0xc8bcb8);
+      graphics.fillRect(0, height * 0.75, width, 18);
+      graphics.fillStyle(0xd7cdca);
+      for (let x = 0; x < width; x += 210) {
+        graphics.fillRect(x, 0, 4, height * 0.75);
+      }
+      graphics.fillStyle(0x827b80);
+      graphics.fillRect(0, height * 0.75 + 18, width, 10);
+      graphics.setDepth(-20);
+    } else if (this.level.world.backgroundStyle === 'home') {
+      graphics.fillStyle(0xf4e4d5);
+      graphics.fillRect(0, 0, width, height * 0.78);
+      graphics.fillStyle(0xd7b9a6);
+      graphics.fillRect(0, height * 0.75, width, 18);
+      graphics.fillStyle(0xead1be);
+      for (let x = 0; x < width; x += 280) {
+        graphics.fillRect(x, 0, 3, height * 0.75);
+      }
+      graphics.fillStyle(0x8f6d68);
+      graphics.fillRect(0, height * 0.75 + 18, width, 9);
+      graphics.setDepth(-20);
+    } else if (this.level.world.backgroundStyle === 'sunset') {
       graphics.fillStyle(0xffdf9c, 0.9);
       graphics.fillCircle(width * 0.78, height * 0.3, 48);
       graphics.fillStyle(0x9a7186);
@@ -238,24 +267,34 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     });
     this.npcs = this.physics.add.staticGroup();
     for (const npc of this.level.npcs ?? []) {
-      const texture = npc.visual === 'renzo'
-        ? 'renzo'
-        : npc.visual === 'phone'
-          ? 'phone-interaction'
-          : 'npc';
+      const texture =
+        npc.visual === 'renzo'
+          ? 'renzo'
+          : npc.visual === 'phone'
+            ? 'phone-interaction'
+            : npc.visual === 'elevator'
+              ? 'elevator-interaction'
+              : npc.visual
+                ? `pet-${npc.visual}`
+                : 'npc';
       const sprite = this.npcs.create(npc.x, npc.y, texture);
-      sprite
-        .setSize(npc.visual === 'renzo' ? 28 : 32, npc.visual === 'renzo' ? 42 : 44)
-        .setDepth(2);
+      sprite.setDepth(2);
       if (npc.visual === 'renzo') {
-        sprite.setScale(1.5).refreshBody();
+        sprite.setScale(1.5).setSize(28, 42).refreshBody();
         if (this.anims.exists('renzo-idle')) sprite.play('renzo-idle');
+      } else if (this.isPetVisual(npc.visual)) {
+        const size = this.petDisplaySize(npc.visual);
+        sprite.setSize(size.width * 0.8, size.height * 0.8).refreshBody();
+      } else if (npc.visual === 'elevator') {
+        sprite.setSize(50, 48).refreshBody();
       } else {
+        sprite.setSize(32, 44);
         sprite.refreshBody();
       }
       sprite.setData('npcId', npc.id);
       sprite.setData('dialogue', npc.dialogue);
       sprite.setData('label', npc.label);
+      sprite.setData('npcVisual', npc.visual);
       this.add
         .text(npc.x, npc.y - 39, npc.label, {
           fontFamily: 'Trebuchet MS, Arial, sans-serif',
@@ -441,6 +480,12 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     const id = npc.getData('npcId') as string;
     if (this.visitedNpcs.has(id) || this.dialog.isOpen) return;
     this.visitedNpcs.add(id);
+    if (npc.getData('npcVisual') === 'renzo' && this.anims.exists('renzo-appear')) {
+      npc.play('renzo-appear');
+      npc.once('animationcomplete-renzo-appear', () => {
+        if (npc.active && this.anims.exists('renzo-idle')) npc.play('renzo-idle');
+      });
+    }
     this.showDialog(`${npc.getData('label')}: ${npc.getData('dialogue') as string}`);
   }
 
@@ -527,24 +572,46 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       renzo.play('renzo-idle');
     }
     const graphics = this.add.graphics().setDepth(4);
-    graphics.fillStyle(0x443d52);
-    graphics.fillRect(x - 155, y + 10, 92, 12);
-    graphics.fillRect(x - 120, y + 22, 22, 33);
-    graphics.fillStyle(0xa9dcdf);
-    graphics.fillRect(x - 149, y - 31, 80, 42);
-    graphics.fillStyle(0x566878);
-    graphics.fillRect(x - 158, y + 11, 98, 6);
-    this.add
-      .text(x - 105, y - 88, 'ESTUDIANTE DE INFORMÁTICA', {
-        fontFamily: 'Trebuchet MS, Arial, sans-serif',
-        fontSize: '12px',
-        fontStyle: 'bold',
-        color: '#452d4a',
-        backgroundColor: '#ffffffcc',
-        padding: { x: 5, y: 3 },
-      })
-      .setOrigin(0.5)
-      .setDepth(27);
+    if (this.level.world.backgroundStyle === 'apartment') {
+      graphics.fillStyle(0x936e78);
+      graphics.fillRoundedRect(x - 160, y + 7, 120, 34, 9);
+      graphics.fillStyle(0xb18b94);
+      graphics.fillRoundedRect(x - 150, y - 7, 48, 25, 7);
+      this.add.image(x - 35, y + 17, 'pet-chocolatin')
+        .setOrigin(0.5, 1)
+        .setDisplaySize(54, 40)
+        .setDepth(26);
+      this.add
+        .text(x - 35, y - 34, 'CHOCOLATÍN', {
+          fontFamily: 'Trebuchet MS, Arial, sans-serif',
+          fontSize: '12px',
+          fontStyle: 'bold',
+          color: '#452d4a',
+          backgroundColor: '#ffffffcc',
+          padding: { x: 5, y: 3 },
+        })
+        .setOrigin(0.5)
+        .setDepth(27);
+    } else {
+      graphics.fillStyle(0x443d52);
+      graphics.fillRect(x - 155, y + 10, 92, 12);
+      graphics.fillRect(x - 120, y + 22, 22, 33);
+      graphics.fillStyle(0xa9dcdf);
+      graphics.fillRect(x - 149, y - 31, 80, 42);
+      graphics.fillStyle(0x566878);
+      graphics.fillRect(x - 158, y + 11, 98, 6);
+      this.add
+        .text(x - 105, y - 88, 'ESTUDIANTE DE INFORMÁTICA', {
+          fontFamily: 'Trebuchet MS, Arial, sans-serif',
+          fontSize: '12px',
+          fontStyle: 'bold',
+          color: '#452d4a',
+          backgroundColor: '#ffffffcc',
+          padding: { x: 5, y: 3 },
+        })
+        .setOrigin(0.5)
+        .setDepth(27);
+    }
     this.tweens.add({
       targets: renzo,
       y: renzo.y - 5,
@@ -611,8 +678,18 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     }
   }
 
-  private drawDecoration({ kind, x, y, label }: DecorationConfig): void {
+  private drawDecoration({ kind, x, y, label, pet }: DecorationConfig): void {
     const groundOffset = kind === 'university' ? 18 : 0;
+    if (kind === 'pet') {
+      if (!this.isPetVisual(pet)) return;
+      const size = this.petDisplaySize(pet);
+      this.add
+        .image(x, y, `pet-${pet}`)
+        .setOrigin(0.5, 1)
+        .setDisplaySize(size.width, size.height)
+        .setDepth(1.5);
+      return;
+    }
     if (kind === 'tree' && this.textures.exists('level-tree')) {
       this.add
         .image(x, y, 'level-tree')
@@ -770,6 +847,126 @@ export abstract class BaseLevelScene extends Phaser.Scene {
           padding: { x: 8, y: 5 },
         }).setOrigin(0.5).setDepth(2);
         break;
+      case 'box':
+        rectangle(0xb98558, -38, -46, 76, 46);
+        rectangle(0xe1bf88, -34, -42, 68, 38);
+        rectangle(0xb98558, -3, -42, 6, 38);
+        break;
+      case 'sofa':
+        rectangle(0x936e78, -60, -44, 120, 34);
+        rectangle(0x765762, -68, -36, 16, 36);
+        rectangle(0x765762, 52, -36, 16, 36);
+        rectangle(0xb18b94, -48, -38, 44, 24);
+        rectangle(0xb18b94, 4, -38, 44, 24);
+        rectangle(0x765762, -48, -8, 9, 8);
+        rectangle(0x765762, 39, -8, 9, 8);
+        break;
+      case 'bed':
+        rectangle(0x805b55, -66, -36, 132, 28);
+        rectangle(0xfff0e5, -60, -52, 120, 19);
+        rectangle(0xe977ad, -10, -34, 70, 15);
+        rectangle(0xfff8fc, -57, -48, 37, 15);
+        rectangle(0x805b55, -57, -8, 8, 8);
+        rectangle(0x805b55, 49, -8, 8, 8);
+        break;
+      case 'lamp':
+        rectangle(0x805b55, -3, -51, 6, 51);
+        rectangle(0xffd88a, -23, -73, 46, 25);
+        rectangle(0xb98558, -14, -4, 28, 5);
+        break;
+      case 'toybox':
+        rectangle(0x68958c, -43, -38, 86, 38);
+        rectangle(0x8ab6a5, -46, -45, 92, 10);
+        rectangle(0xe977ad, -17, -58, 13, 16);
+        rectangle(0xffd04e, 9, -55, 17, 13);
+        break;
+      case 'door':
+        rectangle(0x805b55, -40, -120, 80, 120);
+        rectangle(0xe5bf94, -33, -113, 66, 113);
+        rectangle(0x805b55, 20, -60, 5, 5);
+        break;
+      case 'window':
+        rectangle(0x805b55, -53, -42, 106, 84);
+        rectangle(0xa9dcdf, -46, -35, 92, 70);
+        rectangle(0xfff0c2, -3, -35, 6, 70);
+        rectangle(0xfff0c2, -46, -3, 92, 6);
+        break;
+      case 'pet-bed':
+        graphics.fillStyle(0x9f7080);
+        graphics.fillEllipse(x, y - 8, 90, 30);
+        graphics.fillStyle(0xe7b6c3);
+        graphics.fillEllipse(x, y - 10, 64, 16);
+        break;
+      case 'mailboxes':
+        rectangle(0x69626e, -50, -76, 100, 76);
+        rectangle(0xb9b2ad, -44, -69, 88, 62);
+        for (let row = 0; row < 3; row += 1) {
+          for (let column = 0; column < 2; column += 1) {
+            rectangle(0x716b75, -38 + column * 44, -61 + row * 19, 38, 14);
+            rectangle(0xffd88a, -8 + column * 44, -55 + row * 19, 4, 3);
+          }
+        }
+        if (label) {
+          this.add.text(x, y - 91, label, {
+            fontFamily: 'Trebuchet MS, Arial, sans-serif',
+            fontSize: '12px',
+            fontStyle: 'bold',
+            color: '#452d4a',
+            backgroundColor: '#ffffffbb',
+            padding: { x: 4, y: 2 },
+          }).setOrigin(0.5).setDepth(2);
+        }
+        break;
+      case 'family-photo': {
+        rectangle(0x805b55, -72, -54, 144, 108);
+        rectangle(0xfff3e7, -65, -47, 130, 94);
+        rectangle(0x9bb39a, -58, -39, 116, 75);
+        const furColors = [0x9f4d32, 0xf4f0e9, 0xc89b69, 0x888994, 0xf3e7d2];
+        for (let index = 0; index < furColors.length; index += 1) {
+          const offsetX = -43 + index * 21;
+          graphics.fillStyle(furColors[index]);
+          graphics.fillEllipse(x + offsetX, y + 9, 18, 15);
+          graphics.fillCircle(x + offsetX, y - 1, 8);
+          graphics.fillStyle(0x4a3028);
+          graphics.fillCircle(x + offsetX + 3, y - 2, 1);
+        }
+        if (label) {
+          this.add.text(x, y + 65, label, {
+            fontFamily: 'Trebuchet MS, Arial, sans-serif',
+            fontSize: '11px',
+            color: '#452d4a',
+            backgroundColor: '#ffffffcc',
+            padding: { x: 4, y: 2 },
+          }).setOrigin(0.5).setDepth(2);
+        }
+        break;
+      }
+    }
+  }
+
+  private isPetVisual(visual: string | undefined): visual is PetVisual {
+    return (
+      visual === 'panchito' ||
+      visual === 'oliver' ||
+      visual === 'rex' ||
+      visual === 'silvestre' ||
+      visual === 'peach' ||
+      visual === 'chocolatin'
+    );
+  }
+
+  private petDisplaySize(pet: PetVisual): { width: number; height: number } {
+    switch (pet) {
+      case 'panchito':
+        return { width: 60, height: 38 };
+      case 'oliver':
+      case 'silvestre':
+      case 'peach':
+        return { width: 44, height: 36 };
+      case 'rex':
+        return { width: 72, height: 52 };
+      case 'chocolatin':
+        return { width: 54, height: 40 };
     }
   }
 }

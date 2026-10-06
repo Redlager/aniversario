@@ -1,7 +1,7 @@
 import type { LevelConfig } from './LevelTypes';
+import { LEVEL_3_ID } from './level3';
 
 export const LEVEL_2_ID = 'level-2-nosotros-dos';
-export const LEVEL_3_ID = 'level-3-la-primera-casa';
 
 export const level2: LevelConfig = {
   id: LEVEL_2_ID,

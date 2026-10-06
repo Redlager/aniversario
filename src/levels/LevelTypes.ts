@@ -30,8 +30,16 @@ export interface NpcConfig extends Point {
   id: string;
   label: string;
   dialogue: string;
-  visual?: 'renzo' | 'phone';
+  visual?: 'renzo' | 'phone' | 'elevator' | PetVisual;
 }
+
+export type PetVisual =
+  | 'panchito'
+  | 'oliver'
+  | 'rex'
+  | 'silvestre'
+  | 'peach'
+  | 'chocolatin';
 
 export interface ExitConfig extends Point {
   nextLevelId: string | null;
@@ -52,11 +60,23 @@ export type DecorationKind =
   | 'phone'
   | 'cable'
   | 'social-icons'
-  | 'terminal';
+  | 'terminal'
+  | 'box'
+  | 'sofa'
+  | 'bed'
+  | 'lamp'
+  | 'toybox'
+  | 'door'
+  | 'window'
+  | 'pet-bed'
+  | 'pet'
+  | 'mailboxes'
+  | 'family-photo';
 
 export interface DecorationConfig extends Point {
   kind: DecorationKind;
   label?: string;
+  pet?: PetVisual;
 }
 
 export interface LevelConfig {
@@ -67,7 +87,7 @@ export interface LevelConfig {
     width: number;
     height: number;
     backgroundColor?: string;
-    backgroundStyle?: 'university' | 'sunset';
+    backgroundStyle?: 'university' | 'sunset' | 'home' | 'apartment';
   };
   spawn: Point;
   platforms?: PlatformConfig[];
