@@ -36,7 +36,7 @@ export const level1: LevelConfig = {
   ],
   enemies: [{ id: 'el-parcial', kind: 'exam', x: 1760, y: 550, patrolDistance: 105, speed: 75 }],
   decorations: [
-    { kind: 'university', x: 175, y: 480, label: 'UNIVERSIDAD' },
+    { kind: 'university', x: 175, y: 588, label: 'UNIVERSIDAD' },
     { kind: 'tree', x: 545, y: 588 },
     { kind: 'bench', x: 835, y: 588 },
     { kind: 'sign', x: 965, y: 588, label: 'PSICOLOGÍA →' },
@@ -61,10 +61,10 @@ export const level1: LevelConfig = {
       'Buscando nuevas conexiones...',
       '¡CONEXIÓN ENCONTRADA!',
       'Vicky: ¿Quién es este?',
-      'Renzo: Hola...',
+      'Renzo: Holis...',
       '❤️ MATCH',
       'Y sin saberlo...',
-      '...acababan de comenzar una aventura.',
+      '...acababan de comenzar una hermosa aventura.',
     ],
   },
 };
