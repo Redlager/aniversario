@@ -45,3 +45,85 @@ body {
   image-rendering: pixelated;
   touch-action: none;
 }
+
+.orientation-prompt {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: max(24px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right))
+    max(24px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
+  color: #fff8fc;
+  background: rgb(36 29 53 / 96%);
+  text-align: center;
+}
+
+.orientation-prompt.is-visible {
+  display: flex;
+}
+
+.orientation-card {
+  width: min(100%, 420px);
+}
+
+.orientation-icon {
+  color: #f4a6ce;
+  font-size: 76px;
+  line-height: 1;
+}
+
+.orientation-card h1 {
+  margin: 16px 0 10px;
+  font-size: clamp(25px, 7vw, 34px);
+}
+
+.orientation-card p {
+  margin: 0 auto 24px;
+  max-width: 360px;
+  color: #eee3f0;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.orientation-card button,
+.fullscreen-action {
+  border: 2px solid #ffd9ee;
+  border-radius: 10px;
+  color: white;
+  background: #d34f91;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.orientation-card button {
+  min-height: 56px;
+  padding: 12px 24px;
+  font-size: 16px;
+}
+
+.orientation-card .orientation-status {
+  min-height: 24px;
+  margin: 14px auto 0;
+  color: #ffe7a0;
+  font-size: 14px;
+}
+
+.fullscreen-action {
+  position: fixed;
+  z-index: 50;
+  top: max(12px, env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right));
+  display: none;
+  width: 48px;
+  height: 48px;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.fullscreen-action.is-visible {
+  display: block;
+}

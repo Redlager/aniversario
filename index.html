@@ -9,6 +9,21 @@
   <body>
     <div id="app">
       <div id="game-container"></div>
+      <div id="mobile-orientation-prompt" class="orientation-prompt" aria-hidden="true">
+        <section class="orientation-card" role="dialog" aria-labelledby="orientation-title">
+          <div class="orientation-icon" aria-hidden="true">↻</div>
+          <h1 id="orientation-title">Mejor en horizontal</h1>
+          <p id="orientation-message">
+            Este juego se disfruta mejor con el celular girado. Activá pantalla completa y poné el
+            teléfono en modo horizontal.
+          </p>
+          <button id="orientation-action" type="button">PANTALLA COMPLETA</button>
+          <p id="orientation-status" class="orientation-status" aria-live="polite"></p>
+        </section>
+      </div>
+      <button id="fullscreen-action" class="fullscreen-action" type="button" aria-label="Activar pantalla completa">
+        ⛶
+      </button>
     </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
