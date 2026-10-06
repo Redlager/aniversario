@@ -1,0 +1,29 @@
+import Phaser from 'phaser';
+
+export class Player extends Phaser.Physics.Arcade.Sprite {
+  constructor(scene: Phaser.Scene, x: number, y: number) {
+    super(scene, x, y, 'player');
+    scene.add.existing(this);
+    scene.physics.add.existing(this);
+
+    this.setCollideWorldBounds(false);
+    this.setSize(28, 42).setOffset(5, 4);
+    this.setMaxVelocity(280, 850);
+  }
+
+  move(direction: number): void {
+    this.setVelocityX(direction * 240);
+  }
+
+  jump(): void {
+    const body = this.body;
+    if (body instanceof Phaser.Physics.Arcade.Body && body.onFloor()) {
+      this.setVelocityY(-470);
+    }
+  }
+
+  resetAt(x: number, y: number): void {
+    this.setPosition(x, y);
+    this.setVelocity(0, 0);
+  }
+}
