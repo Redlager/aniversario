@@ -30,6 +30,7 @@ export interface NpcConfig extends Point {
   id: string;
   label: string;
   dialogue: string;
+  visual?: 'renzo' | 'phone';
 }
 
 export interface ExitConfig extends Point {
@@ -66,6 +67,7 @@ export interface LevelConfig {
     width: number;
     height: number;
     backgroundColor?: string;
+    backgroundStyle?: 'university' | 'sunset';
   };
   spawn: Point;
   platforms?: PlatformConfig[];

@@ -1,4 +1,5 @@
 import type { LevelConfig } from './LevelTypes';
+import { LEVEL_2_ID } from './level2';
 
 export const LEVEL_1_ID = 'level-1-el-match';
 
@@ -6,7 +7,7 @@ export const level1: LevelConfig = {
   id: LEVEL_1_ID,
   name: 'Nivel 1 · El Match',
   objective: 'Atravesá el campus y descubrí qué hay en la red social.',
-  world: { width: 3600, height: 760, backgroundColor: '#9bdaf4' },
+  world: { width: 3600, height: 760, backgroundColor: '#9bdaf4', backgroundStyle: 'university' },
   spawn: { x: 70, y: 535 },
   platforms: [
     { x: 1800, y: 600, width: 3600 },
@@ -55,7 +56,7 @@ export const level1: LevelConfig = {
   exit: {
     x: 3420,
     y: 520,
-    nextLevelId: null,
+    nextLevelId: LEVEL_2_ID,
     completionTitle: '¡MATCH ENCONTRADO!',
     dialogue: [
       'Buscando nuevas conexiones...',

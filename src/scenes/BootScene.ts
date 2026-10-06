@@ -50,6 +50,7 @@ export class BootScene extends Phaser.Scene {
     this.createPlaceholderTexture('enemy', 0x7961a8, 36, 42);
     this.createPlaceholderTexture('checkpoint', 0x6b9ce8, 34, 48);
     this.createPlaceholderTexture('npc', 0xf0a66b, 36, 48);
+    this.createPhoneTexture();
     this.createPlaceholderTexture('exit', 0x54b889, 40, 56);
     this.createAnimations();
     this.scene.start('Menu');
@@ -125,6 +126,20 @@ export class BootScene extends Phaser.Scene {
     graphics.fillStyle(0x9ad17b);
     graphics.fillRoundedRect(0, 0, 96, 10, 4);
     graphics.generateTexture('platform', 96, 24);
+    graphics.destroy();
+  }
+
+  private createPhoneTexture(): void {
+    const graphics = this.make.graphics({ x: 0, y: 0 });
+    graphics.fillStyle(0x443d52);
+    graphics.fillRoundedRect(4, 1, 24, 44, 5);
+    graphics.fillStyle(0xfff3f7);
+    graphics.fillRoundedRect(7, 5, 18, 32, 2);
+    graphics.fillStyle(0xe977ad);
+    graphics.fillCircle(16, 41, 2);
+    graphics.fillStyle(0xd34f91);
+    graphics.fillCircle(22, 9, 3);
+    graphics.generateTexture('phone-interaction', 32, 46);
     graphics.destroy();
   }
 

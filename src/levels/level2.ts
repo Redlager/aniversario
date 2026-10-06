@@ -1,0 +1,98 @@
+import type { LevelConfig } from './LevelTypes';
+
+export const LEVEL_2_ID = 'level-2-nosotros-dos';
+export const LEVEL_3_ID = 'level-3-la-primera-casa';
+
+export const level2: LevelConfig = {
+  id: LEVEL_2_ID,
+  name: 'Nivel 2 · Nosotros dos',
+  objective: 'Recorré el camino y descubrí algunos recuerdos.',
+  world: {
+    width: 3100,
+    height: 760,
+    backgroundColor: '#efb18f',
+    backgroundStyle: 'sunset',
+  },
+  spawn: { x: 70, y: 548 },
+  platforms: [
+    { x: 320, y: 600, width: 640 },
+    { x: 700, y: 520, width: 140, height: 24 },
+    { x: 1025, y: 600, width: 500 },
+    { x: 1360, y: 525, width: 150, height: 24 },
+    { x: 1565, y: 600, width: 310 },
+    { x: 1790, y: 510, width: 160, height: 24 },
+    { x: 2025, y: 600, width: 350 },
+    { x: 2265, y: 530, width: 150, height: 24 },
+    { x: 2470, y: 600, width: 400 },
+    { x: 2730, y: 520, width: 150, height: 24 },
+    { x: 2925, y: 600, width: 350 },
+  ],
+  checkpoints: [
+    { id: 'primera-salida', x: 900, y: 548 },
+    { id: 'recuerdos-finales', x: 2040, y: 548 },
+  ],
+  collectibles: [
+    { id: 'mensaje-1', kind: 'notes', x: 300, y: 550 },
+    { id: 'mensaje-2', kind: 'notes', x: 700, y: 470 },
+    { id: 'mensaje-3', kind: 'notes', x: 1150, y: 550 },
+    { id: 'mensaje-4', kind: 'notes', x: 1435, y: 475 },
+    { id: 'mensaje-5', kind: 'notes', x: 1840, y: 460 },
+    { id: 'mensaje-6', kind: 'notes', x: 2335, y: 480 },
+    { id: 'mensaje-7', kind: 'notes', x: 2790, y: 470 },
+    { id: 'recuerdo-1', kind: 'heart', x: 820, y: 460 },
+    { id: 'recuerdo-2', kind: 'heart', x: 1900, y: 430 },
+    { id: 'recuerdo-3', kind: 'heart', x: 2620, y: 550 },
+  ],
+  npcs: [
+    {
+      id: 'primer-mensaje',
+      label: 'MENSAJE',
+      visual: 'phone',
+      x: 180,
+      y: 550,
+      dialogue: 'Después del Match…\nEmpezaron los mensajes.\nRecorré el camino y descubrí algunos recuerdos.',
+    },
+    {
+      id: 'primera-salida',
+      label: 'RENZO',
+      visual: 'renzo',
+      x: 1120,
+      y: 550,
+      dialogue: '¿Qué hacemos? ¿Y a dónde vamos?\nBueno… ya resolvimos lo más difícil: encontrarnos.',
+    },
+    {
+      id: 'cosas-en-comun',
+      label: 'RENZO',
+      visual: 'renzo',
+      x: 2490,
+      y: 550,
+      dialogue: 'Entre charla y charla, cada vez daba más gusto seguir conociéndonos.',
+    },
+  ],
+  decorations: [
+    { kind: 'tree', x: 430, y: 588 },
+    { kind: 'bench', x: 540, y: 588 },
+    { kind: 'tree', x: 1020, y: 588 },
+    { kind: 'bench', x: 1230, y: 588 },
+    { kind: 'books', x: 1510, y: 588 },
+    { kind: 'tree', x: 1690, y: 588 },
+    { kind: 'bench', x: 2110, y: 588 },
+    { kind: 'tree', x: 2350, y: 588 },
+    { kind: 'bench', x: 2840, y: 588 },
+    { kind: 'tree', x: 2760, y: 588 },
+  ],
+  exit: {
+    x: 2990,
+    y: 548,
+    nextLevelId: LEVEL_3_ID,
+    completionTitle: '¡NOSOTROS DOS! ❤️',
+    dialogue: [
+      'Primero fue el Match.',
+      'Después llegaron los mensajes.',
+      'Después, las conversaciones y las primeras salidas.',
+      'Y poco a poco dejaron de ser dos personas que habían hecho Match.',
+      'Ya no era solamente un Match.',
+      'Y pronto iban a empezar a construir algo juntos.',
+    ],
+  },
+};

@@ -5,6 +5,7 @@ import { DialogBox } from '../ui/DialogBox';
 import { LevelHud } from '../ui/LevelHud';
 import { LevelCompletePanel } from '../ui/LevelCompletePanel';
 import { PlayerProgress, type DecorationConfig, type LevelConfig } from '../levels/LevelTypes';
+import { levels } from '../levels/levelRegistry';
 
 interface LevelStartData {
   levelId?: string;
@@ -126,7 +127,10 @@ export abstract class BaseLevelScene extends Phaser.Scene {
   }
 
   private drawBackdrop(width: number, height: number): void {
-    if (this.textures.exists('level-university-background')) {
+    if (
+      this.level.world.backgroundStyle === 'university' &&
+      this.textures.exists('level-university-background')
+    ) {
       const scale = height / this.textures.get('level-university-background').getSourceImage().height;
       this.add
         .tileSprite(0, 0, width, height, 'level-university-background')
@@ -138,12 +142,21 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     }
 
     const graphics = this.add.graphics();
-    graphics.fillStyle(0xffffff, 0.48);
-    graphics.fillCircle(180, 100, 31);
-    graphics.fillCircle(218, 96, 41);
-    graphics.fillCircle(255, 105, 30);
-    graphics.fillStyle(0x8bc97c);
-    graphics.fillEllipse(width * 0.45, height - 30, width * 0.8, 130);
+    if (this.level.world.backgroundStyle === 'sunset') {
+      graphics.fillStyle(0xffdf9c, 0.9);
+      graphics.fillCircle(width * 0.78, height * 0.3, 48);
+      graphics.fillStyle(0x9a7186);
+      graphics.fillEllipse(width * 0.38, height - 30, width * 0.8, 130);
+      graphics.fillStyle(0x6e8a75);
+      graphics.fillEllipse(width * 0.8, height - 12, width * 0.75, 115);
+    } else {
+      graphics.fillStyle(0xffffff, 0.48);
+      graphics.fillCircle(180, 100, 31);
+      graphics.fillCircle(218, 96, 41);
+      graphics.fillCircle(255, 105, 30);
+      graphics.fillStyle(0x8bc97c);
+      graphics.fillEllipse(width * 0.45, height - 30, width * 0.8, 130);
+    }
     graphics.setScrollFactor(0.25);
   }
 
@@ -225,8 +238,21 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     });
     this.npcs = this.physics.add.staticGroup();
     for (const npc of this.level.npcs ?? []) {
-      const sprite = this.npcs.create(npc.x, npc.y, 'npc');
-      sprite.setSize(32, 44).refreshBody();
+      const texture = npc.visual === 'renzo'
+        ? 'renzo'
+        : npc.visual === 'phone'
+          ? 'phone-interaction'
+          : 'npc';
+      const sprite = this.npcs.create(npc.x, npc.y, texture);
+      sprite
+        .setSize(npc.visual === 'renzo' ? 28 : 32, npc.visual === 'renzo' ? 42 : 44)
+        .setDepth(2);
+      if (npc.visual === 'renzo') {
+        sprite.setScale(1.5).refreshBody();
+        if (this.anims.exists('renzo-idle')) sprite.play('renzo-idle');
+      } else {
+        sprite.refreshBody();
+      }
       sprite.setData('npcId', npc.id);
       sprite.setData('dialogue', npc.dialogue);
       sprite.setData('label', npc.label);
@@ -395,7 +421,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
         levelId: this.level.id,
         ...this.level.spawn,
       };
-      this.dialog.show('Sin vidas. El nivel se reinicia desde el comienzo.', () => {
+      this.showDialog('Sin vidas. El nivel se reinicia desde el comienzo.', () => {
         this.scene.restart({ levelId: this.level.id });
       });
       return;
@@ -415,7 +441,32 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     const id = npc.getData('npcId') as string;
     if (this.visitedNpcs.has(id) || this.dialog.isOpen) return;
     this.visitedNpcs.add(id);
-    this.dialog.show(`${npc.getData('label')}: ${npc.getData('dialogue') as string}`);
+    this.showDialog(`${npc.getData('label')}: ${npc.getData('dialogue') as string}`);
+  }
+
+  private showDialog(message: string, onDismiss?: () => void): void {
+    const body = this.player.body;
+    const previousState =
+      body instanceof Phaser.Physics.Arcade.Body
+        ? {
+            allowGravity: body.allowGravity,
+            velocityX: body.velocity.x,
+            velocityY: body.velocity.y,
+          }
+        : undefined;
+
+    if (body instanceof Phaser.Physics.Arcade.Body) {
+      body.setAllowGravity(false);
+      body.setVelocity(0, 0);
+    }
+
+    this.dialog.show(message, () => {
+      if (body instanceof Phaser.Physics.Arcade.Body && previousState) {
+        body.setAllowGravity(previousState.allowGravity);
+        body.setVelocity(previousState.velocityX, previousState.velocityY);
+      }
+      onDismiss?.();
+    });
   }
 
   private reachExit(): void {
@@ -446,7 +497,11 @@ export abstract class BaseLevelScene extends Phaser.Scene {
         this.cameras.main.fadeOut(250, 36, 29, 53);
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
           if (this.level.exit.nextLevelId) {
-            this.scene.restart({ levelId: this.level.exit.nextLevelId });
+            if (levels[this.level.exit.nextLevelId]) {
+              this.scene.restart({ levelId: this.level.exit.nextLevelId });
+            } else {
+              this.scene.start('Menu');
+            }
           } else {
             this.scene.start('Menu');
           }
@@ -457,7 +512,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     if (lines[index] === '❤️ MATCH') {
       this.showMatchEffect();
     }
-    this.dialog.show(lines[index], () => this.playExitDialogue(index + 1));
+    this.showDialog(lines[index], () => this.playExitDialogue(index + 1));
   }
 
   private showRenzoScene(): void {
