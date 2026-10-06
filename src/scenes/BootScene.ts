@@ -3,6 +3,7 @@ import {
   characterSpriteSheets,
   characterSpriteSheetUrls,
 } from '../assets/characterSpriteSheets';
+import { levelArtAssets, levelArtUrls } from '../assets/levelArt';
 
 export class BootScene extends Phaser.Scene {
   constructor() {
@@ -17,6 +18,19 @@ export class BootScene extends Phaser.Scene {
         frameWidth: sheet.frameWidth,
         frameHeight: sheet.frameHeight,
       });
+    }
+
+    for (const asset of levelArtAssets) {
+      const url = levelArtUrls[asset.path];
+      if (!url) continue;
+      if (asset.type === 'spritesheet') {
+        this.load.spritesheet(asset.key, url, {
+          frameWidth: asset.frameWidth,
+          frameHeight: asset.frameHeight,
+        });
+      } else {
+        this.load.image(asset.key, url);
+      }
     }
   }
 

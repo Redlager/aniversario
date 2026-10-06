@@ -76,8 +76,8 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, width, height);
     this.cameras.main.setBackgroundColor(this.level.world.backgroundColor ?? '#9bdaf4');
     this.drawBackdrop(width, height);
-    this.drawDecorations();
     this.createPlatforms();
+    this.drawDecorations();
     this.createPlayer();
     this.createLevelObjects();
     this.createControls();
@@ -126,6 +126,17 @@ export abstract class BaseLevelScene extends Phaser.Scene {
   }
 
   private drawBackdrop(width: number, height: number): void {
+    if (this.textures.exists('level-university-background')) {
+      const scale = height / this.textures.get('level-university-background').getSourceImage().height;
+      this.add
+        .tileSprite(0, 0, width, height, 'level-university-background')
+        .setOrigin(0)
+        .setTileScale(scale)
+        .setScrollFactor(0.25)
+        .setDepth(-20);
+      return;
+    }
+
     const graphics = this.add.graphics();
     graphics.fillStyle(0xffffff, 0.48);
     graphics.fillCircle(180, 100, 31);
@@ -142,6 +153,30 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       const platform = this.platforms.create(platformConfig.x, platformConfig.y, 'platform');
       platform.setDisplaySize(platformConfig.width, platformConfig.height ?? 24);
       platform.refreshBody();
+
+      const ground = platformConfig.width >= this.level.world.width;
+      const textureKey = ground ? 'level-ground-atlas' : 'level-platform-atlas';
+      if (this.textures.exists(textureKey)) {
+        const bodyHeight = platformConfig.height ?? 24;
+        const visualHeight = 48;
+        const colliderTop = platformConfig.y - bodyHeight / 2;
+        const artFrameTop = ground ? 6 / 362 : 9 / 443;
+        const visualTop = colliderTop - artFrameTop * visualHeight;
+        const visualY = visualTop + visualHeight / 2;
+
+        if (ground) {
+          this.add
+            .tileSprite(platformConfig.x, visualY, platformConfig.width, visualHeight, textureKey, 9)
+            .setTileScale(0.9, visualHeight / 362)
+            .setDepth(0);
+        } else {
+          this.add
+            .image(platformConfig.x, visualY, textureKey, 1)
+            .setDisplaySize(platformConfig.width, visualHeight)
+            .setDepth(0);
+        }
+        platform.setVisible(false);
+      }
     }
   }
 
@@ -522,22 +557,49 @@ export abstract class BaseLevelScene extends Phaser.Scene {
   }
 
   private drawDecoration({ kind, x, y, label }: DecorationConfig): void {
+    const groundOffset = kind === 'university' ? 18 : 0;
+    if (kind === 'tree' && this.textures.exists('level-tree')) {
+      this.add
+        .image(x, y, 'level-tree')
+        .setY(y + 22)
+        .setOrigin(0.5, 1)
+        .setDisplaySize(120, 160)
+        .setDepth(1);
+      return;
+    }
+    if (kind === 'bench' && this.textures.exists('level-bench')) {
+      this.add
+        .image(x, y, 'level-bench')
+        .setY(y + 22)
+        .setOrigin(0.5, 1)
+        .setDisplaySize(116, 58)
+        .setDepth(1);
+      return;
+    }
+
     const graphics = this.add.graphics().setDepth(1);
     const rectangle = (color: number, rx: number, ry: number, width: number, height: number): void => {
       graphics.fillStyle(color);
-      graphics.fillRect(x + rx, y + ry, width, height);
+      graphics.fillRect(x + rx, y + groundOffset + ry, width, height);
     };
 
     switch (kind) {
       case 'university':
-        rectangle(0xe9c98d, -132, -228, 264, 228);
+        if (this.textures.exists('level-wall-atlas')) {
+          this.add
+            .tileSprite(x, y + groundOffset - 114, 264, 228, 'level-wall-atlas', 3)
+            .setTileScale(0.55)
+            .setDepth(0.5);
+        } else {
+          rectangle(0xe9c98d, -132, -228, 264, 228);
+        }
         rectangle(0x805b55, -142, -20, 284, 20);
         rectangle(0xfff0c2, -112, -190, 224, 62);
         rectangle(0x74555d, -82, -108, 45, 108);
         rectangle(0x74555d, 37, -108, 45, 108);
         rectangle(0xb8d6dc, -113, -115, 54, 48);
         rectangle(0xb8d6dc, 59, -115, 54, 48);
-        this.add.text(x, y - 158, label ?? 'UNIVERSIDAD', {
+        this.add.text(x, y + groundOffset - 158, label ?? 'UNIVERSIDAD', {
           fontFamily: 'Trebuchet MS, Arial, sans-serif',
           fontSize: '18px',
           fontStyle: 'bold',
