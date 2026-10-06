@@ -1,6 +1,8 @@
 import Phaser from 'phaser';
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
+  private damageAnimationUntil = 0;
+
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, 'vicky-idle');
     scene.add.existing(this);
@@ -18,6 +20,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   updateAnimation(horizontalDirection: number): void {
     const body = this.body;
     if (!(body instanceof Phaser.Physics.Arcade.Body)) return;
+    if (horizontalDirection !== 0) this.setFlipX(horizontalDirection < 0);
+    if (this.scene.time.now < this.damageAnimationUntil) return;
     if (!body.onFloor()) {
       this.play(body.velocity.y < 0 ? 'vicky-jump' : 'vicky-fall', true);
     } else if (horizontalDirection !== 0) {
@@ -25,7 +29,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     } else {
       this.play('vicky-idle', true);
     }
-    if (horizontalDirection !== 0) this.setFlipX(horizontalDirection < 0);
+  }
+
+  playDamageAnimation(): void {
+    if (!this.scene.anims.exists('vicky-damage')) return;
+    this.damageAnimationUntil = this.scene.time.now + 350;
+    this.play('vicky-damage', true);
   }
 
   jump(): void {

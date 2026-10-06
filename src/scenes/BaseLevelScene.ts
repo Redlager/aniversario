@@ -312,7 +312,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       this.player.y < other.y - 10
     ) {
       const { x, y } = other;
-      other.destroy();
+      other.playDefeatAnimation();
       body.setVelocityY(-260);
       const approved = this.add
         .text(x, y - 35, '¡APROBADO!', {
@@ -358,6 +358,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
 
     this.player.resetAt(this.progress.checkpoint.x, this.progress.checkpoint.y);
     this.player.setTint(0xffffff);
+    this.player.playDamageAnimation();
     this.time.delayedCall(350, () => this.player.clearTint());
   }
 
@@ -413,7 +414,15 @@ export abstract class BaseLevelScene extends Phaser.Scene {
 
   private showRenzoScene(): void {
     const { x, y } = this.level.exit;
-    const renzo = this.add.image(x - 105, y - 27, 'renzo').setDepth(5).setScale(1.5);
+    const renzo = this.add.sprite(x - 105, y - 27, 'renzo').setDepth(5).setScale(1.5);
+    if (this.anims.exists('renzo-appear')) {
+      renzo.play('renzo-appear');
+      renzo.once('animationcomplete-renzo-appear', () => {
+        if (this.anims.exists('renzo-idle')) renzo.play('renzo-idle');
+      });
+    } else if (this.anims.exists('renzo-idle')) {
+      renzo.play('renzo-idle');
+    }
     const graphics = this.add.graphics().setDepth(4);
     graphics.fillStyle(0x443d52);
     graphics.fillRect(x - 155, y + 10, 92, 12);

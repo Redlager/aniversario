@@ -1,8 +1,23 @@
 import Phaser from 'phaser';
+import {
+  characterSpriteSheets,
+  characterSpriteSheetUrls,
+} from '../assets/characterSpriteSheets';
 
 export class BootScene extends Phaser.Scene {
   constructor() {
     super('Boot');
+  }
+
+  preload(): void {
+    for (const sheet of characterSpriteSheets) {
+      const url = characterSpriteSheetUrls[sheet.path];
+      if (!url) continue;
+      this.load.spritesheet(sheet.textureKey, url, {
+        frameWidth: sheet.frameWidth,
+        frameHeight: sheet.frameHeight,
+      });
+    }
   }
 
   create(): void {
@@ -12,6 +27,7 @@ export class BootScene extends Phaser.Scene {
     this.createCharacterTexture('vicky-walk-2', 'vicky', 'walk-2');
     this.createCharacterTexture('vicky-jump', 'vicky', 'jump');
     this.createCharacterTexture('vicky-fall', 'vicky', 'fall');
+    this.createCharacterTexture('vicky-damage', 'vicky', 'damage');
     this.createCharacterTexture('renzo', 'renzo', 'idle');
     this.createExamTexture();
     this.createPlatformTexture();
@@ -28,8 +44,9 @@ export class BootScene extends Phaser.Scene {
   private createCharacterTexture(
     key: string,
     character: 'vicky' | 'renzo',
-    pose: 'idle' | 'walk-1' | 'walk-2' | 'jump' | 'fall',
+    pose: 'idle' | 'walk-1' | 'walk-2' | 'jump' | 'fall' | 'damage',
   ): void {
+    if (this.textures.exists(key)) return;
     const graphics = this.make.graphics({ x: 0, y: 0 });
     const jumping = pose === 'jump' || pose === 'fall';
     const legOffset = pose === 'walk-1' ? -2 : pose === 'walk-2' ? 2 : 0;
@@ -60,6 +77,11 @@ export class BootScene extends Phaser.Scene {
     if (pose === 'jump') {
       graphics.fillRect(3, 26, 7, 4);
       graphics.fillRect(30, 26, 7, 4);
+    }
+    if (pose === 'damage') {
+      graphics.fillStyle(0xffffff);
+      graphics.fillRect(8, 14, 3, 3);
+      graphics.fillRect(29, 14, 3, 3);
     }
     graphics.generateTexture(key, 40, 50);
     graphics.destroy();
@@ -150,26 +172,37 @@ export class BootScene extends Phaser.Scene {
   }
 
   private createAnimations(): void {
-    this.anims.create({
-      key: 'vicky-idle',
-      frames: [{ key: 'vicky-idle' }, { key: 'vicky-walk-1' }],
-      frameRate: 2,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: 'vicky-walk',
-      frames: [{ key: 'vicky-walk-1' }, { key: 'vicky-walk-2' }],
-      frameRate: 8,
-      repeat: -1,
-    });
-    this.anims.create({ key: 'vicky-jump', frames: [{ key: 'vicky-jump' }] });
-    this.anims.create({ key: 'vicky-fall', frames: [{ key: 'vicky-fall' }] });
-    this.anims.create({
-      key: 'exam-float',
-      frames: [{ key: 'exam' }, { key: 'exam' }],
-      frameRate: 2,
-      repeat: -1,
-      yoyo: true,
-    });
+    const loadedAnimations = new Set<string>();
+    for (const sheet of characterSpriteSheets) {
+      if (!this.textures.exists(sheet.textureKey)) continue;
+      this.anims.create({
+        key: sheet.animationKey,
+        frames: this.anims.generateFrameNumbers(sheet.textureKey, {
+          start: 0,
+          end: sheet.frameCount - 1,
+        }),
+        frameRate: sheet.frameRate,
+        repeat: sheet.repeat,
+        yoyo: sheet.yoyo,
+      });
+      loadedAnimations.add(sheet.animationKey);
+    }
+
+    const createFallbackAnimation = (
+      key: string,
+      frames: Phaser.Types.Animations.AnimationFrame[],
+      frameRate?: number,
+      repeat?: number,
+    ): void => {
+      if (loadedAnimations.has(key)) return;
+      this.anims.create({ key, frames, frameRate, repeat });
+    };
+    createFallbackAnimation('vicky-idle', [{ key: 'vicky-idle' }, { key: 'vicky-walk-1' }], 2, -1);
+    createFallbackAnimation('vicky-walk', [{ key: 'vicky-walk-1' }, { key: 'vicky-walk-2' }], 8, -1);
+    createFallbackAnimation('vicky-jump', [{ key: 'vicky-jump' }]);
+    createFallbackAnimation('vicky-fall', [{ key: 'vicky-fall' }]);
+    createFallbackAnimation('vicky-damage', [{ key: 'vicky-damage' }]);
+    createFallbackAnimation('renzo-idle', [{ key: 'renzo' }], 1, -1);
+    createFallbackAnimation('exam-float', [{ key: 'exam' }, { key: 'exam' }], 2, -1);
   }
 }
