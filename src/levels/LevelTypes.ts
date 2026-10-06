@@ -39,12 +39,14 @@ export type PetVisual =
   | 'rex'
   | 'silvestre'
   | 'peach'
-  | 'chocolatin';
+  | 'chocolatin'
+  | 'canelo';
 
 export interface ExitConfig extends Point {
   nextLevelId: string | null;
   dialogue?: string[];
   completionTitle?: string;
+  completionScene?: 'family';
 }
 
 export type DecorationKind =
@@ -70,6 +72,7 @@ export type DecorationKind =
   | 'window'
   | 'pet-bed'
   | 'pet'
+  | 'house'
   | 'mailboxes'
   | 'family-photo';
 
@@ -87,7 +90,7 @@ export interface LevelConfig {
     width: number;
     height: number;
     backgroundColor?: string;
-    backgroundStyle?: 'university' | 'sunset' | 'home' | 'apartment';
+    backgroundStyle?: 'university' | 'sunset' | 'home' | 'apartment' | 'yard';
   };
   spawn: Point;
   platforms?: PlatformConfig[];

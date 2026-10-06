@@ -167,6 +167,7 @@ export class BootScene extends Phaser.Scene {
     this.createPetTexture('silvestre', 0x888994, 0x62636d, 44, 36);
     this.createPetTexture('peach', 0xf3e7d2, 0x765064, 44, 36);
     this.createPetTexture('chocolatin', 0x70452f, 0x4a3028, 54, 40);
+    this.createPetTexture('canelo', 0xf5f0e6, 0x9b6543, 56, 46);
   }
 
   private createPetTexture(
@@ -190,7 +191,18 @@ export class BootScene extends Phaser.Scene {
     graphics.fillRect(bodyX + 5, bodyY + bodyHeight - 1, 5, height - bodyY - bodyHeight + 1);
     graphics.fillRect(bodyX + bodyWidth - 10, bodyY + bodyHeight - 1, 5, height - bodyY - bodyHeight + 1);
 
-    if (isCat) {
+    if (pet === 'canelo') {
+      graphics.fillStyle(furColor);
+      graphics.fillEllipse(width - 24, 8, 9, 19);
+      graphics.fillEllipse(width - 11, 8, 9, 19);
+      graphics.fillStyle(detailColor);
+      graphics.fillEllipse(width - 24, 8, 4, 12);
+      graphics.fillEllipse(width - 11, 8, 4, 12);
+      graphics.fillEllipse(bodyX + 18, bodyY + 6, 17, 11);
+      graphics.fillCircle(width - 17, 17, 1.5);
+      graphics.fillCircle(width - 10, 17, 1.5);
+      graphics.fillCircle(width - 13, 21, 2);
+    } else if (isCat) {
       graphics.fillStyle(furColor);
       graphics.fillPoints(
         [

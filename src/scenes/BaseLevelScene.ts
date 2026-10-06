@@ -159,6 +159,16 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       graphics.fillStyle(0x827b80);
       graphics.fillRect(0, height * 0.75 + 18, width, 10);
       graphics.setDepth(-20);
+    } else if (this.level.world.backgroundStyle === 'yard') {
+      graphics.fillStyle(0xa9def2);
+      graphics.fillRect(0, 0, width, height);
+      graphics.fillStyle(0xffe6a0);
+      graphics.fillCircle(width * 0.76, height * 0.22, 48);
+      graphics.fillStyle(0x91c98b);
+      graphics.fillEllipse(width * 0.25, height * 0.72, width * 0.75, 190);
+      graphics.fillStyle(0x7fb47d);
+      graphics.fillEllipse(width * 0.76, height * 0.78, width * 0.82, 220);
+      graphics.setDepth(-20);
     } else if (this.level.world.backgroundStyle === 'home') {
       graphics.fillStyle(0xf4e4d5);
       graphics.fillRect(0, 0, width, height * 0.78);
@@ -571,6 +581,18 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     } else if (this.anims.exists('renzo-idle')) {
       renzo.play('renzo-idle');
     }
+    if (this.level.exit.completionScene === 'family') {
+      this.showFamilyCompletionScene(x, y);
+      this.tweens.add({
+        targets: renzo,
+        y: renzo.y - 5,
+        duration: 750,
+        yoyo: true,
+        repeat: -1,
+      });
+      return;
+    }
+
     const graphics = this.add.graphics().setDepth(4);
     if (this.level.world.backgroundStyle === 'apartment') {
       graphics.fillStyle(0x936e78);
@@ -616,6 +638,39 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       targets: renzo,
       y: renzo.y - 5,
       duration: 750,
+      yoyo: true,
+      repeat: -1,
+    });
+  }
+
+  private showFamilyCompletionScene(x: number, y: number): void {
+    const pets: PetVisual[] = [
+      'panchito',
+      'oliver',
+      'rex',
+      'silvestre',
+      'peach',
+      'chocolatin',
+      'canelo',
+    ];
+    const graphics = this.add.graphics().setDepth(4);
+    graphics.fillStyle(0x79b976, 0.9);
+    graphics.fillEllipse(x + 145, y + 14, 390, 48);
+    pets.forEach((pet, index) => {
+      const size = this.petDisplaySize(pet);
+      this.add
+        .image(x - 20 + index * 50, y + 12, `pet-${pet}`)
+        .setOrigin(0.5, 1)
+        .setDisplaySize(size.width * 0.72, size.height * 0.72)
+        .setDepth(26);
+    });
+
+    const glow = this.add.circle(x + 350, y - 80, 9, 0xe9ddff, 0.8).setDepth(8);
+    this.tweens.add({
+      targets: glow,
+      alpha: 0.25,
+      scale: 1.5,
+      duration: 950,
       yoyo: true,
       repeat: -1,
     });
@@ -716,6 +771,27 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     };
 
     switch (kind) {
+      case 'house':
+        rectangle(0xf5e6cc, -112, -164, 224, 164);
+        graphics.fillStyle(0x9b655e);
+        graphics.fillPoints(
+          [
+            new Phaser.Math.Vector2(x - 132, y - 164),
+            new Phaser.Math.Vector2(x, y - 252),
+            new Phaser.Math.Vector2(x + 132, y - 164),
+          ],
+          true,
+        );
+        rectangle(0x9bdaf4, -91, -139, 54, 48);
+        rectangle(0xfff0c2, -65, -139, 4, 48);
+        rectangle(0xfff0c2, -91, -116, 54, 4);
+        rectangle(0x9bdaf4, 37, -139, 54, 48);
+        rectangle(0xfff0c2, 63, -139, 4, 48);
+        rectangle(0xfff0c2, 37, -116, 54, 4);
+        rectangle(0x9b655e, -22, -82, 44, 82);
+        rectangle(0xe5bf94, -17, -77, 34, 77);
+        rectangle(0x805b55, 10, -42, 4, 4);
+        break;
       case 'university':
         if (this.textures.exists('level-wall-atlas')) {
           this.add
@@ -951,7 +1027,8 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       visual === 'rex' ||
       visual === 'silvestre' ||
       visual === 'peach' ||
-      visual === 'chocolatin'
+      visual === 'chocolatin' ||
+      visual === 'canelo'
     );
   }
 
@@ -967,6 +1044,8 @@ export abstract class BaseLevelScene extends Phaser.Scene {
         return { width: 72, height: 52 };
       case 'chocolatin':
         return { width: 54, height: 40 };
+      case 'canelo':
+        return { width: 56, height: 46 };
     }
   }
 }
