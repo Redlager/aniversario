@@ -150,3 +150,10 @@ The developer controls scope.
 If a requested feature could significantly increase project complexity, explain the tradeoff briefly and recommend the simplest viable implementation.
 
 The goal is to finish a polished small anniversary game, not build a general-purpose game engine.
+
+## Visual testing
+
+Use browser screenshots only when visual verification is necessary. Prefer code/console inspection for non-visual changes. Do not repeatedly capture identical screenshots. After confirming a visual state, continue using code inspection unless the UI changes.
+
+## Testing efficiency
+Batch related changes before performing browser testing when safe. Avoid restarting the browser or server unnecessarily.

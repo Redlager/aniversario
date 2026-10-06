@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { PlayerProgress } from '../levels/LevelTypes';
+import { FIRST_LEVEL_ID } from '../levels/levelRegistry';
 
 export class MenuScene extends Phaser.Scene {
   constructor() {
@@ -36,7 +38,7 @@ export class MenuScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     const startButton = this.add
-      .text(centerX, 330, 'JUGAR · PRUEBA DE MOVIMIENTO', {
+      .text(centerX, 330, 'JUGAR · EL MATCH', {
         fontFamily: 'Trebuchet MS, Arial, sans-serif',
         fontSize: '20px',
         fontStyle: 'bold',
@@ -48,7 +50,8 @@ export class MenuScene extends Phaser.Scene {
       .setInteractive({ useHandCursor: true });
 
     const startGame = (): void => {
-      this.scene.start('Game');
+      this.registry.set('playerProgress', new PlayerProgress());
+      this.scene.start('Level', { levelId: FIRST_LEVEL_ID });
     };
     startButton.on('pointerdown', startGame);
     this.input.keyboard?.once('keydown-SPACE', startGame);
