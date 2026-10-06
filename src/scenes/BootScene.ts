@@ -203,6 +203,7 @@ export class BootScene extends Phaser.Scene {
     createFallbackAnimation('vicky-fall', [{ key: 'vicky-fall' }]);
     createFallbackAnimation('vicky-damage', [{ key: 'vicky-damage' }]);
     createFallbackAnimation('renzo-idle', [{ key: 'renzo' }], 1, -1);
+    createFallbackAnimation('renzo-appear', [{ key: 'renzo' }, { key: 'renzo' }], 8, 0);
     createFallbackAnimation('exam-float', [{ key: 'exam' }, { key: 'exam' }], 2, -1);
   }
 }

@@ -48,6 +48,16 @@ export abstract class BaseLevelScene extends Phaser.Scene {
 
   init(data: LevelStartData = {}): void {
     this.level = this.getLevel(data.levelId ?? '');
+    this.exitNearby = false;
+    this.exitPrompt = undefined;
+    this.interactionButton = undefined;
+    this.interactionLabel = undefined;
+    this.completionPanel = undefined;
+    this.visitedNpcs.clear();
+    this.touchPointers.clear();
+    this.damageAvailableAt = 0;
+    this.transitioning = false;
+    this.exitTriggered = false;
   }
 
   create(): void {
@@ -377,8 +387,11 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     if (this.transitioning || this.exitTriggered) return;
     this.transitioning = true;
     this.exitTriggered = true;
-    this.player.setVelocity(0, 0);
-    this.player.setVisible(false);
+    this.player.resetAt(this.level.exit.x - 210, this.level.exit.y - 27);
+    this.player
+      .setScale(1.5)
+      .setDepth(26)
+      .play('vicky-idle', true);
     this.showRenzoScene();
     this.add
       .rectangle(0, 0, this.scale.width, this.scale.height, 0x171322, 0.34)
@@ -414,7 +427,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
 
   private showRenzoScene(): void {
     const { x, y } = this.level.exit;
-    const renzo = this.add.sprite(x - 105, y - 27, 'renzo').setDepth(5).setScale(1.5);
+    const renzo = this.add.sprite(x - 105, y - 27, 'renzo').setDepth(26).setScale(1.5);
     if (this.anims.exists('renzo-appear')) {
       renzo.play('renzo-appear');
       renzo.once('animationcomplete-renzo-appear', () => {
@@ -441,7 +454,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
         padding: { x: 5, y: 3 },
       })
       .setOrigin(0.5)
-      .setDepth(6);
+      .setDepth(27);
     this.tweens.add({
       targets: renzo,
       y: renzo.y - 5,
