@@ -548,6 +548,17 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     if (index >= lines.length) {
       this.cameras.main.flash(250, 231, 119, 173);
       this.completionPanel = new LevelCompletePanel(this, this.level.exit.completionTitle);
+
+      if (this.level.id === 'final') {
+        this.completionPanel.showFinalAnniversaryCard(() => {
+          this.cameras.main.fadeOut(250, 36, 29, 53);
+          this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+            this.scene.start('Menu');
+          });
+        });
+        return;
+      }
+
       this.completionPanel.show(() => {
         this.cameras.main.fadeOut(250, 36, 29, 53);
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {

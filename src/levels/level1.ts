@@ -6,7 +6,7 @@ export const LEVEL_1_ID = 'level-1-el-match';
 export const level1: LevelConfig = {
   id: LEVEL_1_ID,
   name: 'Nivel 1 · El Match',
-  objective: 'Atravesá el campus y descubrí qué hay en la red social.',
+  objective: 'Atravesá el campus universitario y descubrí qué hay en la red social 😉.',
   world: { width: 3600, height: 760, backgroundColor: '#9bdaf4', backgroundStyle: 'university' },
   spawn: { x: 70, y: 535 },
   platforms: [
@@ -57,11 +57,11 @@ export const level1: LevelConfig = {
     x: 3420,
     y: 520,
     nextLevelId: LEVEL_2_ID,
-    completionTitle: '¡MATCH ENCONTRADO!',
+    completionTitle: '¡¡MATCH ENCONTRADO!!',
     dialogue: [
-      'Buscando nuevas conexiones...',
+      'Buscando nuevas conexiones a ver que hay...',
       '¡CONEXIÓN ENCONTRADA!',
-      'Vicky: ¿Quién es este?',
+      'Vicky: ¡Opa! ¿Quién es este galán?',
       'Renzo: Holis...',
       '❤️ MATCH',
       'Y sin saberlo...',

@@ -102,7 +102,7 @@ export const level3: LevelConfig = {
       id: 'peach',
       label: 'PEACH',
       visual: 'peach',
-      x: 2350,
+      x: 2450,
       y: 570,
       dialogue: 'Y apareció Peach. La promesa del “último” ya empezaba a sonar sospechosa.',
     },
