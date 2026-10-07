@@ -11,10 +11,11 @@ export type LevelArtAsset =
       frameHeight: number;
     });
 
-export const levelArtUrls = import.meta.glob<string>(
-  './ornamentacion/*.png',
-  { eager: true, query: '?url', import: 'default' },
-);
+export const levelArtUrls = import.meta.glob<string>('./ornamentacion/*.png', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+});
 
 export const levelArtAssets: LevelArtAsset[] = [
   {

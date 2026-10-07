@@ -127,7 +127,13 @@ export class LevelCompletePanel {
       this.scene.add
         .text(width / 2, baseY, line, {
           fontFamily: 'Trebuchet MS, Arial, sans-serif',
-          fontSize: line.includes('Feliz') ? (width < 540 ? '18px' : '20px') : (width < 540 ? '16px' : '18px'),
+          fontSize: line.includes('Feliz')
+            ? width < 540
+              ? '18px'
+              : '20px'
+            : width < 540
+              ? '16px'
+              : '18px',
           fontStyle: line.includes('Feliz') ? 'bold' : 'normal',
           color: '#452d4a',
         })
@@ -394,8 +400,10 @@ export class LevelCompletePanel {
       for (let i = 0; i < 5; i += 1) {
         const outerX = x + Math.cos(((Math.PI * 2) / 5) * i - Math.PI / 2) * radius;
         const outerY = y + Math.sin(((Math.PI * 2) / 5) * i - Math.PI / 2) * radius;
-        const innerX = x + Math.cos(((Math.PI * 2) / 5) * i - Math.PI / 2 + Math.PI / 5) * (radius * 0.45);
-        const innerY = y + Math.sin(((Math.PI * 2) / 5) * i - Math.PI / 2 + Math.PI / 5) * (radius * 0.45);
+        const innerX =
+          x + Math.cos(((Math.PI * 2) / 5) * i - Math.PI / 2 + Math.PI / 5) * (radius * 0.45);
+        const innerY =
+          y + Math.sin(((Math.PI * 2) / 5) * i - Math.PI / 2 + Math.PI / 5) * (radius * 0.45);
         if (i === 0) {
           ctx.moveTo(outerX, outerY);
         } else {

@@ -93,7 +93,13 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.touchPointers.clear());
     this.physics.add.collider(this.player, this.platforms);
     this.physics.add.collider(this.enemies, this.platforms);
-    this.physics.add.overlap(this.player, this.checkpoints, this.activateCheckpoint, undefined, this);
+    this.physics.add.overlap(
+      this.player,
+      this.checkpoints,
+      this.activateCheckpoint,
+      undefined,
+      this,
+    );
     this.physics.add.overlap(this.player, this.collectibles, this.collectItem, undefined, this);
     this.physics.add.overlap(this.player, this.enemies, this.hitEnemy, undefined, this);
     this.physics.add.overlap(this.player, this.npcs, this.talkToNpc, undefined, this);
@@ -136,7 +142,8 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       this.level.world.backgroundStyle === 'university' &&
       this.textures.exists('level-university-background')
     ) {
-      const scale = height / this.textures.get('level-university-background').getSourceImage().height;
+      const scale =
+        height / this.textures.get('level-university-background').getSourceImage().height;
       this.add
         .tileSprite(0, 0, width, height, 'level-university-background')
         .setOrigin(0)
@@ -218,7 +225,14 @@ export abstract class BaseLevelScene extends Phaser.Scene {
 
         if (ground) {
           this.add
-            .tileSprite(platformConfig.x, visualY, platformConfig.width, visualHeight, textureKey, 9)
+            .tileSprite(
+              platformConfig.x,
+              visualY,
+              platformConfig.width,
+              visualHeight,
+              textureKey,
+              9,
+            )
             .setTileScale(0.9, visualHeight / 362)
             .setDepth(0);
         } else {
@@ -264,14 +278,17 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       const enemy = new Enemy(this, enemyConfig);
       enemy.setData('enemyId', enemyConfig.id);
       if (enemyConfig.kind === 'exam') {
-        this.add.text(enemyConfig.x, enemyConfig.y - 39, 'EL PARCIAL', {
-          fontFamily: 'Trebuchet MS, Arial, sans-serif',
-          fontSize: '12px',
-          fontStyle: 'bold',
-          color: '#452d4a',
-          backgroundColor: '#ffffffcc',
-          padding: { x: 4, y: 2 },
-        }).setOrigin(0.5).setDepth(3);
+        this.add
+          .text(enemyConfig.x, enemyConfig.y - 39, 'EL PARCIAL', {
+            fontFamily: 'Trebuchet MS, Arial, sans-serif',
+            fontSize: '12px',
+            fontStyle: 'bold',
+            color: '#452d4a',
+            backgroundColor: '#ffffffcc',
+            padding: { x: 4, y: 2 },
+          })
+          .setOrigin(0.5)
+          .setDepth(3);
       }
       return enemy;
     });
@@ -358,7 +375,14 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     action: HorizontalControl | 'jump' | 'interact',
   ): void {
     const button = this.add
-      .rectangle(x, y, action === 'jump' ? 126 : action === 'interact' ? 150 : 78, 72, 0x38243e, 0.62)
+      .rectangle(
+        x,
+        y,
+        action === 'jump' ? 126 : action === 'interact' ? 150 : 78,
+        72,
+        0x38243e,
+        0.62,
+      )
       .setStrokeStyle(2, 0xffffff, 0.72)
       .setScrollFactor(0)
       .setDepth(15)
@@ -390,10 +414,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     });
   }
 
-  private activateCheckpoint(
-    _player: ArcadeOverlapObject,
-    checkpoint: ArcadeOverlapObject,
-  ): void {
+  private activateCheckpoint(_player: ArcadeOverlapObject, checkpoint: ArcadeOverlapObject): void {
     if (!(checkpoint instanceof Phaser.GameObjects.Sprite)) return;
     const id = checkpoint.getData('checkpointId') as string;
     if (this.progress.checkpoint.id === id) return;
@@ -407,10 +428,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     this.hud.update(this.level.name, this.level.objective, this.progress);
   }
 
-  private collectItem(
-    _player: ArcadeOverlapObject,
-    item: ArcadeOverlapObject,
-  ): void {
+  private collectItem(_player: ArcadeOverlapObject, item: ArcadeOverlapObject): void {
     if (!(item instanceof Phaser.GameObjects.Sprite)) return;
     const collectibleId = item.getData('collectibleId') as string;
     const kind = item.getData('collectibleKind') as 'notes' | 'heart' | 'star';
@@ -482,10 +500,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     this.time.delayedCall(350, () => this.player.clearTint());
   }
 
-  private talkToNpc(
-    _player: ArcadeOverlapObject,
-    npc: ArcadeOverlapObject,
-  ): void {
+  private talkToNpc(_player: ArcadeOverlapObject, npc: ArcadeOverlapObject): void {
     if (!(npc instanceof Phaser.GameObjects.Sprite)) return;
     const id = npc.getData('npcId') as string;
     if (this.visitedNpcs.has(id) || this.dialog.isOpen) return;
@@ -529,10 +544,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     this.transitioning = true;
     this.exitTriggered = true;
     this.player.resetAt(this.level.exit.x - 210, this.level.exit.y - 27);
-    this.player
-      .setScale(1.5)
-      .setDepth(26)
-      .play('vicky-idle', true);
+    this.player.setScale(1.5).setDepth(26).play('vicky-idle', true);
     this.showRenzoScene();
     this.add
       .rectangle(0, 0, this.scale.width, this.scale.height, 0x171322, 0.34)
@@ -583,7 +595,10 @@ export abstract class BaseLevelScene extends Phaser.Scene {
 
   private showRenzoScene(): void {
     const { x, y } = this.level.exit;
-    const renzo = this.add.sprite(x - 105, y - 27, 'renzo').setDepth(26).setScale(1.5);
+    const renzo = this.add
+      .sprite(x - 105, y - 27, 'renzo')
+      .setDepth(26)
+      .setScale(1.5);
     if (this.anims.exists('renzo-appear')) {
       renzo.play('renzo-appear');
       renzo.once('animationcomplete-renzo-appear', () => {
@@ -610,7 +625,8 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       graphics.fillRoundedRect(x - 160, y + 7, 120, 34, 9);
       graphics.fillStyle(0xb18b94);
       graphics.fillRoundedRect(x - 150, y - 7, 48, 25, 7);
-      this.add.image(x - 35, y + 17, 'pet-chocolatin')
+      this.add
+        .image(x - 35, y + 17, 'pet-chocolatin')
         .setOrigin(0.5, 1)
         .setDisplaySize(54, 40)
         .setDepth(26);
@@ -776,7 +792,13 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     }
 
     const graphics = this.add.graphics().setDepth(1);
-    const rectangle = (color: number, rx: number, ry: number, width: number, height: number): void => {
+    const rectangle = (
+      color: number,
+      rx: number,
+      ry: number,
+      width: number,
+      height: number,
+    ): void => {
       graphics.fillStyle(color);
       graphics.fillRect(x + rx, y + groundOffset + ry, width, height);
     };
@@ -818,12 +840,15 @@ export abstract class BaseLevelScene extends Phaser.Scene {
         rectangle(0x74555d, 37, -108, 45, 108);
         rectangle(0xb8d6dc, -113, -115, 54, 48);
         rectangle(0xb8d6dc, 59, -115, 54, 48);
-        this.add.text(x, y + groundOffset - 158, label ?? 'UNIVERSIDAD', {
-          fontFamily: 'Trebuchet MS, Arial, sans-serif',
-          fontSize: '18px',
-          fontStyle: 'bold',
-          color: '#513b42',
-        }).setOrigin(0.5).setDepth(2);
+        this.add
+          .text(x, y + groundOffset - 158, label ?? 'UNIVERSIDAD', {
+            fontFamily: 'Trebuchet MS, Arial, sans-serif',
+            fontSize: '18px',
+            fontStyle: 'bold',
+            color: '#513b42',
+          })
+          .setOrigin(0.5)
+          .setDepth(2);
         break;
       case 'tree':
         rectangle(0x80533c, -8, -56, 16, 56);
@@ -840,12 +865,15 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       case 'sign':
         rectangle(0x80533c, -5, -56, 10, 56);
         rectangle(0xe9c98d, -62, -91, 124, 38);
-        this.add.text(x, y - 72, label ?? 'CAMPUS', {
-          fontFamily: 'Trebuchet MS, Arial, sans-serif',
-          fontSize: '13px',
-          fontStyle: 'bold',
-          color: '#513b42',
-        }).setOrigin(0.5).setDepth(2);
+        this.add
+          .text(x, y - 72, label ?? 'CAMPUS', {
+            fontFamily: 'Trebuchet MS, Arial, sans-serif',
+            fontSize: '13px',
+            fontStyle: 'bold',
+            color: '#513b42',
+          })
+          .setOrigin(0.5)
+          .setDepth(2);
         break;
       case 'books':
         rectangle(0xe977ad, -31, -36, 21, 36);
@@ -870,11 +898,14 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       case 'blackboard':
         rectangle(0x80533c, -92, -106, 184, 101);
         rectangle(0x477968, -82, -96, 164, 81);
-        this.add.text(x, y - 57, label ?? 'IDEAS', {
-          fontFamily: 'Trebuchet MS, Arial, sans-serif',
-          fontSize: '17px',
-          color: '#ffffff',
-        }).setOrigin(0.5).setDepth(2);
+        this.add
+          .text(x, y - 57, label ?? 'IDEAS', {
+            fontFamily: 'Trebuchet MS, Arial, sans-serif',
+            fontSize: '17px',
+            color: '#ffffff',
+          })
+          .setOrigin(0.5)
+          .setDepth(2);
         break;
       case 'laptop':
         rectangle(0x566878, -35, -42, 70, 42);
@@ -903,14 +934,17 @@ export abstract class BaseLevelScene extends Phaser.Scene {
         rectangle(0xe977ad, -7, -40, 30, 30);
         rectangle(0x82bb82, 33, -40, 30, 30);
         if (label) {
-          this.add.text(x, y - 60, label, {
-            fontFamily: 'Trebuchet MS, Arial, sans-serif',
-            fontSize: '12px',
-            fontStyle: 'bold',
-            color: '#452d4a',
-            backgroundColor: '#ffffffbb',
-            padding: { x: 4, y: 2 },
-          }).setOrigin(0.5).setDepth(2);
+          this.add
+            .text(x, y - 60, label, {
+              fontFamily: 'Trebuchet MS, Arial, sans-serif',
+              fontSize: '12px',
+              fontStyle: 'bold',
+              color: '#452d4a',
+              backgroundColor: '#ffffffbb',
+              padding: { x: 4, y: 2 },
+            })
+            .setOrigin(0.5)
+            .setDepth(2);
         }
         break;
       case 'terminal':
@@ -919,20 +953,26 @@ export abstract class BaseLevelScene extends Phaser.Scene {
         rectangle(0x566878, -80, -25, 160, 18);
         rectangle(0x443d52, -64, -7, 128, 25);
         rectangle(0x729b91, -39, -61, 78, 7);
-        this.add.text(x, y - 147, label ?? 'RED SOCIAL', {
-          fontFamily: 'Trebuchet MS, Arial, sans-serif',
-          fontSize: '18px',
-          fontStyle: 'bold',
-          color: '#452d4a',
-        }).setOrigin(0.5).setDepth(2);
-        this.add.text(x, y - 95, 'FaceWorld', {
-          fontFamily: 'Trebuchet MS, Arial, sans-serif',
-          fontSize: '16px',
-          fontStyle: 'bold',
-          color: '#527eae',
-          backgroundColor: '#ffffff',
-          padding: { x: 8, y: 5 },
-        }).setOrigin(0.5).setDepth(2);
+        this.add
+          .text(x, y - 147, label ?? 'RED SOCIAL', {
+            fontFamily: 'Trebuchet MS, Arial, sans-serif',
+            fontSize: '18px',
+            fontStyle: 'bold',
+            color: '#452d4a',
+          })
+          .setOrigin(0.5)
+          .setDepth(2);
+        this.add
+          .text(x, y - 95, 'FaceWorld', {
+            fontFamily: 'Trebuchet MS, Arial, sans-serif',
+            fontSize: '16px',
+            fontStyle: 'bold',
+            color: '#527eae',
+            backgroundColor: '#ffffff',
+            padding: { x: 8, y: 5 },
+          })
+          .setOrigin(0.5)
+          .setDepth(2);
         break;
       case 'box':
         rectangle(0xb98558, -38, -46, 76, 46);
@@ -994,14 +1034,17 @@ export abstract class BaseLevelScene extends Phaser.Scene {
           }
         }
         if (label) {
-          this.add.text(x, y - 91, label, {
-            fontFamily: 'Trebuchet MS, Arial, sans-serif',
-            fontSize: '12px',
-            fontStyle: 'bold',
-            color: '#452d4a',
-            backgroundColor: '#ffffffbb',
-            padding: { x: 4, y: 2 },
-          }).setOrigin(0.5).setDepth(2);
+          this.add
+            .text(x, y - 91, label, {
+              fontFamily: 'Trebuchet MS, Arial, sans-serif',
+              fontSize: '12px',
+              fontStyle: 'bold',
+              color: '#452d4a',
+              backgroundColor: '#ffffffbb',
+              padding: { x: 4, y: 2 },
+            })
+            .setOrigin(0.5)
+            .setDepth(2);
         }
         break;
       case 'family-photo': {
@@ -1018,13 +1061,16 @@ export abstract class BaseLevelScene extends Phaser.Scene {
           graphics.fillCircle(x + offsetX + 3, y - 2, 1);
         }
         if (label) {
-          this.add.text(x, y + 65, label, {
-            fontFamily: 'Trebuchet MS, Arial, sans-serif',
-            fontSize: '11px',
-            color: '#452d4a',
-            backgroundColor: '#ffffffcc',
-            padding: { x: 4, y: 2 },
-          }).setOrigin(0.5).setDepth(2);
+          this.add
+            .text(x, y + 65, label, {
+              fontFamily: 'Trebuchet MS, Arial, sans-serif',
+              fontSize: '11px',
+              color: '#452d4a',
+              backgroundColor: '#ffffffcc',
+              padding: { x: 4, y: 2 },
+            })
+            .setOrigin(0.5)
+            .setDepth(2);
         }
         break;
       }

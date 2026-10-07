@@ -5,7 +5,8 @@ export const LEVEL_8_ID = 'level-8-boca-vs-river';
 export const level8: LevelConfig = {
   id: LEVEL_8_ID,
   name: 'Nivel 8 · Boca vs River',
-  objective: 'Señalá tu color, aceptá el debate absurdo y cerrá la noche entendiendo que lo más importante es seguir juntos.',
+  objective:
+    'Señalá tu color, aceptá el debate absurdo y cerrá la noche entendiendo que lo más importante es seguir juntos.',
   world: {
     width: 3000,
     height: 760,

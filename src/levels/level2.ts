@@ -50,7 +50,8 @@ export const level2: LevelConfig = {
       visual: 'phone',
       x: 180,
       y: 550,
-      dialogue: 'Después del Match…\nEmpezaron los mensajes.\nRecorré el camino y descubrí algunos recuerdos.',
+      dialogue:
+        'Después del Match llegó la parte difícil...\n¿Quién mandaba el primer mensaje? 😅\nPor suerte, alguien se animó.',
     },
     {
       id: 'primera-salida',
@@ -58,7 +59,8 @@ export const level2: LevelConfig = {
       visual: 'renzo',
       x: 1120,
       y: 550,
-      dialogue: '¿Qué hacemos? ¿Y a dónde vamos?\nBueno… ya resolvimos lo más difícil: encontrarnos.',
+      dialogue:
+        'Bueno... ya nos habíamos encontrado.\nAhora había que pensar qué hacer en persona.\nCreo que los dos estábamos un poquito nerviosos. 😅',
     },
     {
       id: 'cosas-en-comun',
@@ -66,7 +68,8 @@ export const level2: LevelConfig = {
       visual: 'renzo',
       x: 2490,
       y: 550,
-      dialogue: 'Entre charla y charla, cada vez daba más gusto seguir conociéndonos.',
+      dialogue:
+        'Y entre mensajes, charlas y salidas...\nresultó que teníamos bastante de qué hablar.\nDemasiado, aparentemente. 😂',
     },
   ],
   decorations: [
@@ -88,11 +91,15 @@ export const level2: LevelConfig = {
     completionTitle: '¡NOSOTROS DOS! ❤️',
     dialogue: [
       'Primero fue el Match.',
-      'Después llegaron los mensajes.',
-      'Después, las conversaciones y las primeras salidas.',
-      'Y poco a poco dejaron de ser dos personas que habían hecho Match.',
-      'Ya no era solamente un Match.',
-      'Y pronto iban a empezar a construir algo juntos.',
+      'Después llegaron los mensajes...',
+      '...las charlas que se alargaban más de lo esperado...',
+      '...y las primeras salidas, con esos nervios que ninguno quería admitir. 😅',
+      'Pero entre charla y charla, algo empezó a cambiar.',
+      'Ya no éramos simplemente dos personas que habían hecho Match.',
+      'Éramos dos personas que querían seguir viéndose.',
+      'Y cuando nos quisimos dar cuenta...',
+      '...ya estábamos construyendo algo juntos. ❤️',
+      'Y todavía no sabíamos todo lo que estaba por venir.',
     ],
   },
 };

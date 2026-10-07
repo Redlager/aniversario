@@ -12,13 +12,7 @@ const fullscreenAction = document.querySelector<HTMLButtonElement>('#fullscreen-
 const isTouchDevice =
   navigator.maxTouchPoints > 0 || window.matchMedia('(pointer: coarse)').matches;
 
-if (
-  !app ||
-  !orientationPrompt ||
-  !orientationAction ||
-  !orientationStatus ||
-  !fullscreenAction
-) {
+if (!app || !orientationPrompt || !orientationAction || !orientationStatus || !fullscreenAction) {
   throw new Error('No se pudo inicializar la ayuda de orientación para móviles.');
 }
 
@@ -29,7 +23,10 @@ const updateOrientationPrompt = (): void => {
   const showPrompt = isTouchDevice && !isLandscape();
   orientationPrompt.classList.toggle('is-visible', showPrompt);
   orientationPrompt.setAttribute('aria-hidden', String(!showPrompt));
-  fullscreenAction.classList.toggle('is-visible', isTouchDevice && isLandscape() && !isFullscreen());
+  fullscreenAction.classList.toggle(
+    'is-visible',
+    isTouchDevice && isLandscape() && !isFullscreen(),
+  );
 };
 
 const enterLandscapeFullscreen = async (): Promise<void> => {

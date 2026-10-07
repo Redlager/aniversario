@@ -1,8 +1,5 @@
 import Phaser from 'phaser';
-import {
-  characterSpriteSheets,
-  characterSpriteSheetUrls,
-} from '../assets/characterSpriteSheets';
+import { characterSpriteSheets, characterSpriteSheetUrls } from '../assets/characterSpriteSheets';
 import { levelArtAssets, levelArtUrls } from '../assets/levelArt';
 import type { PetVisual } from '../levels/LevelTypes';
 
@@ -189,7 +186,12 @@ export class BootScene extends Phaser.Scene {
     graphics.fillRoundedRect(bodyX, bodyY, bodyWidth, bodyHeight, 6);
     graphics.fillCircle(width - 13, bodyY + 3, isLargeDog ? 13 : 10);
     graphics.fillRect(bodyX + 5, bodyY + bodyHeight - 1, 5, height - bodyY - bodyHeight + 1);
-    graphics.fillRect(bodyX + bodyWidth - 10, bodyY + bodyHeight - 1, 5, height - bodyY - bodyHeight + 1);
+    graphics.fillRect(
+      bodyX + bodyWidth - 10,
+      bodyY + bodyHeight - 1,
+      5,
+      height - bodyY - bodyHeight + 1,
+    );
 
     if (pet === 'canelo') {
       graphics.fillStyle(furColor);
@@ -335,7 +337,12 @@ export class BootScene extends Phaser.Scene {
       this.anims.create({ key, frames, frameRate, repeat });
     };
     createFallbackAnimation('vicky-idle', [{ key: 'vicky-idle' }, { key: 'vicky-walk-1' }], 2, -1);
-    createFallbackAnimation('vicky-walk', [{ key: 'vicky-walk-1' }, { key: 'vicky-walk-2' }], 8, -1);
+    createFallbackAnimation(
+      'vicky-walk',
+      [{ key: 'vicky-walk-1' }, { key: 'vicky-walk-2' }],
+      8,
+      -1,
+    );
     createFallbackAnimation('vicky-jump', [{ key: 'vicky-jump' }]);
     createFallbackAnimation('vicky-fall', [{ key: 'vicky-fall' }]);
     createFallbackAnimation('vicky-damage', [{ key: 'vicky-damage' }]);

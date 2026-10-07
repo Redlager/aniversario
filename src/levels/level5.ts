@@ -6,7 +6,8 @@ export const LEVEL_6_ID = 'level-6-el-mundo-sobrenatural';
 export const level6: LevelConfig = {
   id: LEVEL_6_ID,
   name: 'Nivel 6 · El mundo sobrenatural',
-  objective: 'Recorré la casa y el sendero extraño, superá la noche rara y salí con la historia viva.',
+  objective:
+    'Recorré la casa y el sendero extraño, superá la noche rara y salí con la historia viva.',
   world: {
     width: 3200,
     height: 760,

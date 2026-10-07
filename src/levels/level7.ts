@@ -5,7 +5,8 @@ export const LEVEL_7_ID = 'level-7-una-hamburguesa-nunca-cae-mal';
 export const level7: LevelConfig = {
   id: LEVEL_7_ID,
   name: 'Nivel 7 · Una hamburguesa nunca cae mal',
-  objective: 'Llegá a la hamburguesa gigante y dejá que Vicky cierre la noche con la comida que más necesita.',
+  objective:
+    'Llegá a la hamburguesa gigante y dejá que Vicky cierre la noche con la comida que más necesita.',
   world: {
     width: 3300,
     height: 760,
@@ -44,7 +45,8 @@ export const level7: LevelConfig = {
       visual: 'renzo',
       x: 380,
       y: 548,
-      dialogue: 'Si la noche anterior fue una pesadilla, creo que esta es la parte en la que se empieza a recuperar el sentido común.',
+      dialogue:
+        'Si la noche anterior fue una pesadilla, creo que esta es la parte en la que se empieza a recuperar el sentido común.',
     },
     {
       id: 'renzo-gag-hamburguesa',

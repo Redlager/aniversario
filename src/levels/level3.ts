@@ -64,7 +64,8 @@ export const level3: LevelConfig = {
       visual: 'panchito',
       x: 805,
       y: 569,
-      dialogue: 'Panchito ya conocía a Vicky; ahora también empezaba a ser parte del hogar de los dos.',
+      dialogue:
+        'Panchito ya conocía a Vicky; ahora también empezaba a ser parte del hogar de los dos.',
     },
     {
       id: 'oliver',

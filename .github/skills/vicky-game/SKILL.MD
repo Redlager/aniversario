@@ -10,12 +10,12 @@ The project is web-first and mobile-first.
 
 ## Stack
 
-* Phaser 3
-* TypeScript
-* Vite
-* HTML/CSS
-* Git
-* Vercel for deployment
+- Phaser 3
+- TypeScript
+- Vite
+- HTML/CSS
+- Git
+- Vercel for deployment
 
 Do not introduce additional dependencies unless clearly necessary.
 
@@ -23,11 +23,11 @@ Do not introduce additional dependencies unless clearly necessary.
 
 Keep the project:
 
-* simple
-* modular
-* maintainable
-* performant
-* mobile-friendly
+- simple
+- modular
+- maintainable
+- performant
+- mobile-friendly
 
 Avoid overengineering.
 
@@ -74,13 +74,13 @@ The game must work correctly in mobile browsers.
 
 Consider:
 
-* responsive canvas
-* touch controls
-* different aspect ratios
-* safe screen areas
-* performance
-* readable UI
-* avoiding tiny interactive elements
+- responsive canvas
+- touch controls
+- different aspect ratios
+- safe screen areas
+- performance
+- readable UI
+- avoiding tiny interactive elements
 
 Desktop keyboard controls should remain available.
 
@@ -88,15 +88,15 @@ Desktop keyboard controls should remain available.
 
 Prefer reusable systems for:
 
-* Player
-* Levels
-* Platforms
-* Enemies
-* Collectibles
-* Checkpoints
-* Dialogues
-* HUD
-* Level transitions
+- Player
+- Levels
+- Platforms
+- Enemies
+- Collectibles
+- Checkpoints
+- Dialogues
+- HUD
+- Level transitions
 
 Level-specific content should be separated from reusable gameplay logic.
 
@@ -138,10 +138,10 @@ Do not output large amounts of code unless necessary.
 
 When reporting progress use:
 
-* Changed
-* Added
-* Tested
-* Next
+- Changed
+- Added
+- Tested
+- Next
 
 ## Important rule
 
@@ -156,4 +156,5 @@ The goal is to finish a polished small anniversary game, not build a general-pur
 Use browser screenshots only when visual verification is necessary. Prefer code/console inspection for non-visual changes. Do not repeatedly capture identical screenshots. After confirming a visual state, continue using code inspection unless the UI changes.
 
 ## Testing efficiency
+
 Batch related changes before performing browser testing when safe. Avoid restarting the browser or server unnecessarily.

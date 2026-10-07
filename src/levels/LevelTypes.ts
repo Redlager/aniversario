@@ -34,13 +34,7 @@ export interface NpcConfig extends Point {
 }
 
 export type PetVisual =
-  | 'panchito'
-  | 'oliver'
-  | 'rex'
-  | 'silvestre'
-  | 'peach'
-  | 'chocolatin'
-  | 'canelo';
+  'panchito' | 'oliver' | 'rex' | 'silvestre' | 'peach' | 'chocolatin' | 'canelo';
 
 export interface ExitConfig extends Point {
   nextLevelId: string | null;

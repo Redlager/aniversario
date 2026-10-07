@@ -93,7 +93,7 @@ export class GameScene extends Phaser.Scene {
       throw new Error('No se pudo inicializar el teclado del juego.');
     }
     this.cursors = this.input.keyboard.createCursorKeys();
-    this.keyA =     this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+    this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
     this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
     this.input.keyboard.on('keydown', (event: KeyboardEvent) => {
       if (event.code === 'Space' || event.code === 'ArrowUp' || event.code === 'KeyW') {
