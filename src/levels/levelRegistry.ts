@@ -3,7 +3,8 @@ import { level1, LEVEL_1_ID } from './level1';
 import { level2, LEVEL_2_ID } from './level2';
 import { level3, LEVEL_3_ID } from './level3';
 import { level4, LEVEL_4_ID } from './level4';
-import { level5 } from './level5';
+import { level5, level6, LEVEL_6_ID } from './level5';
+import { level7, LEVEL_7_ID } from './level7';
 
 export const FIRST_LEVEL_ID = LEVEL_1_ID;
 
@@ -13,4 +14,6 @@ export const levels: Record<string, LevelConfig> = {
   [LEVEL_3_ID]: level3,
   [LEVEL_4_ID]: level4,
   [level5.id]: level5,
+  [LEVEL_6_ID]: level6,
+  [LEVEL_7_ID]: level7,
 };
