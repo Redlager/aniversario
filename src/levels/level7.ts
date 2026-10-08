@@ -84,7 +84,7 @@ export const level7: LevelConfig = {
       x: 2220,
       y: 548,
       dialogue:
-        'Vicky...\nEso no es una hamburguesa.\nEso es un objetivo.\nY viendo cómo venimos, creo que vas a intentar llegar hasta ella. 😂',
+        '¡Che!... mira esa mac doble cuarto de libra y esa tasty doble \nY con la lija que tenemos, vamos a comerla en 5 segundos con papas incluidas. 😂',
     },
   ],
   decorations: [
@@ -106,7 +106,7 @@ export const level7: LevelConfig = {
     x: 3100,
     y: 548,
     nextLevelId: LEVEL_8_ID,
-    completionTitle: '¡UNA HAMBURGUESA DEL MAC NUNCA CAE MAL! ❤️',
+    completionTitle: '¡UNA HAMBURGUESA DEL MAC\nNUNCA CAE MAL! ❤️',
     dialogue: [
       'Vicky: Una hamburguesa nunca cae mal.',
       'Renzo: Después de lo que vivimos hoy, no puedo discutir eso.',

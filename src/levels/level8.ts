@@ -75,7 +75,7 @@ export const level8: LevelConfig = {
       x: 1620,
       y: 548,
       dialogue:
-        'A ver, a ver...\nYo no dije nada.\nVos empezaste a hablar de Boca.\nY ahora resulta que yo soy el problema. 😂',
+        'A ver, a ver...\nYo no dije nada. Vos empezaste a hablar de Boca.\nY ahora resulta que yo soy el problema. 😂',
     },
     {
       id: 'renzo-cierre',

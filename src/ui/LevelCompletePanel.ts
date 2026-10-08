@@ -22,12 +22,20 @@ export class LevelCompletePanel {
       .setScrollFactor(0)
       .setDepth(41);
 
+    const isMultilineTitle = this.title.includes('\n');
     this.scene.add
-      .text(width / 2, height / 2 - 142, this.title, {
+      .text(width / 2, height / 2 - (isMultilineTitle ? 154 : 142), this.title, {
         fontFamily: 'Trebuchet MS, Arial, sans-serif',
-        fontSize: width < 540 ? '25px' : '34px',
+        fontSize: isMultilineTitle
+          ? width < 540
+            ? '21px'
+            : '28px'
+          : width < 540
+            ? '25px'
+            : '34px',
         fontStyle: 'bold',
         color: '#a34279',
+        align: isMultilineTitle ? 'center' : 'left',
       })
       .setOrigin(0.5)
       .setScrollFactor(0)

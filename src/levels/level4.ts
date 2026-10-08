@@ -92,7 +92,7 @@ export const level4: LevelConfig = {
       x: 410,
       y: 548,
       dialogue:
-        'Bueno... una nueva etapa.\nSolo falta acomodar estas cajas y listo.\nAunque viendo la cantidad de cosas que tenemos...\ncreo que vamos a tardar un poquito. 😂',
+        'Bueno... una nueva etapa.\nSolo falta acomodar estas cajas y listo. Aunque viendo la cantidad de cosas que tenemos...\ncreo que vamos a tardar un poquito. 😂',
     },
     {
       id: 'ascensor',
@@ -110,7 +110,7 @@ export const level4: LevelConfig = {
       x: 2060,
       y: 548,
       dialogue:
-        'Vicky, quiero presentarte a alguien.\nBueno... alguien que está a punto de convertirse en parte de esta familia.\nY antes de que preguntes: sí, es otro animal. 😅',
+        'Vic... ¿quién es este ser perruno?\n\nBueno... alguien que aparentemente ya conocía a su próxima familia. 😅',
     },
     {
       id: 'chocolatin',
@@ -119,7 +119,7 @@ export const level4: LevelConfig = {
       x: 2160,
       y: 566,
       dialogue:
-        'Este es Chocolatín. ❤️\nLlegó para acompañarnos en esta nueva etapa.\nY como ya aprendimos...\ncuando decimos “este es el último”, probablemente no sea cierto. 😂',
+        'Chocolatín llegó porque Vicky lo trajo a casa.\nY Renzo, contra toda posibilidad de decir que no...\nlo aceptó. ❤️',
     },
   ],
   decorations: [

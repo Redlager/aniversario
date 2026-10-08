@@ -15,6 +15,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
     this.setSize(30, 34).setOffset(3, 7);
+    if (config.kind === 'exam') this.setScale(1.5);
     this.setCollideWorldBounds(true);
     this.setVelocityX(this.speed);
     if (config.kind === 'exam' && scene.anims.exists('exam-float')) this.play('exam-float');

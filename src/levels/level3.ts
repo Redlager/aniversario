@@ -82,7 +82,7 @@ export const level3: LevelConfig = {
       x: 710,
       y: 548,
       dialogue:
-        'Y entonces llegó Panchito. ❤️\nAunque técnicamente él ya era parte de la familia de Vicky...\nahora también iba a ser parte de nuestra vida juntos.\nBueno... este sí es el último.',
+        'Y entonces llegó Panchito. ❤️\nAunque técnicamente él ya era parte de la familia de Vicky...\nahora también iba a ser parte de nuestra vida juntos.',
     },
     {
       id: 'panchito',
@@ -100,7 +100,7 @@ export const level3: LevelConfig = {
       x: 1300,
       y: 570,
       dialogue:
-        'Después apareció Oliver.\nEncontró una caja y decidió que era suya.\nLa casa podía ser nuestra...\npero la caja era de Oliver. 😂',
+        'Tambien estaba Oliver.\nEncontró una caja y decidió que era suya. La casa podía ser nuestra...\npero la caja era de Oliver. 😂',
     },
     {
       id: 'rex',
@@ -118,7 +118,7 @@ export const level3: LevelConfig = {
       x: 1645,
       y: 548,
       dialogue:
-        'Bueno... ya está.\nPanchito, Oliver y Rex.\nAhora sí, no entra ninguno más.\n...¿no?',
+        'Bueno... ya está.\nPanchito, Oliver y Rex.\nAhora sí, no entra ninguno más, ¿no?',
     },
     {
       id: 'silvestre',

@@ -75,7 +75,7 @@ export const level6: LevelConfig = {
       x: 420,
       y: 548,
       dialogue:
-        'Vicky... esto está raro.\nDecime que vos también viste esa sombra moverse.\nPorque si la viste, tenemos un problema.\nY si no la viste... tenemos un problema peor. 😂',
+        'Vic... esto está raro. Decime que vos también viste esa sombra moverse.\nPorque si la viste, tenemos un problema.\nY si no la viste... tenemos un problema peor. 😂',
     },
     {
       id: 'fantasma-sala',
@@ -92,7 +92,7 @@ export const level6: LevelConfig = {
       x: 2380,
       y: 548,
       dialogue:
-        'Vicky, yo te acompaño, pero dejame aclarar algo.\nSi ese fantasma vuelve a aparecer...\nvos vas adelante. 😂\nYo te sigo desde una distancia prudente.',
+        'Vic, yo te acompaño, pero dejame aclarar algo. Si ese fantasma vuelve a aparecer...\nvos vas adelante. 😂\nYo te sigo desde una distancia prudente.',
     },
   ],
   decorations: [
@@ -201,7 +201,7 @@ export const level5: LevelConfig = {
       x: 2240,
       y: 548,
       dialogue:
-        'Vicky, quería presentarte a alguien.\nEncontró su lugar acá y parece bastante decidido a quedarse.\nAunque... técnicamente todavía no te lo presenté. 😅',
+        'Vic... ¿y este conejo?\nVos lo trajiste, yo dije que no...\ny mirá cómo terminamos. 😅',
     },
     {
       id: 'canelo',
@@ -210,7 +210,7 @@ export const level5: LevelConfig = {
       x: 2390,
       y: 566,
       dialogue:
-        'Este es Canelo. ❤️\nBlanco, marrón y bastante tranquilo.\nBueno... tranquilo hasta que decide que algo es suyo.',
+        'Este es Canelo. ❤️\nVicky decidió que tenía que formar parte de la familia.\nRenzo se hizo el difícil al principio... pero terminó aceptándome.',
     },
     {
       id: 'renzo-canelo-cierre',
@@ -219,7 +219,7 @@ export const level5: LevelConfig = {
       x: 2520,
       y: 548,
       dialogue:
-        'Sí... creo que ya decidió que el patio es suyo.\nY nosotros simplemente vivimos acá. 😂',
+        'Bueno... sí.\nMe negué un poquito.\nPero miralo. ¿Cómo le iba a decir que no para siempre? 😂',
     },
   ],
   decorations: [

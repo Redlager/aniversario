@@ -252,7 +252,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
         ? this.progress.checkpoint
         : this.level.spawn;
     this.player = new Player(this, spawn.x, spawn.y);
-    this.player.setDepth(2);
+    this.player.setScale(1.5).setDepth(2);
     this.cameras.main.startFollow(this.player, true, 0.08, 0.08);
   }
 
@@ -280,9 +280,9 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       enemy.setData('enemyId', enemyConfig.id);
       if (enemyConfig.kind === 'exam') {
         this.add
-          .text(enemyConfig.x, enemyConfig.y - 39, 'EL PARCIAL', {
+          .text(enemyConfig.x, enemyConfig.y - 52, 'EL PARCIAL', {
             fontFamily: 'Trebuchet MS, Arial, sans-serif',
-            fontSize: '12px',
+            fontSize: '14px',
             fontStyle: 'bold',
             color: '#452d4a',
             backgroundColor: '#ffffffcc',
@@ -657,7 +657,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       graphics.fillStyle(0x566878);
       graphics.fillRect(x - 158, y + 11, 98, 6);
       this.add
-        .text(x - 105, y - 88, 'ESTUDIANTE DE INFORMÁTICA', {
+        .text(x - 105, y - 88, 'RENZO', {
           fontFamily: 'Trebuchet MS, Arial, sans-serif',
           fontSize: '12px',
           fontStyle: 'bold',
