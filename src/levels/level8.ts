@@ -31,11 +31,31 @@ export const level8: LevelConfig = {
     { id: 'antes-del-cierre', x: 2360, y: 548 },
   ],
   collectibles: [
-    { id: 'nota-discusion', kind: 'notes', x: 280, y: 548 },
+    {
+      id: 'nota-discusion',
+      kind: 'notes',
+      x: 280,
+      y: 548,
+      message:
+        'Hay parejas que discuten por dinero, por quién dejó algo fuera de lugar o por quién tiene razón.\nNosotros tenemos un método más simple: Boca vs River. 😂',
+    },
     { id: 'corazon-azul', kind: 'heart', x: 930, y: 480 },
-    { id: 'nota-territorio-vicky', kind: 'notes', x: 1180, y: 548 },
+    {
+      id: 'nota-territorio-vicky',
+      kind: 'notes',
+      x: 1180,
+      y: 548,
+      message: 'Territorio de Vicky: azul y amarillo.\nEntrar bajo su propio riesgo. 😏',
+    },
     { id: 'corazon-rojo', kind: 'heart', x: 1800, y: 548 },
-    { id: 'nota-partido', kind: 'notes', x: 2380, y: 548 },
+    {
+      id: 'nota-partido',
+      kind: 'notes',
+      x: 2380,
+      y: 548,
+      message:
+        'Después de tantos años juntos, algunas cosas nunca cambiaron.\nElla sigue siendo de Boca.\nY yo sigo creyendo que algún día va a entrar en razón. 😂',
+    },
     { id: 'corazon-cierre', kind: 'heart', x: 2780, y: 470 },
   ],
   npcs: [
@@ -45,7 +65,8 @@ export const level8: LevelConfig = {
       visual: 'renzo',
       x: 420,
       y: 548,
-      dialogue: 'No voy a discutir de fútbol con vos.',
+      dialogue:
+        'No voy a discutir de fútbol con vos.\nTenemos demasiados años juntos como para caer en esa trampa. 😂',
     },
     {
       id: 'renzo-azul',
@@ -53,7 +74,8 @@ export const level8: LevelConfig = {
       visual: 'renzo',
       x: 1620,
       y: 548,
-      dialogue: 'Ya empezaste.',
+      dialogue:
+        'A ver, a ver...\nYo no dije nada.\nVos empezaste a hablar de Boca.\nY ahora resulta que yo soy el problema. 😂',
     },
     {
       id: 'renzo-cierre',
@@ -61,7 +83,8 @@ export const level8: LevelConfig = {
       visual: 'renzo',
       x: 2560,
       y: 548,
-      dialogue: 'Eso es exactamente lo que diría alguien que está equivocado.',
+      dialogue:
+        'Eso es exactamente lo que diría alguien que sabe que está equivocada.\nPero bueno...\nte voy a dejar disfrutar esta pequeña victoria. 😏',
     },
   ],
   decorations: [
@@ -89,13 +112,25 @@ export const level8: LevelConfig = {
       'Renzo: River.',
       'Vicky: Boca.',
       'Renzo: River.',
-      'Vicky: Eso es exactamente lo que diría alguien que está equivocado.',
-      'Renzo: Y vos lo dirías si estuvieras perdiendo la discusión.',
-      'Entonces, en medio de la absurda disputa, algo quedó claro.',
-      'Podemos discutir por cualquier cosa.',
-      'Pero hay algo en lo que siempre estamos de acuerdo.',
-      'Que después de todo esto… seguimos juntos.',
-      'Y ahora… es momento de volver a lo importante.',
+      'Vicky: ¿Vas a seguir con eso?',
+      'Renzo: Vos empezaste.',
+      'Vicky: Mentira.',
+      'Renzo: Prueba número uno: acabás de decir “Boca”.',
+      'Vicky: ...',
+      'Vicky: Bueno. Puede ser. 😂',
+      'Después de tantos años juntos...',
+      'hay cosas en las que probablemente nunca vamos a estar de acuerdo.',
+      'Pero también hay muchas otras en las que sí.',
+      'Compartimos una vida.',
+      'Una casa.',
+      'Una familia.',
+      'Un montón de recuerdos.',
+      'Y hasta sobrevivimos a fantasmas y discusiones por fútbol. 😂',
+      'Así que, después de todo...',
+      'hay algo en lo que siempre estamos de acuerdo.',
+      'Que seguimos eligiéndonos.',
+      'Y ahora sí...',
+      'vamos a recordar cómo empezó todo. ❤️',
     ],
   },
 };

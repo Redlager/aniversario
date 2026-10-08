@@ -1,4 +1,5 @@
 import type { LevelConfig } from './LevelTypes';
+import { LEVEL_8_ID } from './level8';
 
 export const LEVEL_7_ID = 'level-7-una-hamburguesa-nunca-cae-mal';
 
@@ -30,12 +31,40 @@ export const level7: LevelConfig = {
     { id: 'antes-de-la-hamburguesa', x: 2520, y: 548 },
   ],
   collectibles: [
-    { id: 'nota-mostrador', kind: 'notes', x: 300, y: 548 },
-    { id: 'nota-mesas', kind: 'notes', x: 810, y: 485 },
+    {
+      id: 'nota-mostrador',
+      kind: 'notes',
+      x: 300,
+      y: 548,
+      message:
+        'Después de sobrevivir a una noche sobrenatural, había una prioridad bastante clara: conseguir algo rico para comer.',
+    },
+    {
+      id: 'nota-mesas',
+      kind: 'notes',
+      x: 810,
+      y: 485,
+      message:
+        'Una mesa vacía, una noche tranquila y una hamburguesa cerca. Por fin, un problema fácil de resolver. 😂',
+    },
     { id: 'corazon-papas', kind: 'heart', x: 1180, y: 550 },
-    { id: 'nota-caja', kind: 'notes', x: 1840, y: 548 },
+    {
+      id: 'nota-caja',
+      kind: 'notes',
+      x: 1840,
+      y: 548,
+      message:
+        'En algún lugar de esta cocina hay comida suficiente para alimentar a una familia entera. Probablemente también a algunos fantasmas.',
+    },
     { id: 'corazon-cocina', kind: 'heart', x: 2210, y: 470 },
-    { id: 'nota-ingredientes', kind: 'notes', x: 2480, y: 548 },
+    {
+      id: 'nota-ingredientes',
+      kind: 'notes',
+      x: 2480,
+      y: 548,
+      message:
+        'Pan, carne, queso, papas... técnicamente no hacía falta nada más. Aunque siempre se puede pedir algo más. 😏',
+    },
     { id: 'corazon-final', kind: 'heart', x: 2880, y: 470 },
   ],
   npcs: [
@@ -46,7 +75,7 @@ export const level7: LevelConfig = {
       x: 380,
       y: 548,
       dialogue:
-        'Si la noche anterior fue una pesadilla, creo que esta es la parte en la que se empieza a recuperar el sentido común.',
+        'Después de fantasmas, sombras y una noche bastante cuestionable...\ncreo que necesitamos algo importante.\nComida. Mucha comida. 😂',
     },
     {
       id: 'renzo-gag-hamburguesa',
@@ -54,7 +83,8 @@ export const level7: LevelConfig = {
       visual: 'renzo',
       x: 2220,
       y: 548,
-      dialogue: 'Eso no es una hamburguesa, eso es un objetivo.',
+      dialogue:
+        'Vicky...\nEso no es una hamburguesa.\nEso es un objetivo.\nY viendo cómo venimos, creo que vas a intentar llegar hasta ella. 😂',
     },
   ],
   decorations: [
@@ -75,13 +105,23 @@ export const level7: LevelConfig = {
   exit: {
     x: 3100,
     y: 548,
-    nextLevelId: 'level8',
-    completionTitle: '¡UNA HAMBURGUESA NUNCA CAE MAL! ❤️',
+    nextLevelId: LEVEL_8_ID,
+    completionTitle: '¡UNA HAMBURGUESA DEL MAC NUNCA CAE MAL! ❤️',
     dialogue: [
       'Vicky: Una hamburguesa nunca cae mal.',
-      'Renzo: Está bien. Lo admito. Eso sí tenía sentido.',
-      'Y, mientras la noche seguía, una pregunta quedaba flotando en el aire…',
-      '¿Qué pasa cuando una pareja comparte todo, hasta sus diferencias? ',
+      'Renzo: Después de lo que vivimos hoy, no puedo discutir eso.',
+      'Vicky: ¿Viste?',
+      'Renzo: Igual hay algo que tenemos que decidir.',
+      'Vicky: ¿Qué cosa?',
+      'Renzo: ¿Qué acompañamiento va mejor con una hamburguesa?',
+      'Vicky: Papas.',
+      'Renzo: Obviamente.',
+      'Vicky: ¿Obviamente?',
+      'Renzo: Sí.',
+      'Vicky: Bueno... por lo menos en eso estamos de acuerdo.',
+      'Renzo: Por ahora.',
+      'Porque después de la hamburguesa...',
+      '...hay temas mucho más importantes que discutir. 😂',
     ],
   },
 };

@@ -17,6 +17,7 @@ export interface CheckpointConfig extends Point {
 export interface CollectibleConfig extends Point {
   id: string;
   kind: 'notes' | 'heart' | 'star';
+  message?: string;
 }
 
 export interface EnemyConfig extends Point {

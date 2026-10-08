@@ -30,13 +30,37 @@ export const level3: LevelConfig = {
     { id: 'antes-del-hogar', x: 2460, y: 548 },
   ],
   collectibles: [
-    { id: 'recuerdo-casa-1', kind: 'notes', x: 390, y: 550 },
-    { id: 'recuerdo-casa-2', kind: 'notes', x: 675, y: 490 },
-    { id: 'recuerdo-casa-3', kind: 'notes', x: 1080, y: 550 },
-    { id: 'recuerdo-casa-4', kind: 'notes', x: 1260, y: 480 },
-    { id: 'recuerdo-casa-5', kind: 'notes', x: 1830, y: 490 },
-    { id: 'recuerdo-casa-6', kind: 'notes', x: 2250, y: 550 },
-    { id: 'recuerdo-casa-7', kind: 'notes', x: 2380, y: 490 },
+    { id: 'recuerdo-casa-1', kind: 'notes', x: 390, y: 550, message: 'Nuestro primer hogar. ❤️' },
+    {
+      id: 'recuerdo-casa-2',
+      kind: 'notes',
+      x: 675,
+      y: 490,
+      message: 'Al principio todavía había lugares vacíos...',
+    },
+    { id: 'recuerdo-casa-3', kind: 'notes', x: 1080, y: 550, message: 'Después llegó Panchito.' },
+    {
+      id: 'recuerdo-casa-4',
+      kind: 'notes',
+      x: 1260,
+      y: 480,
+      message: 'Y descubrimos que una casa se siente diferente cuando hay animales.',
+    },
+    {
+      id: 'recuerdo-casa-5',
+      kind: 'notes',
+      x: 1830,
+      y: 490,
+      message: 'Después llegó otro... y otro...',
+    },
+    {
+      id: 'recuerdo-casa-6',
+      kind: 'notes',
+      x: 2250,
+      y: 550,
+      message: 'Cada uno fue encontrando su lugar.',
+    },
+    { id: 'recuerdo-casa-7', kind: 'notes', x: 2380, y: 490, message: 'Y nosotros también.' },
     { id: 'corazon-casa-1', kind: 'heart', x: 760, y: 490 },
     { id: 'corazon-casa-2', kind: 'heart', x: 1650, y: 550 },
     { id: 'corazon-casa-3', kind: 'heart', x: 2710, y: 550 },
@@ -48,7 +72,8 @@ export const level3: LevelConfig = {
       visual: 'phone',
       x: 175,
       y: 550,
-      dialogue: 'Después de conocernos, llegó el momento de compartir un lugar.',
+      dialogue:
+        'Después de empezar nuestra historia, llegó otro gran paso: compartir nuestro primer hogar. ❤️\nEra nuestro espacio, nuestras cosas y nuestras primeras rutinas juntos.',
     },
     {
       id: 'renzo-panchito',
@@ -56,7 +81,8 @@ export const level3: LevelConfig = {
       visual: 'renzo',
       x: 710,
       y: 548,
-      dialogue: 'Panchito fue el primero en llegar.\nBueno... este sí es el último.',
+      dialogue:
+        'Y entonces llegó Panchito. ❤️\nAunque técnicamente él ya era parte de la familia de Vicky...\nahora también iba a ser parte de nuestra vida juntos.\nBueno... este sí es el último.',
     },
     {
       id: 'panchito',
@@ -65,7 +91,7 @@ export const level3: LevelConfig = {
       x: 805,
       y: 569,
       dialogue:
-        'Panchito ya conocía a Vicky; ahora también empezaba a ser parte del hogar de los dos.',
+        'Panchito tenía una misión muy importante:\nconvertirse oficialmente en el primer integrante de cuatro patas de nuestra historia juntos. ❤️',
     },
     {
       id: 'oliver',
@@ -73,7 +99,8 @@ export const level3: LevelConfig = {
       visual: 'oliver',
       x: 1300,
       y: 570,
-      dialogue: 'Oliver encontró una caja cómoda. La caja, desde luego, ya era suya.',
+      dialogue:
+        'Después apareció Oliver.\nEncontró una caja y decidió que era suya.\nLa casa podía ser nuestra...\npero la caja era de Oliver. 😂',
     },
     {
       id: 'rex',
@@ -81,7 +108,8 @@ export const level3: LevelConfig = {
       visual: 'rex',
       x: 1550,
       y: 562,
-      dialogue: 'Rex llegó con tamaño de sobra y energía para toda la casa.',
+      dialogue:
+        'Y después llegó Rex.\nGrande, lleno de energía y con suficiente entusiasmo para ocupar media casa. 😂\nLa familia seguía creciendo.',
     },
     {
       id: 'renzo-ultimo',
@@ -89,7 +117,8 @@ export const level3: LevelConfig = {
       visual: 'renzo',
       x: 1645,
       y: 548,
-      dialogue: 'Bueno... técnicamente, este también es el último.',
+      dialogue:
+        'Bueno... ya está.\nPanchito, Oliver y Rex.\nAhora sí, no entra ninguno más.\n...¿no?',
     },
     {
       id: 'silvestre',
@@ -97,7 +126,8 @@ export const level3: LevelConfig = {
       visual: 'silvestre',
       x: 2050,
       y: 570,
-      dialogue: 'Silvestre encontró el sillón. La casa ya tenía dueño de cada rincón.',
+      dialogue:
+        'Pero todavía faltaba Silvestre.\nÉl simplemente encontró su lugar, se acomodó...\ny probablemente asumió que siempre había vivido ahí. 😂',
     },
     {
       id: 'peach',
@@ -105,7 +135,8 @@ export const level3: LevelConfig = {
       visual: 'peach',
       x: 2450,
       y: 570,
-      dialogue: 'Y apareció Peach. La promesa del “último” ya empezaba a sonar sospechosa.',
+      dialogue:
+        'Y cuando parecía que ya estaba todo completo...\napareció Peach. ❤️\nA esa altura, decir “este es el último” ya era claramente una mentira.',
     },
   ],
   decorations: [
@@ -135,11 +166,18 @@ export const level3: LevelConfig = {
     nextLevelId: LEVEL_4_ID,
     completionTitle: '¡NUESTRO PRIMER HOGAR! ❤️',
     dialogue: [
-      'La casa fue llenándose de pequeñas rutinas y grandes personalidades.',
-      'Panchito, Oliver, Rex, Silvestre, Peach... y nosotros.',
-      'Entre cajas, juguetes y promesas de que ya no habría otro animal...',
-      'sin darnos cuenta, ya éramos una familia.',
-      'Y todavía nos quedaban muchas etapas por vivir.',
+      'Primero tuvimos un lugar para nosotros.',
+      'Después llegaron Panchito, Oliver, Rex, Silvestre y Peach.',
+      'Y con cada uno, la casa se volvió un poquito más nuestra.',
+      'Había juguetes, pelos, cajas, ruido...',
+      'y muchas, muchas personalidades. 😂',
+      'También hubo varias promesas de:',
+      '“Bueno... este sí es el último.”',
+      'Spoiler: no era el último.',
+      'Pero entre todo ese caos, pasó algo hermoso.',
+      'Ya no éramos solamente Vicky y Renzo.',
+      'Éramos una familia. ❤️',
+      'Y nuestra historia recién estaba empezando.',
     ],
   },
 };

@@ -1,5 +1,6 @@
 import type { LevelConfig } from './LevelTypes';
 import { LEVEL_5_ID } from './level4';
+import { LEVEL_7_ID } from './level7';
 
 export const LEVEL_6_ID = 'level-6-el-mundo-sobrenatural';
 
@@ -31,12 +32,39 @@ export const level6: LevelConfig = {
     { id: 'antes-del-final', x: 2440, y: 548 },
   ],
   collectibles: [
-    { id: 'nota-ventana-rara', kind: 'notes', x: 260, y: 548 },
-    { id: 'nota-sombra', kind: 'notes', x: 820, y: 470 },
+    {
+      id: 'nota-ventana-rara',
+      kind: 'notes',
+      x: 260,
+      y: 548,
+      message:
+        'La casa estaba tranquila... demasiado tranquila. Y esa ventana definitivamente no estaba así hace un rato. 👀',
+    },
+    {
+      id: 'nota-sombra',
+      kind: 'notes',
+      x: 820,
+      y: 470,
+      message:
+        'Hay cosas que uno prefiere no investigar. Esta vez, sin embargo, ya habíamos llegado demasiado lejos. 😂',
+    },
     { id: 'corazon-puerta', kind: 'heart', x: 1200, y: 550 },
-    { id: 'nota-porche', kind: 'notes', x: 1600, y: 548 },
+    {
+      id: 'nota-porche',
+      kind: 'notes',
+      x: 1600,
+      y: 548,
+      message:
+        'No sabemos qué era esa cosa. Pero al menos parecía tener mejores modales que algunos fantasmas de las películas. 👻',
+    },
     { id: 'corazon-casa', kind: 'heart', x: 2120, y: 470 },
-    { id: 'nota-fantasma', kind: 'notes', x: 2520, y: 548 },
+    {
+      id: 'nota-fantasma',
+      kind: 'notes',
+      x: 2520,
+      y: 548,
+      message: 'Después de todo, hasta los fantasmas pueden necesitar un poquito de compañía.',
+    },
     { id: 'corazon-salida', kind: 'heart', x: 2840, y: 475 },
   ],
   npcs: [
@@ -46,14 +74,16 @@ export const level6: LevelConfig = {
       visual: 'renzo',
       x: 420,
       y: 548,
-      dialogue: 'Esto está raro. No me gusta la forma en que se mueve esa sombra.',
+      dialogue:
+        'Vicky... esto está raro.\nDecime que vos también viste esa sombra moverse.\nPorque si la viste, tenemos un problema.\nY si no la viste... tenemos un problema peor. 😂',
     },
     {
       id: 'fantasma-sala',
       label: 'FANTASMA',
       x: 1450,
       y: 560,
-      dialogue: 'Yo no quería asustarte… sólo quería que me vieras.',
+      dialogue:
+        'Yo no quería asustarte...\nsolo quería que me vieras.\nHace bastante que intento llamar la atención por acá.',
     },
     {
       id: 'renzo-final',
@@ -61,7 +91,8 @@ export const level6: LevelConfig = {
       visual: 'renzo',
       x: 2380,
       y: 548,
-      dialogue: 'Vicky, si me agarrás la mano, al menos no me dejes solo con este fantasma.',
+      dialogue:
+        'Vicky, yo te acompaño, pero dejame aclarar algo.\nSi ese fantasma vuelve a aparecer...\nvos vas adelante. 😂\nYo te sigo desde una distancia prudente.',
     },
   ],
   decorations: [
@@ -82,7 +113,7 @@ export const level6: LevelConfig = {
   exit: {
     x: 3000,
     y: 548,
-    nextLevelId: 'level7',
+    nextLevelId: LEVEL_7_ID,
     completionTitle: '¡NIVEL COMPLETADO! ❤️',
     dialogue: [
       'Esto fue horrible…',
@@ -117,10 +148,31 @@ export const level5: LevelConfig = {
     { id: 'antes-de-canelo', x: 2110, y: 548 },
   ],
   collectibles: [
-    { id: 'mudanza-patio', kind: 'notes', x: 500, y: 550 },
-    { id: 'recuerdo-jardin', kind: 'notes', x: 940, y: 550 },
+    {
+      id: 'mudanza-patio',
+      kind: 'notes',
+      x: 500,
+      y: 550,
+      message:
+        'Después de tantos cambios, por fin teníamos un lugar con un poquito más de espacio para todos.',
+    },
+    {
+      id: 'recuerdo-jardin',
+      kind: 'notes',
+      x: 940,
+      y: 550,
+      message:
+        'Un patio parecía un detalle... pero terminó convirtiéndose en uno de nuestros lugares favoritos.',
+    },
     { id: 'corazon-ruta-elevada', kind: 'heart', x: 1190, y: 470 },
-    { id: 'recuerdo-familia', kind: 'notes', x: 1690, y: 550 },
+    {
+      id: 'recuerdo-familia',
+      kind: 'notes',
+      x: 1690,
+      y: 550,
+      message:
+        'Panchito, Oliver, Rex, Silvestre, Peach y Chocolatín. La casa ya estaba bastante llena. ❤️',
+    },
     { id: 'corazon-canelo', kind: 'heart', x: 2645, y: 475 },
   ],
   npcs: [
@@ -130,7 +182,8 @@ export const level5: LevelConfig = {
       visual: 'renzo',
       x: 375,
       y: 548,
-      dialogue: 'Por fin hay lugar para caminar sin esquivar cajas… casi.',
+      dialogue:
+        'Por fin una casa con un poquito más de espacio.\nPodemos caminar sin esquivar cajas, muebles y animales.\nBueno... casi. 😂',
     },
     {
       id: 'renzo-familia',
@@ -138,7 +191,8 @@ export const level5: LevelConfig = {
       visual: 'renzo',
       x: 1760,
       y: 548,
-      dialogue: 'Creo que cada uno ya eligió su rincón.',
+      dialogue:
+        'Mirá cómo estamos ahora.\nCada uno ya encontró su rincón, su lugar y su manera de hacer lío.\nCreo que finalmente tenemos una familia bastante completa. ❤️',
     },
     {
       id: 'renzo-presenta-canelo',
@@ -146,7 +200,8 @@ export const level5: LevelConfig = {
       visual: 'renzo',
       x: 2240,
       y: 548,
-      dialogue: 'Quería presentarte a alguien que encontró su lugar acá.',
+      dialogue:
+        'Vicky, quería presentarte a alguien.\nEncontró su lugar acá y parece bastante decidido a quedarse.\nAunque... técnicamente todavía no te lo presenté. 😅',
     },
     {
       id: 'canelo',
@@ -154,7 +209,8 @@ export const level5: LevelConfig = {
       visual: 'canelo',
       x: 2390,
       y: 566,
-      dialogue: 'Este es Canelo: blanco, marrón y… aparentemente ya eligió el patio.',
+      dialogue:
+        'Este es Canelo. ❤️\nBlanco, marrón y bastante tranquilo.\nBueno... tranquilo hasta que decide que algo es suyo.',
     },
     {
       id: 'renzo-canelo-cierre',
@@ -162,7 +218,8 @@ export const level5: LevelConfig = {
       visual: 'renzo',
       x: 2520,
       y: 548,
-      dialogue: '… Sí, creo que ya decidió que se queda.',
+      dialogue:
+        'Sí... creo que ya decidió que el patio es suyo.\nY nosotros simplemente vivimos acá. 😂',
     },
   ],
   decorations: [
@@ -193,9 +250,20 @@ export const level5: LevelConfig = {
     completionTitle: '¡NUESTRO LUGAR! ❤️',
     completionScene: 'family',
     dialogue: [
-      'La casa tenía más espacio…',
-      'pero lo mejor era todo lo que compartíamos en él.',
-      'Y sí… la familia volvió a crecer.',
+      'Después de tantos cambios, llegamos a un lugar que sentíamos realmente nuestro.',
+      'Una casa con espacio para nosotros...',
+      '...y para todos los animales que habían ido apareciendo por el camino. 😂',
+      'Panchito, Oliver, Rex, Silvestre, Peach y Chocolatín.',
+      'Y cuando parecía que finalmente estábamos completos...',
+      'apareció Canelo. ❤️',
+      'A esta altura ya habíamos aprendido algo importante.',
+      'Cada vez que decíamos “este es el último”...',
+      '...claramente no era el último. 😂',
+      'Pero cada nuevo integrante hacía que nuestra casa se sintiera un poquito más como hogar.',
+      'Y ahora sí teníamos nuestro lugar.',
+      'Nuestra casa.',
+      'Nuestra familia.',
+      'Y todavía quedaban muchas historias por vivir.',
     ],
   },
 };

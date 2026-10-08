@@ -272,6 +272,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       sprite.setSize(28, 28).refreshBody();
       sprite.setData('collectibleId', collectibleId);
       sprite.setData('collectibleKind', item.kind);
+      if (item.message) sprite.setData('message', item.message);
     }
 
     this.enemies = (this.level.enemies ?? []).map((enemyConfig) => {
@@ -432,13 +433,19 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     if (!(item instanceof Phaser.GameObjects.Sprite)) return;
     const collectibleId = item.getData('collectibleId') as string;
     const kind = item.getData('collectibleKind') as 'notes' | 'heart' | 'star';
+    const message = item.getData('message');
     this.progress.collectedIds.push(collectibleId);
     this.progress.collectibles += 1;
     if (kind === 'notes') this.progress.notes += 1;
-    else if (kind === 'heart') this.progress.hearts += 1;
-    else this.progress.stars += 1;
+    else if (kind === 'heart') {
+      this.progress.hearts += 1;
+      this.progress.health = Math.min(3, this.progress.health + 1);
+    } else this.progress.stars += 1;
     item.destroy();
     this.hud.update(this.level.name, this.level.objective, this.progress);
+    if (kind === 'notes' && typeof message === 'string') {
+      this.showDialog(message);
+    }
   }
 
   private hitEnemy(_player: ArcadeOverlapObject, other: ArcadeOverlapObject): void {
@@ -481,7 +488,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     this.hud.update(this.level.name, this.level.objective, this.progress);
 
     if (this.progress.health <= 0) {
-      this.progress.reset();
+      this.progress.health = 3;
       this.progress.currentLevelId = this.level.id;
       this.progress.checkpoint = {
         id: 'start',

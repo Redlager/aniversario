@@ -30,13 +30,56 @@ export const level4: LevelConfig = {
     { id: 'antes-de-chocolatin', x: 2310, y: 480 },
   ],
   collectibles: [
-    { id: 'mudanza-recuerdo-1', kind: 'notes', x: 340, y: 550 },
-    { id: 'mudanza-recuerdo-2', kind: 'notes', x: 715, y: 485 },
-    { id: 'rutina-recuerdo-1', kind: 'notes', x: 1100, y: 550 },
-    { id: 'rutina-recuerdo-2', kind: 'notes', x: 1260, y: 480 },
-    { id: 'rutina-recuerdo-3', kind: 'notes', x: 1800, y: 485 },
-    { id: 'chocolatin-recuerdo', kind: 'notes', x: 2160, y: 550 },
-    { id: 'hogar-recuerdo', kind: 'notes', x: 2500, y: 550 },
+    {
+      id: 'mudanza-recuerdo-1',
+      kind: 'notes',
+      x: 340,
+      y: 550,
+      message: 'Nueva casa, nuevas rutinas y una cantidad sospechosa de cajas.',
+    },
+    {
+      id: 'mudanza-recuerdo-2',
+      kind: 'notes',
+      x: 715,
+      y: 485,
+      message: 'Mudarse juntos suena romántico... hasta que toca mover todas las cosas. 😂',
+    },
+    {
+      id: 'rutina-recuerdo-1',
+      kind: 'notes',
+      x: 1100,
+      y: 550,
+      message: 'De a poquito, aquel departamento empezó a sentirse como nuestro.',
+    },
+    {
+      id: 'rutina-recuerdo-2',
+      kind: 'notes',
+      x: 1260,
+      y: 480,
+      message: 'Había nuevas rutinas, nuevos rincones y muchas historias por sumar.',
+    },
+    {
+      id: 'rutina-recuerdo-3',
+      kind: 'notes',
+      x: 1800,
+      y: 485,
+      message: 'Y aunque cambiara el lugar, había algo que seguía igual: estábamos juntos. ❤️',
+    },
+    {
+      id: 'chocolatin-recuerdo',
+      kind: 'notes',
+      x: 2160,
+      y: 550,
+      message: 'Y entonces apareció Chocolatín. Sí... otro integrante para la familia. 🐶',
+    },
+    {
+      id: 'hogar-recuerdo',
+      kind: 'notes',
+      x: 2500,
+      y: 550,
+      message:
+        'Un hogar no siempre es un lugar. A veces son todas las personas y animales que lo llenan.',
+    },
     { id: 'corazon-departamento-1', kind: 'heart', x: 780, y: 485 },
     { id: 'corazon-departamento-2', kind: 'heart', x: 1850, y: 485 },
     { id: 'corazon-departamento-3', kind: 'heart', x: 2400, y: 480 },
@@ -48,7 +91,8 @@ export const level4: LevelConfig = {
       visual: 'renzo',
       x: 410,
       y: 548,
-      dialogue: 'Una caja más y terminamos de mudarnos.\nCreo. ¿Viste cuántas cajas hay?',
+      dialogue:
+        'Bueno... una nueva etapa.\nSolo falta acomodar estas cajas y listo.\nAunque viendo la cantidad de cosas que tenemos...\ncreo que vamos a tardar un poquito. 😂',
     },
     {
       id: 'ascensor',
@@ -56,7 +100,8 @@ export const level4: LevelConfig = {
       visual: 'elevator',
       x: 870,
       y: 548,
-      dialogue: 'Un viaje corto y listo: empieza nuestra nueva rutina.',
+      dialogue:
+        'Subimos, bajamos, cargamos cajas...\ny así empezó nuestra vida en el edificio.\nPor suerte, al menos el ascensor existía. 😂',
     },
     {
       id: 'renzo-chocolatin',
@@ -64,7 +109,8 @@ export const level4: LevelConfig = {
       visual: 'renzo',
       x: 2060,
       y: 548,
-      dialogue: 'Vicky, quiero presentarte a alguien que se suma a esta etapa.',
+      dialogue:
+        'Vicky, quiero presentarte a alguien.\nBueno... alguien que está a punto de convertirse en parte de esta familia.\nY antes de que preguntes: sí, es otro animal. 😅',
     },
     {
       id: 'chocolatin',
@@ -72,7 +118,8 @@ export const level4: LevelConfig = {
       visual: 'chocolatin',
       x: 2160,
       y: 566,
-      dialogue: 'Este es Chocolatín: marrón, adorable y oficialmente parte de la familia.',
+      dialogue:
+        'Este es Chocolatín. ❤️\nLlegó para acompañarnos en esta nueva etapa.\nY como ya aprendimos...\ncuando decimos “este es el último”, probablemente no sea cierto. 😂',
     },
   ],
   decorations: [
@@ -98,10 +145,18 @@ export const level4: LevelConfig = {
     nextLevelId: LEVEL_5_ID,
     completionTitle: '¡NUEVA ETAPA, NUEVO HOGAR! ❤️',
     dialogue: [
-      'El departamento se llenó de nuevas rutinas y recuerdos.',
-      'Y con Chocolatín, la familia volvió a crecer.',
-      'Seguíamos construyendo una vida juntos, un hogar a la vez.',
-      'Y más adelante, nos esperaba una casa con patio.',
+      'El departamento se convirtió en nuestro nuevo escenario.',
+      'Ahí tuvimos nuevas rutinas, nuevos recuerdos...',
+      'y, por supuesto, más pelos de animales por todos lados. 😂',
+      'También llegó Chocolatín.',
+      'Y una vez más, la familia volvió a crecer.',
+      'Ya teníamos nuestro hogar, nuestros animales y nuestra vida juntos.',
+      'Pero todavía faltaba algo...',
+      'Un poquito más de espacio.',
+      'Un patio.',
+      'Y, probablemente, otro animal. 😂',
+      'Porque a esta altura ya deberíamos haber aprendido...',
+      'cuando decimos “este es el último”... nunca es el último. ❤️',
     ],
   },
 };

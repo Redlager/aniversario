@@ -25,11 +25,45 @@ export const level1: LevelConfig = {
     { id: 'digital', x: 2670, y: 548 },
   ],
   collectibles: [
-    { id: 'notes-1', kind: 'notes', x: 400, y: 550 },
-    { id: 'notes-2', kind: 'notes', x: 790, y: 465 },
-    { id: 'notes-3', kind: 'notes', x: 1470, y: 470 },
-    { id: 'notes-4', kind: 'notes', x: 2050, y: 455 },
-    { id: 'notes-5', kind: 'notes', x: 2780, y: 550 },
+    {
+      id: 'notes-1',
+      kind: 'notes',
+      x: 400,
+      y: 550,
+      message:
+        'Todo empezó de una manera bastante simple: dos personas con curiosidad por conocerse.',
+    },
+    {
+      id: 'notes-2',
+      kind: 'notes',
+      x: 790,
+      y: 465,
+      message: 'Un perfil llamó la atención... y alguien decidió averiguar un poquito más. 👀',
+    },
+    {
+      id: 'notes-3',
+      kind: 'notes',
+      x: 1470,
+      y: 470,
+      message:
+        'Y entonces llegó el famoso “Holis”. No parecía gran cosa... pero mirá todo lo que vino después. 😂',
+    },
+    {
+      id: 'notes-4',
+      kind: 'notes',
+      x: 2050,
+      y: 455,
+      message:
+        'Entre mensajes, curiosidad y ganas de seguir hablando, aquel Match empezó a convertirse en algo especial. ❤️',
+    },
+    {
+      id: 'notes-5',
+      kind: 'notes',
+      x: 2780,
+      y: 550,
+      message:
+        'Y sin saberlo, estaban dando el primer paso de una historia que, siete años después, todavía continúa. ❤️',
+    },
     { id: 'heart-1', kind: 'heart', x: 940, y: 550 },
     { id: 'heart-2', kind: 'heart', x: 2340, y: 410 },
     { id: 'star-1', kind: 'star', x: 1100, y: 415 },

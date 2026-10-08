@@ -24,9 +24,23 @@ export const finalLevel: LevelConfig = {
     { x: 2750, y: 540, width: 370, height: 24 },
   ],
   collectibles: [
-    { id: 'recuerdo-inicio', kind: 'notes', x: 310, y: 548 },
+    {
+      id: 'recuerdo-inicio',
+      kind: 'notes',
+      x: 310,
+      y: 548,
+      message:
+        'Todo empezó con algo tan simple como un mensaje.\nA veces las historias más importantes empiezan sin que uno se dé cuenta.',
+    },
     { id: 'recuerdo-familia', kind: 'heart', x: 1160, y: 548 },
-    { id: 'recuerdo-historias', kind: 'notes', x: 1810, y: 548 },
+    {
+      id: 'recuerdo-historias',
+      kind: 'notes',
+      x: 1810,
+      y: 548,
+      message:
+        'Hubo casas, mudanzas, animales, risas, sustos, discusiones y muchísimos momentos compartidos.\nTodo eso terminó formando nuestra historia.',
+    },
     { id: 'recuerdo-futuro', kind: 'heart', x: 2540, y: 548 },
   ],
   npcs: [
@@ -36,7 +50,8 @@ export const finalLevel: LevelConfig = {
       visual: 'renzo',
       x: 390,
       y: 548,
-      dialogue: '¿Sabés algo? Hace siete años empezó todo con un simple mensaje.',
+      dialogue:
+        '¿Sabés qué es lo más raro de todo?\nQue hace siete años ninguno de los dos podía imaginar hasta dónde iba a llegar aquel primer mensaje.\nY acá estamos. ❤️',
     },
     {
       id: 'renzo-cierre',
@@ -44,7 +59,8 @@ export const finalLevel: LevelConfig = {
       visual: 'renzo',
       x: 2280,
       y: 548,
-      dialogue: 'Y pensar que todo empezó con un mensaje.',
+      dialogue:
+        'Pasaron un montón de cosas desde aquel “Holis”.\nCambiamos de casa, llenamos todo de animales, nos casamos...\ny todavía seguimos haciendo planes juntos. ❤️',
     },
     {
       id: 'panchito-final',
@@ -52,7 +68,8 @@ export const finalLevel: LevelConfig = {
       visual: 'panchito',
       x: 1720,
       y: 570,
-      dialogue: 'La familia creció y también la historia.',
+      dialogue:
+        'Y mirá todo lo que pasó después.\nUna casa, otra casa, más animales...\ny al final terminamos siendo una familia enorme. ❤️',
     },
     {
       id: 'oliver-final',
@@ -60,7 +77,8 @@ export const finalLevel: LevelConfig = {
       visual: 'oliver',
       x: 1830,
       y: 570,
-      dialogue: 'O quizá simplemente nos acompañó desde el principio.',
+      dialogue:
+        'Siete años después, seguimos acá.\nBueno... yo principalmente sigo acá para asegurarme de que ninguna caja quede sin dueño. 😂',
     },
   ],
   decorations: [
@@ -93,9 +111,22 @@ export const finalLevel: LevelConfig = {
       'Vicky: 5 años de casados.',
       'Renzo: 3 hogares.',
       'Vicky: Una familia.',
-      'Renzo: Muchísimos recuerdos.',
-      'Vicky: Y muchísimas cosas que todavía nos quedan por vivir.',
-      'Renzo: Y pensar que todo empezó con un mensaje.',
+      'Renzo: Y una cantidad bastante importante de animales. 😂',
+      'Vicky: Demasiados para contarlos sin olvidarnos de alguno.',
+      'Renzo: Y muchísimos recuerdos.',
+      'Vicky: Algunos tranquilos...',
+      'Vicky: ...otros bastante raros.',
+      'Renzo: Algunos empezaron con un “Holis”.',
+      'Vicky: Otros con un “este es el último”. 😂',
+      'Renzo: Y ninguno de los dos terminó siendo realmente el último.',
+      'Pero entre todas esas historias...',
+      'lo más importante es que las vivimos juntos.',
+      'Vicky: Y todavía nos queda muchísimo por vivir.',
+      'Renzo: Porque si estos siete años fueron así...',
+      '...no quiero imaginar todo lo que nos espera.',
+      'Vicky: Yo sí quiero verlo.',
+      'Renzo: Yo también.',
+      'Y pensar que todo empezó con un mensaje.',
       'Vicky: Menos mal que respondí.',
       'Renzo: Menos mal que apareciste.',
       'Feliz aniversario, Vicky.',
