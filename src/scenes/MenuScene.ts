@@ -43,7 +43,7 @@ export class MenuScene extends Phaser.Scene {
     };
 
     const startButton = this.add
-      .text(centerX, 300, 'JUGAR · EL MATCH', {
+      .text(centerX, 300, 'JUGAR', {
         fontFamily: 'Trebuchet MS, Arial, sans-serif',
         fontSize: '20px',
         fontStyle: 'bold',
