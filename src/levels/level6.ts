@@ -30,6 +30,11 @@ export const level6: LevelConfig = {
     { id: 'entrada-sobrenatural', x: 980, y: 548 },
     { id: 'antes-del-final', x: 2440, y: 548 },
   ],
+  enemies: [
+    { id: 'fantasmita-entrada', kind: 'ghost', x: 560, y: 550, patrolDistance: 42, speed: 42 },
+    { id: 'fantasmita-pasillo', kind: 'ghost', x: 1130, y: 550, patrolDistance: 45, speed: 48 },
+    { id: 'fantasmita-salida', kind: 'ghost', x: 2625, y: 550, patrolDistance: 32, speed: 45 },
+  ],
   collectibles: [
     {
       id: 'nota-ventana-rara',
@@ -81,6 +86,7 @@ export const level6: LevelConfig = {
       label: 'FANTASMA',
       x: 1700,
       y: 560,
+      effect: 'jumpscare',
       dialogue:
         'Yo no quería asustarte...\nsolo quería que me vieras.\nHace bastante que intento llamar la atención por acá.',
     },

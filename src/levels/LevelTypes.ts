@@ -22,7 +22,7 @@ export interface CollectibleConfig extends Point {
 
 export interface EnemyConfig extends Point {
   id: string;
-  kind?: 'exam';
+  kind?: 'exam' | 'ghost' | 'cockroach' | 'scorpion';
   patrolDistance?: number;
   speed?: number;
 }
@@ -32,6 +32,7 @@ export interface NpcConfig extends Point {
   label: string;
   dialogue: string;
   visual?: 'renzo' | 'phone' | 'elevator' | PetVisual;
+  effect?: 'jumpscare';
 }
 
 export type PetVisual =
@@ -69,7 +70,8 @@ export type DecorationKind =
   | 'pet'
   | 'house'
   | 'mailboxes'
-  | 'family-photo';
+  | 'family-photo'
+  | 'pigeons';
 
 export interface DecorationConfig extends Point {
   kind: DecorationKind;

@@ -42,6 +42,8 @@ export class BootScene extends Phaser.Scene {
     this.createCharacterTexture('vicky-damage', 'vicky', 'damage');
     this.createCharacterTexture('renzo', 'renzo', 'idle');
     this.createExamTexture();
+    this.createGhostTexture();
+    this.createBugTextures();
     this.createPlatformTexture();
     this.createPlaceholderTexture('collectible', 0xffcf5c, 24, 24);
     this.createCollectibleTextures();
@@ -117,6 +119,73 @@ export class BootScene extends Phaser.Scene {
     graphics.fillRect(25, 26, 3, 3);
     graphics.generateTexture('exam', 44, 48);
     graphics.destroy();
+  }
+
+  private createGhostTexture(): void {
+    const graphics = this.make.graphics({ x: 0, y: 0 });
+    graphics.fillStyle(0xd8f4ff, 0.92);
+    graphics.fillEllipse(24, 20, 34, 36);
+    graphics.fillRoundedRect(7, 18, 34, 25, 11);
+    graphics.fillTriangle(7, 36, 15, 47, 21, 36);
+    graphics.fillTriangle(19, 37, 25, 47, 31, 37);
+    graphics.fillTriangle(29, 36, 36, 46, 41, 35);
+    graphics.fillStyle(0x17213a, 1);
+    graphics.fillEllipse(17, 21, 5, 8);
+    graphics.fillEllipse(31, 21, 5, 8);
+    graphics.fillStyle(0x90d8ec, 0.85);
+    graphics.fillCircle(18, 20, 1.5);
+    graphics.fillCircle(32, 20, 1.5);
+    graphics.generateTexture('ghost-enemy', 48, 50);
+    graphics.destroy();
+  }
+
+  private createBugTextures(): void {
+    const cockroach = this.make.graphics({ x: 0, y: 0 });
+    cockroach.fillStyle(0x60351f, 1);
+    cockroach.fillEllipse(24, 29, 30, 15);
+    cockroach.fillStyle(0x9a5a2d, 1);
+    cockroach.fillEllipse(25, 27, 22, 12);
+    cockroach.fillStyle(0x452519, 1);
+    cockroach.fillEllipse(37, 25, 9, 9);
+    cockroach.fillStyle(0xffdf9a, 1);
+    cockroach.fillCircle(39, 23, 1.5);
+    cockroach.lineStyle(2, 0x452519, 1);
+    cockroach.lineBetween(39, 21, 45, 12);
+    cockroach.lineBetween(35, 21, 36, 11);
+    cockroach.lineBetween(14, 30, 6, 25);
+    cockroach.lineBetween(20, 35, 13, 43);
+    cockroach.lineBetween(29, 35, 31, 44);
+    cockroach.lineBetween(35, 31, 43, 38);
+    cockroach.generateTexture('cockroach-enemy', 50, 48);
+    cockroach.destroy();
+
+    const scorpion = this.make.graphics({ x: 0, y: 0 });
+    scorpion.fillStyle(0xb76d37, 1);
+    scorpion.fillEllipse(22, 31, 24, 16);
+    scorpion.fillStyle(0x704127, 1);
+    scorpion.fillCircle(22, 31, 7);
+    scorpion.lineStyle(3, 0x704127, 1);
+    scorpion.lineBetween(13, 33, 7, 40);
+    scorpion.lineBetween(19, 35, 17, 44);
+    scorpion.lineBetween(27, 35, 31, 44);
+    scorpion.lineBetween(32, 32, 39, 38);
+    scorpion.lineStyle(4, 0x8b4a2c, 1);
+    scorpion.beginPath();
+    scorpion.moveTo(30, 27);
+    scorpion.lineTo(38, 20);
+    scorpion.lineTo(39, 12);
+    scorpion.lineTo(34, 7);
+    scorpion.strokePath();
+    scorpion.fillStyle(0x39251f, 1);
+    scorpion.fillTriangle(31, 8, 39, 5, 37, 13);
+    scorpion.lineStyle(3, 0x704127, 1);
+    scorpion.lineBetween(8, 28, 2, 22);
+    scorpion.lineBetween(8, 31, 2, 35);
+    scorpion.fillStyle(0xffd28a, 1);
+    scorpion.fillCircle(18, 27, 2);
+    scorpion.fillCircle(26, 27, 2);
+    scorpion.generateTexture('scorpion-enemy', 48, 50);
+    scorpion.destroy();
   }
 
   private createPlatformTexture(): void {

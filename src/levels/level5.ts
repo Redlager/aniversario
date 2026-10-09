@@ -21,6 +21,12 @@ export const level5: LevelConfig = {
     { x: 1900, y: 525, width: 150, height: 24 },
     { x: 2580, y: 525, width: 145, height: 24 },
   ],
+  enemies: [
+    { id: 'cucaracha-mudanza', kind: 'cockroach', x: 820, y: 558, patrolDistance: 38, speed: 48 },
+    { id: 'alacran-patio', kind: 'scorpion', x: 1320, y: 558, patrolDistance: 42, speed: 42 },
+    { id: 'cucaracha-cajas', kind: 'cockroach', x: 2180, y: 558, patrolDistance: 38, speed: 50 },
+    { id: 'alacran-salida', kind: 'scorpion', x: 2780, y: 558, patrolDistance: 42, speed: 44 },
+  ],
   checkpoints: [
     { id: 'llegada-al-patio', x: 760, y: 548 },
     { id: 'antes-de-canelo', x: 2110, y: 548 },

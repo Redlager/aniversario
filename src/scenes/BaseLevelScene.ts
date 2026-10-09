@@ -49,6 +49,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
   private damageAvailableAt = 0;
   private transitioning = false;
   private exitTriggered = false;
+  private jumpscareActive = false;
 
   protected abstract getLevel(levelId: string): LevelConfig;
 
@@ -64,6 +65,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     this.damageAvailableAt = 0;
     this.transitioning = false;
     this.exitTriggered = false;
+    this.jumpscareActive = false;
   }
 
   create(): void {
@@ -106,7 +108,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
   }
 
   override update(): void {
-    if (this.transitioning || this.dialog?.isOpen) {
+    if (this.transitioning || this.jumpscareActive || this.dialog?.isOpen) {
       this.player.setVelocityX(0);
       return;
     }
@@ -323,6 +325,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       sprite.setData('dialogue', npc.dialogue);
       sprite.setData('label', npc.label);
       sprite.setData('npcVisual', npc.visual);
+      sprite.setData('effect', npc.effect);
       this.add
         .text(npc.x, npc.y - 39, npc.label, {
           fontFamily: 'Trebuchet MS, Arial, sans-serif',
@@ -349,6 +352,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
     this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
     this.input.keyboard.on('keydown', (event: KeyboardEvent) => {
+      if (this.jumpscareActive) return;
       if (event.code === 'Space' || event.code === 'ArrowUp' || event.code === 'KeyW') {
         if (this.dialog?.isOpen) this.dialog.dismiss();
         else if (!this.transitioning) this.player.jump();
@@ -406,7 +410,9 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     }
     button.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
       if (action === 'jump') {
-        if (!this.transitioning && !this.dialog.isOpen) this.player.jump();
+        if (!this.transitioning && !this.jumpscareActive && !this.dialog.isOpen) {
+          this.player.jump();
+        }
       } else if (action === 'interact') {
         if (this.exitNearby && !this.transitioning) this.reachExit();
       } else {
@@ -457,10 +463,19 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       this.player.y < other.y - 10
     ) {
       const { x, y } = other;
+      const enemyKind = other.getData('enemyKind') as string;
+      const defeatMessage =
+        enemyKind === 'ghost'
+          ? '¡FANTASMITA ESPANTADO!'
+          : enemyKind === 'cockroach'
+            ? '¡CUCARACHA ESPANTADA!'
+            : enemyKind === 'scorpion'
+              ? '¡ALACRÁN ESPANTADO!'
+              : '¡APROBADO!';
       other.playDefeatAnimation();
       body.setVelocityY(-260);
       const approved = this.add
-        .text(x, y - 35, '¡APROBADO!', {
+        .text(x, y - 35, defeatMessage, {
           fontFamily: 'Trebuchet MS, Arial, sans-serif',
           fontSize: '18px',
           fontStyle: 'bold',
@@ -512,13 +527,144 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     const id = npc.getData('npcId') as string;
     if (this.visitedNpcs.has(id) || this.dialog.isOpen) return;
     this.visitedNpcs.add(id);
+    const label = npc.getData('label') as string;
+    const dialogue = npc.getData('dialogue') as string;
+    if (npc.getData('effect') === 'jumpscare') {
+      this.showGhostJumpscare(() => this.showDialog(`${label}: ${dialogue}`));
+      return;
+    }
     if (npc.getData('npcVisual') === 'renzo' && this.anims.exists('renzo-appear')) {
       npc.play('renzo-appear');
       npc.once('animationcomplete-renzo-appear', () => {
         if (npc.active && this.anims.exists('renzo-idle')) npc.play('renzo-idle');
       });
     }
-    this.showDialog(`${npc.getData('label')}: ${npc.getData('dialogue') as string}`);
+    this.showDialog(`${label}: ${dialogue}`);
+  }
+
+  private showGhostJumpscare(onDismiss: () => void): void {
+    const { width, height } = this.scale.gameSize;
+    const body = this.player.body;
+    const previousBodyState =
+      body instanceof Phaser.Physics.Arcade.Body
+        ? {
+            allowGravity: body.allowGravity,
+            velocityX: body.velocity.x,
+            velocityY: body.velocity.y,
+          }
+        : undefined;
+
+    this.jumpscareActive = true;
+    if (body instanceof Phaser.Physics.Arcade.Body) {
+      body.setAllowGravity(false);
+      body.setVelocity(0, 0);
+    }
+
+    const backdrop = this.add
+      .rectangle(width / 2, height / 2, width, height, 0x08030e, 0.97)
+      .setScrollFactor(0)
+      .setDepth(70)
+      .setInteractive();
+    const faceGraphics = this.add.graphics();
+    faceGraphics.setPosition(-150, -150);
+    faceGraphics.fillStyle(0xd8d6e5, 1);
+    faceGraphics.fillEllipse(150, 150, 230, 270);
+    faceGraphics.fillStyle(0xa6a3ba, 1);
+    faceGraphics.fillTriangle(55, 93, 82, 5, 116, 83);
+    faceGraphics.fillTriangle(184, 82, 220, 5, 244, 99);
+    faceGraphics.fillStyle(0x170b20, 1);
+    faceGraphics.fillEllipse(105, 133, 48, 72);
+    faceGraphics.fillEllipse(195, 133, 48, 72);
+    faceGraphics.fillStyle(0xff315d, 1);
+    faceGraphics.fillCircle(105, 139, 13);
+    faceGraphics.fillCircle(195, 139, 13);
+    faceGraphics.fillStyle(0xffa2b5, 0.8);
+    faceGraphics.fillCircle(105, 139, 5);
+    faceGraphics.fillCircle(195, 139, 5);
+    faceGraphics.fillStyle(0x2a1024, 1);
+    faceGraphics.fillEllipse(150, 220, 86, 91);
+    faceGraphics.fillStyle(0xfff0e6, 1);
+    faceGraphics.fillTriangle(111, 199, 132, 202, 120, 232);
+    faceGraphics.fillTriangle(135, 200, 156, 200, 145, 231);
+    faceGraphics.fillTriangle(160, 200, 181, 198, 171, 231);
+    faceGraphics.fillStyle(0x9a193b, 1);
+    faceGraphics.fillEllipse(150, 255, 35, 17);
+
+    const face = this.add
+      .container(width / 2, height / 2, [faceGraphics])
+      .setScrollFactor(0)
+      .setDepth(71)
+      .setScale(0.02);
+    const prompt = this.add
+      .text(width / 2, height - 52, '¡BU!  ·  TOCÁ PARA CONTINUAR', {
+        fontFamily: 'Trebuchet MS, Arial, sans-serif',
+        fontSize: width < 540 ? '16px' : '20px',
+        fontStyle: 'bold',
+        color: '#ffffff',
+        backgroundColor: '#3a1028',
+        padding: { x: 14, y: 9 },
+      })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(72)
+      .setAlpha(0);
+
+    let readyToDismiss = false;
+    let dismissed = false;
+    let dismiss = (): void => undefined;
+    let onKeyDown = (_event: KeyboardEvent): void => undefined;
+    const removeDismissListeners = (): void => {
+      this.input.off('pointerdown', dismiss);
+      this.input.keyboard?.off('keydown', onKeyDown);
+    };
+    dismiss = (): void => {
+      if (!readyToDismiss || dismissed) return;
+      dismissed = true;
+      removeDismissListeners();
+      this.tweens.add({
+        targets: [backdrop, face, prompt],
+        alpha: 0,
+        duration: 220,
+        onComplete: () => {
+          backdrop.destroy();
+          face.destroy();
+          prompt.destroy();
+          this.jumpscareActive = false;
+          if (body instanceof Phaser.Physics.Arcade.Body && previousBodyState) {
+            body.setAllowGravity(previousBodyState.allowGravity);
+            body.setVelocity(previousBodyState.velocityX, previousBodyState.velocityY);
+          }
+          onDismiss();
+        },
+      });
+    };
+    onKeyDown = (event: KeyboardEvent): void => {
+      if (event.code === 'Space' || event.code === 'Enter' || event.code === 'Escape') {
+        dismiss();
+      }
+    };
+    this.input.on('pointerdown', dismiss);
+    this.input.keyboard?.on('keydown', onKeyDown);
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, removeDismissListeners);
+
+    this.cameras.main.shake(420, 0.012);
+    this.tweens.add({
+      targets: face,
+      scale: Math.max(width, height) / 230,
+      duration: 560,
+      ease: 'Back.Out',
+      onComplete: () => {
+        readyToDismiss = true;
+        this.tweens.add({ targets: prompt, alpha: 1, duration: 180 });
+      },
+    });
+    this.tweens.add({
+      targets: face,
+      angle: { from: -3, to: 3 },
+      duration: 75,
+      yoyo: true,
+      repeat: 5,
+    });
   }
 
   private showDialog(message: string, onDismiss?: () => void): void {
@@ -769,6 +915,47 @@ export abstract class BaseLevelScene extends Phaser.Scene {
 
   private drawDecoration({ kind, x, y, label, pet }: DecorationConfig): void {
     const groundOffset = kind === 'university' ? 18 : 0;
+    if (kind === 'pigeons') {
+      const flock = this.add.container(x, y).setDepth(1.7);
+      const birdPositions = [
+        { x: -24, y: 5, scale: 0.75 },
+        { x: 0, y: -6, scale: 1 },
+        { x: 25, y: 4, scale: 0.68 },
+      ];
+
+      for (const position of birdPositions) {
+        const bird = this.add.graphics();
+        bird.fillStyle(0x586775, 0.88);
+        bird.fillEllipse(0, 0, 17, 8);
+        bird.fillCircle(7, -3, 4);
+        bird.fillTriangle(10, -4, 16, -2, 10, -1);
+        bird.fillTriangle(-9, 0, -15, -5, -12, 2);
+        bird.fillTriangle(-2, -1, -10, -12, 4, -4);
+        bird.fillTriangle(0, -1, 10, -11, 5, -2);
+        bird.setPosition(position.x, position.y).setScale(position.scale);
+        flock.add(bird);
+
+        this.tweens.add({
+          targets: bird,
+          angle: { from: -8, to: 8 },
+          duration: 230 + Math.abs(position.x) * 2,
+          yoyo: true,
+          repeat: -1,
+        });
+      }
+
+      this.tweens.add({
+        targets: flock,
+        x: x + 72,
+        y: y - 12,
+        duration: 4200,
+        ease: 'Sine.InOut',
+        yoyo: true,
+        repeat: -1,
+        delay: Math.abs(x) % 900,
+      });
+      return;
+    }
     if (kind === 'pet') {
       if (!this.isPetVisual(pet)) return;
       const size = this.petDisplaySize(pet);
