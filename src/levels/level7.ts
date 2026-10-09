@@ -89,7 +89,7 @@ export const level7: LevelConfig = {
   ],
   decorations: [
     { kind: 'door', x: 90, y: 588 },
-    { kind: 'mailboxes', x: 220, y: 470, label: 'LA BURGERIA' },
+    { kind: 'mailboxes', x: 220, y: 470, label: 'EL MAC' },
     { kind: 'box', x: 420, y: 588 },
     { kind: 'bench', x: 630, y: 588 },
     { kind: 'lamp', x: 860, y: 588 },

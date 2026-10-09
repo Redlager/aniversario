@@ -117,8 +117,7 @@ export const level3: LevelConfig = {
       visual: 'renzo',
       x: 1645,
       y: 548,
-      dialogue:
-        'Bueno... ya está.\nPanchito, Oliver y Rex.\nAhora sí, no entra ninguno más, ¿no?',
+      dialogue: 'Bueno... ya está.\nPanchito, Oliver y Rex.\nAhora sí, no entra ninguno más, ¿no?',
     },
     {
       id: 'silvestre',
