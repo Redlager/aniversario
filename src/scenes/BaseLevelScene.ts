@@ -300,18 +300,81 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       const texture =
         npc.visual === 'renzo'
           ? 'renzo'
-          : npc.visual === 'phone'
-            ? 'phone-interaction'
-            : npc.visual === 'elevator'
-              ? 'elevator-interaction'
-              : npc.visual
-                ? `pet-${npc.visual}`
-                : 'npc';
+          : npc.visual === 'panchito' && this.textures.exists('panchito-sheet')
+            ? 'panchito-sheet'
+            : npc.visual === 'oliver' && this.textures.exists('oliver-sheet')
+              ? 'oliver-sheet'
+              : npc.visual === 'peach' && this.textures.exists('peach-sheet')
+                ? 'peach-sheet'
+                : npc.visual === 'rex' && this.textures.exists('rex-sheet')
+                  ? 'rex-sheet'
+                  : npc.visual === 'silvestre' && this.textures.exists('silvestre-sheet')
+                    ? 'silvestre-sheet'
+                    : npc.visual === 'chocolatin' && this.textures.exists('chocolatin-sheet')
+                      ? 'chocolatin-sheet'
+                      : npc.visual === 'canelo' && this.textures.exists('canelo-sheet')
+                        ? 'canelo-sheet'
+                        : npc.visual === 'phone'
+                          ? 'phone-interaction'
+                          : npc.visual === 'elevator'
+                            ? 'elevator-interaction'
+                            : npc.visual
+                              ? `pet-${npc.visual}`
+                              : 'npc';
       const sprite = this.npcs.create(npc.x, npc.y, texture);
       sprite.setDepth(2);
       if (npc.visual === 'renzo') {
         sprite.setScale(1.5).setSize(28, 42).refreshBody();
         if (this.anims.exists('renzo-idle')) sprite.play('renzo-idle');
+      } else if (npc.visual === 'panchito' && this.textures.exists('panchito-sheet')) {
+        const size = this.petDisplaySize(npc.visual);
+        sprite
+          .setDisplaySize(size.width, size.height)
+          .setSize(size.width * 0.8, size.height * 0.8)
+          .refreshBody();
+        if (this.anims.exists('panchito-idle')) sprite.play('panchito-idle');
+      } else if (npc.visual === 'oliver' && this.textures.exists('oliver-sheet')) {
+        const size = this.petDisplaySize(npc.visual);
+        sprite
+          .setDisplaySize(size.width, size.height)
+          .setSize(size.width * 0.8, size.height * 0.8)
+          .refreshBody();
+        if (this.anims.exists('oliver-idle')) sprite.play('oliver-idle');
+      } else if (npc.visual === 'peach' && this.textures.exists('peach-sheet')) {
+        const size = this.petDisplaySize(npc.visual);
+        sprite
+          .setDisplaySize(size.width, size.height)
+          .setSize(size.width * 0.8, size.height * 0.8)
+          .refreshBody();
+        if (this.anims.exists('peach-idle')) sprite.play('peach-idle');
+      } else if (npc.visual === 'rex' && this.textures.exists('rex-sheet')) {
+        const size = this.petDisplaySize(npc.visual);
+        sprite
+          .setDisplaySize(size.width, size.height)
+          .setSize(size.width * 0.8, size.height * 0.8)
+          .refreshBody();
+        if (this.anims.exists('rex-idle')) sprite.play('rex-idle');
+      } else if (npc.visual === 'silvestre' && this.textures.exists('silvestre-sheet')) {
+        const size = this.petDisplaySize(npc.visual);
+        sprite
+          .setDisplaySize(size.width, size.height)
+          .setSize(size.width * 0.8, size.height * 0.8)
+          .refreshBody();
+        if (this.anims.exists('silvestre-idle')) sprite.play('silvestre-idle');
+      } else if (npc.visual === 'chocolatin' && this.textures.exists('chocolatin-sheet')) {
+        const size = this.petDisplaySize(npc.visual);
+        sprite
+          .setDisplaySize(size.width, size.height)
+          .setSize(size.width * 0.8, size.height * 0.8)
+          .refreshBody();
+        if (this.anims.exists('chocolatin-idle')) sprite.play('chocolatin-idle');
+      } else if (npc.visual === 'canelo' && this.textures.exists('canelo-sheet')) {
+        const size = this.petDisplaySize(npc.visual);
+        sprite
+          .setDisplaySize(size.width, size.height)
+          .setSize(size.width * 0.8, size.height * 0.8)
+          .refreshBody();
+        if (this.anims.exists('canelo-idle')) sprite.play('canelo-idle');
       } else if (this.isPetVisual(npc.visual)) {
         const size = this.petDisplaySize(npc.visual);
         sprite.setSize(size.width * 0.8, size.height * 0.8).refreshBody();
@@ -532,6 +595,30 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     if (npc.getData('effect') === 'jumpscare') {
       this.showGhostJumpscare(() => this.showDialog(`${label}: ${dialogue}`));
       return;
+    }
+    if (npc.getData('npcVisual') === 'panchito' && this.anims.exists('panchito-surprised')) {
+      npc.play('panchito-surprised');
+      npc.once('animationcomplete-panchito-surprised', () => {
+        if (npc.active && this.anims.exists('panchito-idle')) npc.play('panchito-idle');
+      });
+    }
+    if (npc.getData('npcVisual') === 'rex' && this.anims.exists('rex-surprised')) {
+      npc.play('rex-surprised');
+      npc.once('animationcomplete-rex-surprised', () => {
+        if (npc.active && this.anims.exists('rex-idle')) npc.play('rex-idle');
+      });
+    }
+    if (npc.getData('npcVisual') === 'chocolatin' && this.anims.exists('chocolatin-play')) {
+      npc.play('chocolatin-play');
+      npc.once('animationcomplete-chocolatin-play', () => {
+        if (npc.active && this.anims.exists('chocolatin-idle')) npc.play('chocolatin-idle');
+      });
+    }
+    if (npc.getData('npcVisual') === 'canelo' && this.anims.exists('canelo-treat')) {
+      npc.play('canelo-treat');
+      npc.once('animationcomplete-canelo-treat', () => {
+        if (npc.active && this.anims.exists('canelo-idle')) npc.play('canelo-idle');
+      });
     }
     if (npc.getData('npcVisual') === 'renzo' && this.anims.exists('renzo-appear')) {
       npc.play('renzo-appear');
@@ -778,11 +865,15 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       graphics.fillRoundedRect(x - 160, y + 7, 120, 34, 9);
       graphics.fillStyle(0xb18b94);
       graphics.fillRoundedRect(x - 150, y - 7, 48, 25, 7);
-      this.add
-        .image(x - 35, y + 17, 'pet-chocolatin')
+      const chocolatinTexture = this.textures.exists('chocolatin-sheet')
+        ? 'chocolatin-sheet'
+        : 'pet-chocolatin';
+      const chocolatin = this.add
+        .sprite(x - 35, y + 17, chocolatinTexture)
         .setOrigin(0.5, 1)
         .setDisplaySize(54, 40)
         .setDepth(26);
+      if (this.anims.exists('chocolatin-idle')) chocolatin.play('chocolatin-idle');
       this.add
         .text(x - 35, y - 34, 'CHOCOLATÍN', {
           fontFamily: 'Trebuchet MS, Arial, sans-serif',
@@ -838,11 +929,24 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     graphics.fillEllipse(x + 145, y + 14, 390, 48);
     pets.forEach((pet, index) => {
       const size = this.petDisplaySize(pet);
-      this.add
-        .image(x - 20 + index * 50, y + 12, `pet-${pet}`)
+      const animatedTexture =
+        pet === 'rex' && this.textures.exists('rex-sheet')
+          ? 'rex-sheet'
+          : pet === 'chocolatin' && this.textures.exists('chocolatin-sheet')
+            ? 'chocolatin-sheet'
+            : pet === 'canelo' && this.textures.exists('canelo-sheet')
+              ? 'canelo-sheet'
+              : `pet-${pet}`;
+      const petSprite = this.add
+        .sprite(x - 20 + index * 50, y + 12, animatedTexture)
         .setOrigin(0.5, 1)
         .setDisplaySize(size.width * 0.72, size.height * 0.72)
         .setDepth(26);
+      if (pet === 'rex' && this.anims.exists('rex-idle')) petSprite.play('rex-idle');
+      if (pet === 'chocolatin' && this.anims.exists('chocolatin-idle')) {
+        petSprite.play('chocolatin-idle');
+      }
+      if (pet === 'canelo' && this.anims.exists('canelo-idle')) petSprite.play('canelo-idle');
     });
 
     const glow = this.add.circle(x + 350, y - 80, 9, 0xe9ddff, 0.8).setDepth(8);
@@ -959,11 +1063,44 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     if (kind === 'pet') {
       if (!this.isPetVisual(pet)) return;
       const size = this.petDisplaySize(pet);
-      this.add
-        .image(x, y, `pet-${pet}`)
+      const animatedTexture =
+        pet === 'panchito' && this.textures.exists('panchito-sheet')
+          ? 'panchito-sheet'
+          : pet === 'oliver' && this.textures.exists('oliver-sheet')
+            ? 'oliver-sheet'
+            : pet === 'peach' && this.textures.exists('peach-sheet')
+              ? 'peach-sheet'
+              : pet === 'rex' && this.textures.exists('rex-sheet')
+                ? 'rex-sheet'
+                : pet === 'silvestre' && this.textures.exists('silvestre-sheet')
+                  ? 'silvestre-sheet'
+                  : pet === 'chocolatin' && this.textures.exists('chocolatin-sheet')
+                    ? 'chocolatin-sheet'
+                    : pet === 'canelo' && this.textures.exists('canelo-sheet')
+                      ? 'canelo-sheet'
+                      : undefined;
+      const sprite = this.add
+        .sprite(x, y, animatedTexture ?? `pet-${pet}`)
         .setOrigin(0.5, 1)
         .setDisplaySize(size.width, size.height)
         .setDepth(1.5);
+      const animation =
+        pet === 'panchito'
+          ? 'panchito-idle'
+          : pet === 'oliver'
+            ? 'oliver-idle'
+            : pet === 'peach'
+              ? 'peach-idle'
+              : pet === 'rex'
+                ? 'rex-idle'
+                : pet === 'silvestre'
+                  ? 'silvestre-idle'
+                  : pet === 'chocolatin'
+                    ? 'chocolatin-idle'
+                    : 'canelo-idle';
+      if (animatedTexture && this.anims.exists(animation)) {
+        sprite.play(animation);
+      }
       return;
     }
     if (kind === 'tree' && this.textures.exists('level-tree')) {
@@ -1286,13 +1423,17 @@ export abstract class BaseLevelScene extends Phaser.Scene {
   private petDisplaySize(pet: PetVisual): { width: number; height: number } {
     switch (pet) {
       case 'panchito':
-        return { width: 60, height: 38 };
+        return { width: 60, height: 45 };
       case 'oliver':
+        return { width: 48, height: 36 };
       case 'silvestre':
-      case 'peach':
         return { width: 44, height: 36 };
+      case 'peach':
+        return { width: 48, height: 36 };
       case 'rex':
-        return { width: 72, height: 52 };
+        return this.textures.exists('rex-sheet')
+          ? { width: 72, height: 48 }
+          : { width: 72, height: 52 };
       case 'chocolatin':
         return { width: 54, height: 40 };
       case 'canelo':

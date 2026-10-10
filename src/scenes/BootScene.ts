@@ -383,12 +383,15 @@ export class BootScene extends Phaser.Scene {
     const loadedAnimations = new Set<string>();
     for (const sheet of characterSpriteSheets) {
       if (!this.textures.exists(sheet.textureKey)) continue;
+      const frames = sheet.frameIndices
+        ? this.anims.generateFrameNumbers(sheet.textureKey, { frames: sheet.frameIndices })
+        : this.anims.generateFrameNumbers(sheet.textureKey, {
+            start: 0,
+            end: sheet.frameCount - 1,
+          });
       this.anims.create({
         key: sheet.animationKey,
-        frames: this.anims.generateFrameNumbers(sheet.textureKey, {
-          start: 0,
-          end: sheet.frameCount - 1,
-        }),
+        frames,
         frameRate: sheet.frameRate,
         repeat: sheet.repeat,
         yoyo: sheet.yoyo,
@@ -418,5 +421,37 @@ export class BootScene extends Phaser.Scene {
     createFallbackAnimation('renzo-idle', [{ key: 'renzo' }], 1, -1);
     createFallbackAnimation('renzo-appear', [{ key: 'renzo' }, { key: 'renzo' }], 8, 0);
     createFallbackAnimation('exam-float', [{ key: 'exam' }, { key: 'exam' }], 2, -1);
+    if (this.textures.exists('panchito-sheet')) {
+      createFallbackAnimation(
+        'panchito-surprised',
+        this.anims.generateFrameNumbers('panchito-sheet', { start: 3, end: 3 }),
+        1,
+        0,
+      );
+    }
+    if (this.textures.exists('rex-sheet')) {
+      createFallbackAnimation(
+        'rex-surprised',
+        this.anims.generateFrameNumbers('rex-sheet', { frames: [3] }),
+        1,
+        0,
+      );
+    }
+    if (this.textures.exists('chocolatin-sheet')) {
+      createFallbackAnimation(
+        'chocolatin-play',
+        this.anims.generateFrameNumbers('chocolatin-sheet', { frames: [3] }),
+        1,
+        0,
+      );
+    }
+    if (this.textures.exists('canelo-sheet')) {
+      createFallbackAnimation(
+        'canelo-treat',
+        this.anims.generateFrameNumbers('canelo-sheet', { frames: [3] }),
+        1,
+        0,
+      );
+    }
   }
 }
