@@ -254,7 +254,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
         ? this.progress.checkpoint
         : this.level.spawn;
     this.player = new Player(this, spawn.x, spawn.y);
-    this.player.setScale(1.5).setDepth(2);
+    this.player.setDepth(2);
     this.cameras.main.startFollow(this.player, true, 0.08, 0.08);
   }
 
@@ -298,33 +298,35 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     this.npcs = this.physics.add.staticGroup();
     for (const npc of this.level.npcs ?? []) {
       const texture =
-        npc.visual === 'renzo'
-          ? 'renzo'
-          : npc.visual === 'panchito' && this.textures.exists('panchito-sheet')
-            ? 'panchito-sheet'
-            : npc.visual === 'oliver' && this.textures.exists('oliver-sheet')
-              ? 'oliver-sheet'
-              : npc.visual === 'peach' && this.textures.exists('peach-sheet')
-                ? 'peach-sheet'
-                : npc.visual === 'rex' && this.textures.exists('rex-sheet')
-                  ? 'rex-sheet'
-                  : npc.visual === 'silvestre' && this.textures.exists('silvestre-sheet')
-                    ? 'silvestre-sheet'
-                    : npc.visual === 'chocolatin' && this.textures.exists('chocolatin-sheet')
-                      ? 'chocolatin-sheet'
-                      : npc.visual === 'canelo' && this.textures.exists('canelo-sheet')
-                        ? 'canelo-sheet'
-                        : npc.visual === 'phone'
-                          ? 'phone-interaction'
-                          : npc.visual === 'elevator'
-                            ? 'elevator-interaction'
-                            : npc.visual
-                              ? `pet-${npc.visual}`
-                              : 'npc';
+        npc.visual === 'renzo' && this.textures.exists('renzo-idle-sheet')
+          ? 'renzo-idle-sheet'
+          : npc.visual === 'renzo'
+            ? 'renzo'
+            : npc.visual === 'panchito' && this.textures.exists('panchito-sheet')
+              ? 'panchito-sheet'
+              : npc.visual === 'oliver' && this.textures.exists('oliver-sheet')
+                ? 'oliver-sheet'
+                : npc.visual === 'peach' && this.textures.exists('peach-sheet')
+                  ? 'peach-sheet'
+                  : npc.visual === 'rex' && this.textures.exists('rex-sheet')
+                    ? 'rex-sheet'
+                    : npc.visual === 'silvestre' && this.textures.exists('silvestre-sheet')
+                      ? 'silvestre-sheet'
+                      : npc.visual === 'chocolatin' && this.textures.exists('chocolatin-sheet')
+                        ? 'chocolatin-sheet'
+                        : npc.visual === 'canelo' && this.textures.exists('canelo-sheet')
+                          ? 'canelo-sheet'
+                          : npc.visual === 'phone'
+                            ? 'phone-interaction'
+                            : npc.visual === 'elevator'
+                              ? 'elevator-interaction'
+                              : npc.visual
+                                ? `pet-${npc.visual}`
+                                : 'npc';
       const sprite = this.npcs.create(npc.x, npc.y, texture);
       sprite.setDepth(2);
       if (npc.visual === 'renzo') {
-        sprite.setScale(1.5).setSize(28, 42).refreshBody();
+        sprite.setScale(1.5).setSize(20, 42).refreshBody();
         if (this.anims.exists('renzo-idle')) sprite.play('renzo-idle');
       } else if (npc.visual === 'panchito' && this.textures.exists('panchito-sheet')) {
         const size = this.petDisplaySize(npc.visual);
@@ -623,7 +625,11 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     if (npc.getData('npcVisual') === 'renzo' && this.anims.exists('renzo-appear')) {
       npc.play('renzo-appear');
       npc.once('animationcomplete-renzo-appear', () => {
-        if (npc.active && this.anims.exists('renzo-idle')) npc.play('renzo-idle');
+        if (!npc.active) return;
+        if (this.textures.exists('renzo-idle-sheet')) {
+          npc.setTexture('renzo-idle-sheet', 0);
+        }
+        if (this.anims.exists('renzo-idle')) npc.play('renzo-idle');
       });
     }
     this.showDialog(`${label}: ${dialogue}`);
@@ -784,7 +790,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     this.transitioning = true;
     this.exitTriggered = true;
     this.player.resetAt(this.level.exit.x - 210, this.level.exit.y - 27);
-    this.player.setScale(1.5).setDepth(26).play('vicky-idle', true);
+    this.player.setDepth(26).playIdleAnimation();
     this.showRenzoScene();
     this.add
       .rectangle(0, 0, this.scale.width, this.scale.height, 0x171322, 0.34)
@@ -836,15 +842,25 @@ export abstract class BaseLevelScene extends Phaser.Scene {
   private showRenzoScene(): void {
     const { x, y } = this.level.exit;
     const renzo = this.add
-      .sprite(x - 105, y - 27, 'renzo')
+      .sprite(
+        x - 105,
+        y - 27,
+        this.textures.exists('renzo-idle-sheet') ? 'renzo-idle-sheet' : 'renzo',
+      )
       .setDepth(26)
       .setScale(1.5);
     if (this.anims.exists('renzo-appear')) {
       renzo.play('renzo-appear');
       renzo.once('animationcomplete-renzo-appear', () => {
+        if (this.textures.exists('renzo-idle-sheet')) {
+          renzo.setTexture('renzo-idle-sheet', 0);
+        }
         if (this.anims.exists('renzo-idle')) renzo.play('renzo-idle');
       });
     } else if (this.anims.exists('renzo-idle')) {
+      if (this.textures.exists('renzo-idle-sheet')) {
+        renzo.setTexture('renzo-idle-sheet', 0);
+      }
       renzo.play('renzo-idle');
     }
     if (this.level.exit.completionScene === 'family') {

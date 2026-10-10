@@ -52,18 +52,26 @@ export class LevelCompletePanel {
       .setScrollFactor(0)
       .setDepth(42);
 
-    const vicky = this.scene.add
-      .sprite(width / 2 - 100, height / 2 - 10, 'vicky-idle')
-      .setScale(1.5)
+    const hasVickySpriteSheet = this.scene.textures.exists('vicky-idle-sheet');
+    const vicky = this.scene.add.sprite(
+      width / 2 - 100,
+      height / 2 - 10,
+      hasVickySpriteSheet ? 'vicky-idle-sheet' : 'vicky-idle',
+    );
+    vicky
+      .setScale(hasVickySpriteSheet ? 0.19 : 1.5)
       .setScrollFactor(0)
       .setDepth(42);
     if (this.scene.anims.exists('vicky-idle')) vicky.play('vicky-idle');
 
-    const renzo = this.scene.add
-      .sprite(width / 2 + 100, height / 2 - 10, 'renzo')
-      .setScale(1.5)
-      .setScrollFactor(0)
-      .setDepth(42);
+    const hasRenzoSpriteSheet = this.scene.textures.exists('renzo-idle-sheet');
+    const renzo = this.scene.add.sprite(
+      width / 2 + 100,
+      height / 2 - 10,
+      hasRenzoSpriteSheet ? 'renzo-idle-sheet' : 'renzo',
+    );
+    renzo.setScale(1.5);
+    renzo.setScrollFactor(0).setDepth(42);
     if (this.scene.anims.exists('renzo-idle')) renzo.play('renzo-idle');
     this.scene.add
       .text(width / 2, height / 2 - 28, '♥     ♥     ♥', {

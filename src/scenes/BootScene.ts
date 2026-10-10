@@ -416,10 +416,11 @@ export class BootScene extends Phaser.Scene {
       -1,
     );
     createFallbackAnimation('vicky-jump', [{ key: 'vicky-jump' }]);
+    createFallbackAnimation('vicky-land', [{ key: 'vicky-idle' }]);
     createFallbackAnimation('vicky-fall', [{ key: 'vicky-fall' }]);
     createFallbackAnimation('vicky-damage', [{ key: 'vicky-damage' }]);
     createFallbackAnimation('renzo-idle', [{ key: 'renzo' }], 1, -1);
-    createFallbackAnimation('renzo-appear', [{ key: 'renzo' }, { key: 'renzo' }], 8, 0);
+    createFallbackAnimation('renzo-appear', [{ key: 'renzo' }], 1, 0);
     createFallbackAnimation('exam-float', [{ key: 'exam' }, { key: 'exam' }], 2, -1);
     if (this.textures.exists('panchito-sheet')) {
       createFallbackAnimation(
