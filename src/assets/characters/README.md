@@ -24,6 +24,7 @@ frame.
 | `pets/silvestre.png`    |  724 x 543 |      4 | 2x2 poses; frames 1 and 3 used for idle             |
 | `pets/chocolatin.png`   |  724 x 543 |      4 | 2x2 poses; neutral pose and ball-play reaction      |
 | `pets/canelo.png`       |  724 x 543 |      4 | 2x2 poses; neutral pose and carrot reaction         |
+| `pets/cleaned/*.png`    | same as source | same | Conservative cleanup copies used by the loader |
 | `el-parcial/patrol.png` |    44 x 48 |      4 | patrol / floating loop                              |
 | `el-parcial/defeat.png` |    44 x 48 |      4 | defeat                                              |
 
@@ -52,6 +53,12 @@ walk or looping motion is inferred.
 Canelo's 1448 x 1086 image is a 2x2 grid, read in row-major order. Frame 0 is
 used as the neutral pose and frame 3, with the carrot, as a brief interaction
 reaction. The other poses are not treated as a continuous movement animation.
+The seven pet sheets are loaded from `pets/cleaned/`; the original PNGs remain
+unchanged. Each cleaned copy retains its source dimensions, frame grid, colors,
+and alpha except for fully disconnected alpha components of at most 10 pixels
+removed independently inside each frame. No resampling, color-keying, or
+silhouette trimming is applied. Larger detached marks and ambiguous details
+are retained for manual review rather than removed automatically.
 Victoria's `vic1.png` measures 1983 x 793 and is an irregular collage, not a
 10x2 frame grid. Alpha-connected silhouette analysis identifies 10 upper-row
 poses and 8 lower-row poses; each is isolated into a transparent, 256 x 396

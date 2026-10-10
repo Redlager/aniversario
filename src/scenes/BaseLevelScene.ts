@@ -47,6 +47,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
   private exitPrompt?: Phaser.GameObjects.Text;
   private readonly visitedNpcs = new Set<string>();
   private damageAvailableAt = 0;
+  private knockbackUntil = 0;
   private transitioning = false;
   private exitTriggered = false;
   private jumpscareActive = false;
@@ -63,6 +64,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     this.visitedNpcs.clear();
     this.touchPointers.clear();
     this.damageAvailableAt = 0;
+    this.knockbackUntil = 0;
     this.transitioning = false;
     this.exitTriggered = false;
     this.jumpscareActive = false;
@@ -116,7 +118,9 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     const direction =
       Number(this.cursors.right.isDown || this.keyD.isDown || this.isTouching('right')) -
       Number(this.cursors.left.isDown || this.keyA.isDown || this.isTouching('left'));
-    this.player.move(direction);
+    if (this.time.now >= this.knockbackUntil) {
+      this.player.move(direction);
+    }
     this.player.updateAnimation(direction);
     this.updateExitPrompt();
 
@@ -562,10 +566,10 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       });
       return;
     }
-    this.loseLife();
+    this.loseLife(other.x);
   }
 
-  private loseLife(): void {
+  private loseLife(enemyX?: number): void {
     if (this.time.now < this.damageAvailableAt || this.transitioning) return;
     this.damageAvailableAt = this.time.now + 900;
     this.progress.health -= 1;
@@ -585,7 +589,13 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       return;
     }
 
-    this.player.resetAt(this.progress.checkpoint.x, this.progress.checkpoint.y);
+    if (enemyX === undefined) {
+      this.player.resetAt(this.progress.checkpoint.x, this.progress.checkpoint.y);
+    } else {
+      const direction = Math.sign(this.player.x - enemyX) || (this.player.flipX ? 1 : -1);
+      this.knockbackUntil = this.time.now + 350;
+      this.player.setVelocityX(direction * 300);
+    }
     this.player.setTint(0xffffff);
     this.player.playDamageAnimation();
     this.time.delayedCall(350, () => this.player.clearTint());

@@ -14,7 +14,8 @@ export interface CharacterSpriteSheet {
 export const characterSpriteSheetUrls = import.meta.glob<string>(
   [
     './characters/**/*.png',
-    '!./characters/el-parcial/parcial vivo.png',
+  '!./characters/pets/*.png',
+  '!./characters/el-parcial/parcial vivo.png',
     '!./characters/el-parcial/parcial muerto.png',
   ],
   { eager: true, query: '?url', import: 'default' },
@@ -104,7 +105,7 @@ export const characterSpriteSheets: CharacterSpriteSheet[] = [
   {
     animationKey: 'panchito-idle',
     textureKey: 'panchito-sheet',
-    path: './characters/pets/panchito.png',
+    path: './characters/pets/cleaned/panchito.png',
     frameWidth: 724,
     frameHeight: 543,
     frameCount: 2,
@@ -114,7 +115,7 @@ export const characterSpriteSheets: CharacterSpriteSheet[] = [
   {
     animationKey: 'oliver-idle',
     textureKey: 'oliver-sheet',
-    path: './characters/pets/oliver.png',
+    path: './characters/pets/cleaned/oliver.png',
     frameWidth: 724,
     frameHeight: 543,
     frameCount: 2,
@@ -125,7 +126,7 @@ export const characterSpriteSheets: CharacterSpriteSheet[] = [
   {
     animationKey: 'peach-idle',
     textureKey: 'peach-sheet',
-    path: './characters/pets/peach.png',
+    path: './characters/pets/cleaned/peach.png',
     frameWidth: 724,
     frameHeight: 543,
     frameCount: 2,
@@ -136,7 +137,7 @@ export const characterSpriteSheets: CharacterSpriteSheet[] = [
   {
     animationKey: 'rex-idle',
     textureKey: 'rex-sheet',
-    path: './characters/pets/rex.png',
+    path: './characters/pets/cleaned/rex.png',
     frameWidth: 768,
     frameHeight: 512,
     frameCount: 1,
@@ -147,7 +148,7 @@ export const characterSpriteSheets: CharacterSpriteSheet[] = [
   {
     animationKey: 'silvestre-idle',
     textureKey: 'silvestre-sheet',
-    path: './characters/pets/silvestre.png',
+    path: './characters/pets/cleaned/silvestre.png',
     frameWidth: 724,
     frameHeight: 543,
     frameCount: 2,
@@ -158,7 +159,7 @@ export const characterSpriteSheets: CharacterSpriteSheet[] = [
   {
     animationKey: 'chocolatin-idle',
     textureKey: 'chocolatin-sheet',
-    path: './characters/pets/chocolatin.png',
+    path: './characters/pets/cleaned/chocolatin.png',
     frameWidth: 724,
     frameHeight: 543,
     frameCount: 1,
@@ -169,7 +170,7 @@ export const characterSpriteSheets: CharacterSpriteSheet[] = [
   {
     animationKey: 'canelo-idle',
     textureKey: 'canelo-sheet',
-    path: './characters/pets/canelo.png',
+    path: './characters/pets/cleaned/canelo.png',
     frameWidth: 724,
     frameHeight: 543,
     frameCount: 1,
