@@ -9,6 +9,9 @@ export class BootScene extends Phaser.Scene {
   }
 
   preload(): void {
+    const renzoPortraitUrl = characterSpriteSheetUrls['./characters/renzo/renzo.png'];
+    if (renzoPortraitUrl) this.load.image('renzo', renzoPortraitUrl);
+
     for (const sheet of characterSpriteSheets) {
       const url = characterSpriteSheetUrls[sheet.path];
       if (!url) continue;
@@ -420,7 +423,7 @@ export class BootScene extends Phaser.Scene {
     createFallbackAnimation('vicky-fall', [{ key: 'vicky-fall' }]);
     createFallbackAnimation('vicky-damage', [{ key: 'vicky-damage' }]);
     createFallbackAnimation('renzo-idle', [{ key: 'renzo' }], 1, -1);
-    createFallbackAnimation('renzo-appear', [{ key: 'renzo' }], 1, 0);
+    createFallbackAnimation('renzo-interact', [{ key: 'renzo' }], 1, 0);
     createFallbackAnimation('exam-float', [{ key: 'exam' }, { key: 'exam' }], 2, -1);
     if (this.textures.exists('panchito-sheet')) {
       createFallbackAnimation(

@@ -70,7 +70,8 @@ export class LevelCompletePanel {
       height / 2 - 10,
       hasRenzoSpriteSheet ? 'renzo-idle-sheet' : 'renzo',
     );
-    renzo.setScale(1.5);
+    const renzoScale = renzo.texture.getSourceImage().height > 50 ? 0.19 : 1.5;
+    renzo.setScale(renzoScale);
     renzo.setScrollFactor(0).setDepth(42);
     if (this.scene.anims.exists('renzo-idle')) renzo.play('renzo-idle');
     this.scene.add

@@ -14,8 +14,9 @@ frame.
 | `vicky/land.png`        |  256 x 396 |      1 | landing                                             |
 | `vicky/fall.png`        |  256 x 396 |      2 | fall loop                                           |
 | `vicky/damage.png`      |  256 x 396 |      2 | damage / stun                                       |
-| `renzo/idle.png`        |    40 x 50 |      4 | subtle passive NPC idle                             |
-| `renzo/appear.png`      |    40 x 50 |      6 | brief NPC interaction / final-scene appearance      |
+| `renzo/renzo.png`       |  198 x 396 |      1 | static fallback portrait                            |
+| `renzo/idle.png`        |  198 x 396 |      4 | subtle passive NPC idle                             |
+| `renzo/interact.png`    |  198 x 396 |      2 | brief wink reaction; returns to idle                |
 | `pets/panchito.png`     |  724 x 543 |      4 | 2x2 pose grid; top row idle, bottom-right surprised |
 | `pets/oliver.png`       |  724 x 543 |      4 | 2x2 pose grid; frames 0 and 2 used for idle         |
 | `pets/peach.png`        |  724 x 543 |      4 | 2x2 pose grid; frames 0 and 2 used for idle         |
@@ -62,14 +63,17 @@ shared foot baseline. The lower-row running pose and surprised pose remain
 unused because their intended gameplay role is unclear. The source has no
 multi-frame jump-up sequence; the jump state therefore holds its one genuine
 pose instead of repeating invented artwork.
-Renzo's original `renzo1.png` is 1983 x 793 and contains mixed poses; it is not
-loaded as an evenly spaced grid. The prepared `idle.png` is a 4-frame,
-40 x 50 strip used for the passive NPC idle loop. `appear.png` is a separate
-6-frame strip with the same frame size and is used only for the existing
-one-time proximity interaction and final-scene arrival. The source also
-contains walking and other expressive poses; they are not played during
-gameplay because Renzo remains stationary, and the other poses are not
-assigned an animation without a clear sequence.
+Renzo's original `renzo1.png` is 1983 x 793 and contains tightly packed,
+touching poses rather than a safe uniform grid. The four upper-left standing
+poses are individually extracted into `idle.png`; their original pixels are
+centered on 198 x 396 transparent frames with a shared foot baseline. The
+wink and neutral standing poses also form the two-frame `interact.png`
+reaction. The new `renzo.png` is a full-size still from the same source and is
+used as the fallback portrait. The source has six adjacent walking poses, but
+their silhouettes touch; no walk sheet is registered until those boundaries
+can be separated without stray fragments. Renzo stays stationary in all
+levels, and the remaining lower poses are not played because their sequence
+or gameplay meaning is unclear.
 El Parcial's `patrol.png` is a 4-frame sheet adapted from the supplied
 `el-parcial/parcial vivo.png` artwork.
 Its `defeat.png` is adapted from `el-parcial/parcial muerto.png`, keeping the

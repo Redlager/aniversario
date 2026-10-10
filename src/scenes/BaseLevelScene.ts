@@ -326,7 +326,11 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       const sprite = this.npcs.create(npc.x, npc.y, texture);
       sprite.setDepth(2);
       if (npc.visual === 'renzo') {
-        sprite.setScale(1.5).setSize(20, 42).refreshBody();
+        const scale = this.textures.get(texture).getSourceImage().height > 50 ? 0.19 : 1.5;
+        sprite
+          .setScale(scale)
+          .setSize(20 / scale, 42 / scale)
+          .refreshBody();
         if (this.anims.exists('renzo-idle')) sprite.play('renzo-idle');
       } else if (npc.visual === 'panchito' && this.textures.exists('panchito-sheet')) {
         const size = this.petDisplaySize(npc.visual);
@@ -622,9 +626,9 @@ export abstract class BaseLevelScene extends Phaser.Scene {
         if (npc.active && this.anims.exists('canelo-idle')) npc.play('canelo-idle');
       });
     }
-    if (npc.getData('npcVisual') === 'renzo' && this.anims.exists('renzo-appear')) {
-      npc.play('renzo-appear');
-      npc.once('animationcomplete-renzo-appear', () => {
+    if (npc.getData('npcVisual') === 'renzo' && this.anims.exists('renzo-interact')) {
+      npc.play('renzo-interact');
+      npc.once('animationcomplete-renzo-interact', () => {
         if (!npc.active) return;
         if (this.textures.exists('renzo-idle-sheet')) {
           npc.setTexture('renzo-idle-sheet', 0);
@@ -841,17 +845,15 @@ export abstract class BaseLevelScene extends Phaser.Scene {
 
   private showRenzoScene(): void {
     const { x, y } = this.level.exit;
+    const texture = this.textures.exists('renzo-idle-sheet') ? 'renzo-idle-sheet' : 'renzo';
+    const scale = this.textures.get(texture).getSourceImage().height > 50 ? 0.19 : 1.5;
     const renzo = this.add
-      .sprite(
-        x - 105,
-        y - 27,
-        this.textures.exists('renzo-idle-sheet') ? 'renzo-idle-sheet' : 'renzo',
-      )
+      .sprite(x - 105, y - 27, texture)
       .setDepth(26)
-      .setScale(1.5);
-    if (this.anims.exists('renzo-appear')) {
-      renzo.play('renzo-appear');
-      renzo.once('animationcomplete-renzo-appear', () => {
+      .setScale(scale);
+    if (this.anims.exists('renzo-interact')) {
+      renzo.play('renzo-interact');
+      renzo.once('animationcomplete-renzo-interact', () => {
         if (this.textures.exists('renzo-idle-sheet')) {
           renzo.setTexture('renzo-idle-sheet', 0);
         }
