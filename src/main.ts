@@ -9,45 +9,102 @@ const orientationPrompt = document.querySelector<HTMLElement>('#mobile-orientati
 const orientationAction = document.querySelector<HTMLButtonElement>('#orientation-action');
 const orientationStatus = document.querySelector<HTMLElement>('#orientation-status');
 const fullscreenAction = document.querySelector<HTMLButtonElement>('#fullscreen-action');
+const fullscreenStatus = document.querySelector<HTMLElement>('#fullscreen-status');
 const isTouchDevice =
   navigator.maxTouchPoints > 0 || window.matchMedia('(pointer: coarse)').matches;
+let fullscreenUnavailable = false;
 
-if (!app || !orientationPrompt || !orientationAction || !orientationStatus || !fullscreenAction) {
+if (
+  !app ||
+  !orientationPrompt ||
+  !orientationAction ||
+  !orientationStatus ||
+  !fullscreenAction ||
+  !fullscreenStatus
+) {
   throw new Error('No se pudo inicializar la ayuda de orientación para móviles.');
 }
 
 const isLandscape = (): boolean => window.matchMedia('(orientation: landscape)').matches;
 const isFullscreen = (): boolean => document.fullscreenElement === app;
+const canRequestFullscreen = (): boolean =>
+  !fullscreenUnavailable &&
+  document.fullscreenEnabled &&
+  typeof app.requestFullscreen === 'function' &&
+  typeof document.exitFullscreen === 'function';
+
+const showFullscreenStatus = (message: string): void => {
+  fullscreenStatus.textContent = message;
+  fullscreenStatus.classList.toggle('is-visible', message.length > 0);
+};
 
 const updateOrientationPrompt = (): void => {
   const showPrompt = isTouchDevice && !isLandscape();
   orientationPrompt.classList.toggle('is-visible', showPrompt);
   orientationPrompt.setAttribute('aria-hidden', String(!showPrompt));
+  orientationAction.hidden = !canRequestFullscreen();
+  fullscreenAction.textContent = isFullscreen() ? '×' : '⛶';
+  fullscreenAction.setAttribute(
+    'aria-label',
+    isFullscreen() ? 'Salir de pantalla completa' : 'Activar pantalla completa',
+  );
   fullscreenAction.classList.toggle(
     'is-visible',
-    isTouchDevice && isLandscape() && !isFullscreen(),
+    isTouchDevice && isLandscape() && canRequestFullscreen(),
   );
 };
 
 const enterLandscapeFullscreen = async (): Promise<void> => {
   orientationStatus.textContent = '';
+  showFullscreenStatus('');
 
   try {
-    if (!isFullscreen()) await app.requestFullscreen();
+    if (isFullscreen()) {
+      await document.exitFullscreen();
+      updateOrientationPrompt();
+      return;
+    }
+    if (!canRequestFullscreen()) {
+      orientationStatus.textContent = 'Girá el teléfono para jugar en horizontal.';
+      return;
+    }
+    await app.requestFullscreen();
   } catch {
-    orientationStatus.textContent =
-      'El navegador no habilitó pantalla completa. Girá el teléfono manualmente.';
-    return;
+    fullscreenUnavailable = true;
+    updateOrientationPrompt();
+    showFullscreenStatus(
+      'Este navegador no permite pantalla completa desde la página. Podés jugar igual: girá el teléfono.',
+    );
   }
 
-  try {
-    const orientation = screen.orientation as ScreenOrientation & {
-      lock?: (value: 'landscape') => Promise<void>;
-    };
-    if (orientation.lock) await orientation.lock('landscape');
-    else orientationStatus.textContent = 'Girá el teléfono para jugar en horizontal.';
-  } catch {
-    orientationStatus.textContent = 'Girá el teléfono para jugar en horizontal.';
+  if (isFullscreen()) {
+    try {
+      const orientation = screen.orientation as ScreenOrientation & {
+        lock?: (value: 'landscape') => Promise<void>;
+      };
+      if (orientation.lock) await orientation.lock('landscape');
+      else orientationStatus.textContent = 'Girá el teléfono para jugar en horizontal.';
+    } catch {
+      orientationStatus.textContent = 'Girá el teléfono para jugar en horizontal.';
+    }
+  }
+
+  updateOrientationPrompt();
+};
+
+const syncGameViewport = (): void => {
+  const viewport = window.visualViewport;
+  const viewportWidth = viewport?.width ?? window.innerWidth;
+  const viewportHeight = viewport?.height ?? window.innerHeight;
+
+  if (isTouchDevice && viewportWidth > viewportHeight) {
+    const gameHeight = 540;
+    const gameWidth = Math.round((gameHeight * viewportWidth) / viewportHeight);
+    if (game.scale.gameSize.width !== gameWidth || game.scale.gameSize.height !== gameHeight) {
+      game.scale.setGameSize(gameWidth, gameHeight);
+    }
+  } else if (game.scale.gameSize.width !== 960 || game.scale.gameSize.height !== 540) {
+    game.scale.setGameSize(960, 540);
   }
 
   updateOrientationPrompt();
@@ -56,8 +113,9 @@ const enterLandscapeFullscreen = async (): Promise<void> => {
 orientationAction.addEventListener('click', () => void enterLandscapeFullscreen());
 fullscreenAction.addEventListener('click', () => void enterLandscapeFullscreen());
 document.addEventListener('fullscreenchange', updateOrientationPrompt);
-window.addEventListener('orientationchange', updateOrientationPrompt);
-window.addEventListener('resize', updateOrientationPrompt);
-updateOrientationPrompt();
+window.addEventListener('orientationchange', () => requestAnimationFrame(syncGameViewport));
+window.addEventListener('resize', () => requestAnimationFrame(syncGameViewport));
+window.visualViewport?.addEventListener('resize', () => requestAnimationFrame(syncGameViewport));
+syncGameViewport();
 
 window.addEventListener('pagehide', () => game.destroy(true));
