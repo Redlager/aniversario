@@ -1,16 +1,22 @@
 import Phaser from 'phaser';
 
 export class DialogBox {
+  private readonly tapArea: Phaser.GameObjects.Rectangle;
   private readonly background: Phaser.GameObjects.Rectangle;
   private readonly text: Phaser.GameObjects.Text;
   private onDismiss?: () => void;
 
   constructor(scene: Phaser.Scene) {
     const { width, height } = scene.scale.gameSize;
+    this.tapArea = scene.add
+      .rectangle(width / 2, height / 2, width, height, 0x000000, 0)
+      .setScrollFactor(0)
+      .setDepth(30)
+      .setInteractive();
     this.background = scene.add
       .rectangle(width / 2, height - 76, width - 64, 104, 0x38243e, 0.94)
       .setScrollFactor(0)
-      .setDepth(30)
+      .setDepth(31)
       .setStrokeStyle(2, 0xffffff);
     this.text = scene.add
       .text(width / 2, height - 76, '', {
@@ -22,10 +28,9 @@ export class DialogBox {
       })
       .setOrigin(0.5)
       .setScrollFactor(0)
-      .setDepth(31);
+      .setDepth(32);
 
-    this.background.setInteractive().on('pointerdown', () => this.dismiss());
-    this.text.setInteractive().on('pointerdown', () => this.dismiss());
+    this.tapArea.on('pointerdown', () => this.dismiss());
     this.setVisible(false);
   }
 
@@ -33,9 +38,9 @@ export class DialogBox {
     return this.background.visible;
   }
 
-  show(message: string, onDismiss?: () => void): void {
+  show(message: string, onDismiss?: () => void, showContinueHint = false): void {
     this.onDismiss = onDismiss;
-    this.text.setText(`${message}\n\nTocá para continuar`);
+    this.text.setText(showContinueHint ? `${message}\n\nTocá para continuar` : message);
     this.setVisible(true);
   }
 
@@ -48,6 +53,7 @@ export class DialogBox {
   }
 
   private setVisible(visible: boolean): void {
+    this.tapArea.setVisible(visible);
     this.background.setVisible(visible);
     this.text.setVisible(visible);
   }

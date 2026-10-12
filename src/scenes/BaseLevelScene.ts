@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { Enemy } from '../entities/Enemy';
 import { Player } from '../entities/Player';
 import { DialogBox } from '../ui/DialogBox';
+import { MessageHistory } from '../ui/MessageHistory';
 import { LevelHud } from '../ui/LevelHud';
 import { LevelCompletePanel } from '../ui/LevelCompletePanel';
 import {
@@ -10,7 +11,7 @@ import {
   type LevelConfig,
   type PetVisual,
 } from '../levels/LevelTypes';
-import { levels } from '../levels/levelRegistry';
+import { FIRST_LEVEL_ID, levels } from '../levels/levelRegistry';
 
 interface LevelStartData {
   levelId?: string;
@@ -36,6 +37,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
   private enemies: Enemy[] = [];
   private hud!: LevelHud;
   private dialog!: DialogBox;
+  private messageHistory!: MessageHistory;
   private completionPanel?: LevelCompletePanel;
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   private keyA!: Phaser.Input.Keyboard.Key;
@@ -94,6 +96,11 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     this.hud = new LevelHud(this);
     this.dialog = new DialogBox(this);
     this.hud.update(this.level.name, this.level.objective, this.progress);
+    this.messageHistory = new MessageHistory(
+      this,
+      () => this.progress.messageHistory,
+      () => undefined,
+    );
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.touchPointers.clear());
     this.physics.add.collider(this.player, this.platforms);
     this.physics.add.collider(this.enemies, this.platforms);
@@ -110,7 +117,12 @@ export abstract class BaseLevelScene extends Phaser.Scene {
   }
 
   override update(): void {
-    if (this.transitioning || this.jumpscareActive || this.dialog?.isOpen) {
+    if (
+      this.transitioning ||
+      this.jumpscareActive ||
+      this.dialog?.isOpen ||
+      this.messageHistory?.isOpen
+    ) {
       this.player.setVelocityX(0);
       return;
     }
@@ -703,7 +715,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       .setDepth(71)
       .setScale(0.02);
     const prompt = this.add
-      .text(width / 2, height - 52, '¡BU!  ·  TOCÁ PARA CONTINUAR', {
+      .text(width / 2, height - 52, this.level.id === FIRST_LEVEL_ID ? '¡BU!' : '¡BU!', {
         fontFamily: 'Trebuchet MS, Arial, sans-serif',
         fontSize: width < 540 ? '16px' : '20px',
         fontStyle: 'bold',
@@ -775,6 +787,11 @@ export abstract class BaseLevelScene extends Phaser.Scene {
   }
 
   private showDialog(message: string, onDismiss?: () => void): void {
+    this.progress.messageHistory.push({
+      levelName: this.level.name,
+      message,
+    });
+    this.messageHistory.refresh();
     const body = this.player.body;
     const previousState =
       body instanceof Phaser.Physics.Arcade.Body
@@ -790,13 +807,17 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       body.setVelocity(0, 0);
     }
 
-    this.dialog.show(message, () => {
-      if (body instanceof Phaser.Physics.Arcade.Body && previousState) {
-        body.setAllowGravity(previousState.allowGravity);
-        body.setVelocity(previousState.velocityX, previousState.velocityY);
-      }
-      onDismiss?.();
-    });
+    this.dialog.show(
+      message,
+      () => {
+        if (body instanceof Phaser.Physics.Arcade.Body && previousState) {
+          body.setAllowGravity(previousState.allowGravity);
+          body.setVelocity(previousState.velocityX, previousState.velocityY);
+        }
+        onDismiss?.();
+      },
+      this.level.id === FIRST_LEVEL_ID,
+    );
   }
 
   private reachExit(): void {
@@ -822,12 +843,20 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       this.completionPanel = new LevelCompletePanel(this, this.level.exit.completionTitle);
 
       if (this.level.id === 'final') {
-        this.completionPanel.showFinalAnniversaryCard(() => {
-          this.cameras.main.fadeOut(250, 36, 29, 53);
-          this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-            this.scene.start('Menu');
-          });
-        });
+        const totalCollectibles = Object.values(levels).reduce(
+          (total, level) => total + (level.collectibles?.length ?? 0),
+          0,
+        );
+        this.completionPanel.showFinalAnniversaryCard(
+          () => {
+            this.cameras.main.fadeOut(250, 36, 29, 53);
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+              this.scene.start('Menu');
+            });
+          },
+          this.progress,
+          totalCollectibles,
+        );
         return;
       }
 

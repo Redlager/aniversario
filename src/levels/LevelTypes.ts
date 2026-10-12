@@ -104,6 +104,11 @@ export interface CheckpointState extends Point {
   levelId: string;
 }
 
+export interface MessageHistoryEntry {
+  levelName: string;
+  message: string;
+}
+
 export class PlayerProgress {
   health = 3;
   collectibles = 0;
@@ -113,6 +118,7 @@ export class PlayerProgress {
   checkpoint: CheckpointState = { id: 'start', levelId: '', x: 0, y: 0 };
   collectedIds: string[] = [];
   currentLevelId = '';
+  messageHistory: MessageHistoryEntry[] = [];
 
   reset(): void {
     this.health = 3;
@@ -123,5 +129,6 @@ export class PlayerProgress {
     this.checkpoint = { id: 'start', levelId: '', x: 0, y: 0 };
     this.collectedIds = [];
     this.currentLevelId = '';
+    this.messageHistory = [];
   }
 }
