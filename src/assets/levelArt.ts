@@ -12,7 +12,11 @@ export type LevelArtAsset =
     });
 
 export const levelArtUrls = import.meta.glob<string>(
-  ['./ornamentacion/*.png', './ornamentacion/backgroaunds/*.png'],
+  [
+    './ornamentacion/*.png',
+    './ornamentacion/backgroaunds/*.png',
+    '!./ornamentacion/backgroaunds/fondo menu principal.png',
+  ],
   {
     eager: true,
     query: '?url',
@@ -95,6 +99,11 @@ export const levelArtAssets: LevelArtAsset[] = [
   {
     key: 'level-final-background',
     path: './ornamentacion/backgroaunds/fondo nivel final.png',
+    type: 'image',
+  },
+  {
+    key: 'main-menu-background',
+    path: './ornamentacion/backgroaunds/nuevo fondo de nivel de menu principal.png',
     type: 'image',
   },
 ];
