@@ -13,6 +13,7 @@ export const level7: LevelConfig = {
     height: 760,
     backgroundColor: '#f7d4a3',
     backgroundStyle: 'home',
+    backgroundImage: 'level-7-background',
   },
   spawn: { x: 70, y: 548 },
   platforms: [

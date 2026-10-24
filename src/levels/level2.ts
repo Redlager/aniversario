@@ -12,6 +12,7 @@ export const level2: LevelConfig = {
     height: 760,
     backgroundColor: '#efb18f',
     backgroundStyle: 'sunset',
+    backgroundImage: 'level-2-background',
   },
   spawn: { x: 70, y: 548 },
   platforms: [

@@ -156,6 +156,17 @@ export abstract class BaseLevelScene extends Phaser.Scene {
   }
 
   private drawBackdrop(width: number, height: number): void {
+    const backgroundImage = this.level.world.backgroundImage;
+    if (backgroundImage && this.textures.exists(backgroundImage)) {
+      this.add
+        .image(0, 0, backgroundImage)
+        .setOrigin(0)
+        .setDisplaySize(width, height)
+        .setScrollFactor(1)
+        .setDepth(-20);
+      return;
+    }
+
     if (
       this.level.world.backgroundStyle === 'university' &&
       this.textures.exists('level-university-background')

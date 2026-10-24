@@ -88,6 +88,7 @@ export interface LevelConfig {
     height: number;
     backgroundColor?: string;
     backgroundStyle?: 'university' | 'sunset' | 'home' | 'apartment' | 'yard';
+    backgroundImage?: string;
   };
   spawn: Point;
   platforms?: PlatformConfig[];

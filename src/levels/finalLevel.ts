@@ -11,6 +11,7 @@ export const finalLevel: LevelConfig = {
     height: 760,
     backgroundColor: '#f7e7f7',
     backgroundStyle: 'sunset',
+    backgroundImage: 'level-final-background',
   },
   spawn: { x: 70, y: 548 },
   platforms: [

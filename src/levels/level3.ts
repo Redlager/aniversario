@@ -12,6 +12,7 @@ export const level3: LevelConfig = {
     height: 760,
     backgroundColor: '#ead6c6',
     backgroundStyle: 'home',
+    backgroundImage: 'level-3-background',
   },
   spawn: { x: 70, y: 548 },
   platforms: [

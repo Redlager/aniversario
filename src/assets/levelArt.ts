@@ -11,11 +11,14 @@ export type LevelArtAsset =
       frameHeight: number;
     });
 
-export const levelArtUrls = import.meta.glob<string>('./ornamentacion/*.png', {
-  eager: true,
-  query: '?url',
-  import: 'default',
-});
+export const levelArtUrls = import.meta.glob<string>(
+  ['./ornamentacion/*.png', './ornamentacion/backgroaunds/*.png'],
+  {
+    eager: true,
+    query: '?url',
+    import: 'default',
+  },
+);
 
 export const levelArtAssets: LevelArtAsset[] = [
   {
@@ -52,6 +55,41 @@ export const levelArtAssets: LevelArtAsset[] = [
   {
     key: 'level-university-background',
     path: './ornamentacion/fodo del juego.png',
+    type: 'image',
+  },
+  {
+    key: 'level-2-background',
+    path: './ornamentacion/backgroaunds/fondo nivel 2.png',
+    type: 'image',
+  },
+  {
+    key: 'level-3-background',
+    path: './ornamentacion/backgroaunds/fondo nivel 3.png',
+    type: 'image',
+  },
+  {
+    key: 'level-4-background',
+    path: './ornamentacion/backgroaunds/fondo nivel 4.png',
+    type: 'image',
+  },
+  {
+    key: 'level-5-background',
+    path: './ornamentacion/backgroaunds/fondo nivel 5.png',
+    type: 'image',
+  },
+  {
+    key: 'level-6-background',
+    path: './ornamentacion/backgroaunds/fondo nivel 6.png',
+    type: 'image',
+  },
+  {
+    key: 'level-7-background',
+    path: './ornamentacion/backgroaunds/fondo nivel 7.png',
+    type: 'image',
+  },
+  {
+    key: 'level-final-background',
+    path: './ornamentacion/backgroaunds/fondo nivel final.png',
     type: 'image',
   },
 ];

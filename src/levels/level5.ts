@@ -11,6 +11,7 @@ export const level5: LevelConfig = {
     height: 760,
     backgroundColor: '#a9def2',
     backgroundStyle: 'yard',
+    backgroundImage: 'level-5-background',
   },
   spawn: { x: 70, y: 548 },
   platforms: [
