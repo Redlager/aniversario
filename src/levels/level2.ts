@@ -120,7 +120,6 @@ export const level2: LevelConfig = {
     { kind: 'bench', x: 540, y: 588 },
     { kind: 'tree', x: 1020, y: 588 },
     { kind: 'bench', x: 1230, y: 588 },
-    { kind: 'books', x: 1510, y: 588 },
     { kind: 'tree', x: 1690, y: 588 },
     { kind: 'bench', x: 2110, y: 588 },
     { kind: 'tree', x: 2350, y: 588 },
