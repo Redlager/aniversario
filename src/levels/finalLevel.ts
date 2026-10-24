@@ -12,6 +12,7 @@ export const finalLevel: LevelConfig = {
     backgroundColor: '#f7e7f7',
     backgroundStyle: 'sunset',
     backgroundImage: 'level-final-background',
+    backgroundMode: 'repeat',
   },
   spawn: { x: 70, y: 548 },
   platforms: [

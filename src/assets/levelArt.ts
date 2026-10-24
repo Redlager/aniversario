@@ -88,6 +88,11 @@ export const levelArtAssets: LevelArtAsset[] = [
     type: 'image',
   },
   {
+    key: 'level-8-background',
+    path: './ornamentacion/backgroaunds/fondo nivel 8.png',
+    type: 'image',
+  },
+  {
     key: 'level-final-background',
     path: './ornamentacion/backgroaunds/fondo nivel final.png',
     type: 'image',

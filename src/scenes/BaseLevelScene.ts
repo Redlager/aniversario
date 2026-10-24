@@ -158,6 +158,19 @@ export abstract class BaseLevelScene extends Phaser.Scene {
   private drawBackdrop(width: number, height: number): void {
     const backgroundImage = this.level.world.backgroundImage;
     if (backgroundImage && this.textures.exists(backgroundImage)) {
+      if (this.level.world.backgroundMode === 'repeat') {
+        const imageHeight = this.textures.get(backgroundImage).getSourceImage().height;
+        const backgroundHeight = height * 0.9;
+        const scale = backgroundHeight / imageHeight;
+        this.add
+          .tileSprite(0, height - backgroundHeight, width, backgroundHeight, backgroundImage)
+          .setOrigin(0)
+          .setTileScale(scale)
+          .setScrollFactor(1)
+          .setDepth(-20);
+        return;
+      }
+
       this.add
         .image(0, 0, backgroundImage)
         .setOrigin(0)

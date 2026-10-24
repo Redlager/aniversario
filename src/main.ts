@@ -92,30 +92,11 @@ const enterLandscapeFullscreen = async (): Promise<void> => {
   updateOrientationPrompt();
 };
 
-const syncGameViewport = (): void => {
-  const viewport = window.visualViewport;
-  const viewportWidth = viewport?.width ?? window.innerWidth;
-  const viewportHeight = viewport?.height ?? window.innerHeight;
-
-  if (isTouchDevice && viewportWidth > viewportHeight) {
-    const gameHeight = 540;
-    const gameWidth = Math.round((gameHeight * viewportWidth) / viewportHeight);
-    if (game.scale.gameSize.width !== gameWidth || game.scale.gameSize.height !== gameHeight) {
-      game.scale.setGameSize(gameWidth, gameHeight);
-    }
-  } else if (game.scale.gameSize.width !== 960 || game.scale.gameSize.height !== 540) {
-    game.scale.setGameSize(960, 540);
-  }
-
-  updateOrientationPrompt();
-};
-
 orientationAction.addEventListener('click', () => void enterLandscapeFullscreen());
 fullscreenAction.addEventListener('click', () => void enterLandscapeFullscreen());
 document.addEventListener('fullscreenchange', updateOrientationPrompt);
-window.addEventListener('orientationchange', () => requestAnimationFrame(syncGameViewport));
-window.addEventListener('resize', () => requestAnimationFrame(syncGameViewport));
-window.visualViewport?.addEventListener('resize', () => requestAnimationFrame(syncGameViewport));
-syncGameViewport();
+window.addEventListener('orientationchange', updateOrientationPrompt);
+window.addEventListener('resize', updateOrientationPrompt);
+updateOrientationPrompt();
 
 window.addEventListener('pagehide', () => game.destroy(true));

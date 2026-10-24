@@ -13,6 +13,7 @@ export const level4: LevelConfig = {
     backgroundColor: '#d9d2d2',
     backgroundStyle: 'apartment',
     backgroundImage: 'level-4-background',
+    backgroundMode: 'repeat',
   },
   spawn: { x: 70, y: 548 },
   platforms: [

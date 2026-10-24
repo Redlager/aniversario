@@ -12,6 +12,8 @@ export const level8: LevelConfig = {
     height: 760,
     backgroundColor: '#dfe7ff',
     backgroundStyle: 'sunset',
+    backgroundImage: 'level-8-background',
+    backgroundMode: 'repeat',
   },
   spawn: { x: 70, y: 548 },
   platforms: [

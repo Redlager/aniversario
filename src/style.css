@@ -46,6 +46,16 @@ body {
   background: #241d35;
 }
 
+@media (min-width: 900px) and (min-height: 600px) {
+  #game-container {
+    position: absolute;
+    inset: 0;
+    width: min(100vw, 1440px);
+    height: min(100dvh, 810px);
+    margin: auto;
+  }
+}
+
 #game-container canvas {
   display: block;
   max-width: 100%;
