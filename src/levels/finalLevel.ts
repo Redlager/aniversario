@@ -5,7 +5,7 @@ export const LEVEL_FINAL_ID = 'final';
 export const finalLevel: LevelConfig = {
   id: LEVEL_FINAL_ID,
   name: 'Nivel final · 7 años',
-  objective: 'Recorré los recuerdos, celebrá la historia y cerrá esta aventura con amor.',
+  objective: 'Recorre los recuerdos y celebra esta historia de amor.',
   world: {
     width: 2900,
     height: 760,

@@ -53,6 +53,11 @@ export const levelArtAssets: LevelArtAsset[] = [
     type: 'image',
   },
   {
+    key: 'level-university-building',
+    path: './ornamentacion/objetos/universidad.png',
+    type: 'image',
+  },
+  {
     key: 'checkpoint-off',
     path: './ornamentacion/objetos/checkpoint apagado.png',
     type: 'spritesheet',
@@ -74,8 +79,33 @@ export const levelArtAssets: LevelArtAsset[] = [
     frameHeight: 724,
   },
   {
+    key: 'hamburger-power-up',
+    path: './ornamentacion/objetos/hamburguesaPowerUp.png',
+    type: 'image',
+  },
+  {
+    key: 'collectible-note',
+    path: './ornamentacion/objetos/notas.png',
+    type: 'image',
+  },
+  {
     key: 'level-bench',
     path: './ornamentacion/asiento banqueta parque.png',
+    type: 'image',
+  },
+  {
+    key: 'level-sign',
+    path: './ornamentacion/objetos/letrero.png',
+    type: 'image',
+  },
+  {
+    key: 'level-faceworld-terminal',
+    path: './ornamentacion/objetos/faceworld.png',
+    type: 'image',
+  },
+  {
+    key: 'level-exit-door',
+    path: './ornamentacion/objetos/puertaNivel.png',
     type: 'image',
   },
   {

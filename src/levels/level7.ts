@@ -37,7 +37,7 @@ export const level7: LevelConfig = {
       id: 'nota-mostrador',
       kind: 'notes',
       x: 300,
-      y: 548,
+      y: 560,
       message:
         'Después de sobrevivir a una noche sobrenatural, había una prioridad bastante clara: conseguir algo rico para comer.',
     },
@@ -59,6 +59,7 @@ export const level7: LevelConfig = {
         'En algún lugar de esta cocina hay comida suficiente para alimentar a una familia entera. Probablemente también a algunos fantasmas.',
     },
     { id: 'corazon-cocina', kind: 'heart', x: 2210, y: 470 },
+    { id: 'hamburguesa-nivel-7', kind: 'burger', x: 2320, y: 548 },
     {
       id: 'nota-ingredientes',
       kind: 'notes',
@@ -70,10 +71,10 @@ export const level7: LevelConfig = {
     { id: 'corazon-final', kind: 'heart', x: 2880, y: 470 },
   ],
   enemies: [
-    { id: 'moza-1', kind: 'waitress', x: 470, y: 548, patrolDistance: 28, speed: 60 },
-    { id: 'moza-2', kind: 'waitress', x: 1260, y: 548, patrolDistance: 45, speed: 60 },
-    { id: 'moza-3', kind: 'waitress', x: 1940, y: 548, patrolDistance: 35, speed: 60 },
-    { id: 'moza-4', kind: 'waitress', x: 2600, y: 548, patrolDistance: 40, speed: 60 },
+    { id: 'moza-1', kind: 'waitress', x: 470, y: 548, patrolDistance: 28, speed: 60, sizeMultiplier: 1.2 },
+    { id: 'moza-2', kind: 'waitress', x: 1260, y: 548, patrolDistance: 45, speed: 60, sizeMultiplier: 1.2 },
+    { id: 'moza-3', kind: 'waitress', x: 1940, y: 548, patrolDistance: 35, speed: 60, sizeMultiplier: 1.2 },
+    { id: 'chef-hamburgueseria', kind: 'chef', x: 2480, y: 548, patrolDistance: 30, speed: 52, sizeMultiplier: 1.30 },
   ],
   npcs: [
     {
@@ -81,7 +82,7 @@ export const level7: LevelConfig = {
       label: 'RENZO',
       visual: 'renzo',
       x: 380,
-      y: 548,
+      y: 560,
       dialogue:
         'Después de fantasmas, sombras y una noche bastante cuestionable...\ncreo que necesitamos algo importante.\nComida. Mucha comida. 😂',
     },
@@ -90,7 +91,7 @@ export const level7: LevelConfig = {
       label: 'RENZO',
       visual: 'renzo',
       x: 2220,
-      y: 548,
+      y: 560,
       dialogue:
         '¡Che!... mira esa mac doble cuarto de libra y esa tasty doble \nY con la lija que tenemos, vamos a comerla en 5 segundos con papas incluidas. 😂',
     },
@@ -99,7 +100,7 @@ export const level7: LevelConfig = {
   ],
   exit: {
     x: 3100,
-    y: 548,
+    y: 560,
     nextLevelId: LEVEL_8_ID,
     completionTitle: '¡UNA HAMBURGUESA DEL MAC\nNUNCA CAE MAL! ❤️',
     dialogue: [

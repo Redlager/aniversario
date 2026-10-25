@@ -62,6 +62,7 @@ export class BootScene extends Phaser.Scene {
     this.createPlatformTexture();
     this.createPlaceholderTexture('collectible', 0xffcf5c, 24, 24);
     this.createCollectibleTextures();
+    this.createOutlinedNoteTexture();
     this.createPlaceholderTexture('enemy', 0x7961a8, 36, 42);
     this.createPlaceholderTexture('npc', 0xf0a66b, 36, 48);
     this.createPhoneTexture();
@@ -324,6 +325,42 @@ export class BootScene extends Phaser.Scene {
     );
     star.generateTexture('star', 30, 30);
     star.destroy();
+  }
+
+  private createOutlinedNoteTexture(): void {
+    const sourceTexture = this.textures.get('collectible-note');
+    if (!sourceTexture || this.textures.exists('collectible-note-outlined')) return;
+
+    const size = 36;
+    const outline = 2;
+    const source = sourceTexture.getSourceImage();
+    if (!(source instanceof HTMLImageElement || source instanceof HTMLCanvasElement)) return;
+    const silhouetteCanvas = document.createElement('canvas');
+    silhouetteCanvas.width = size;
+    silhouetteCanvas.height = size;
+    const silhouetteContext = silhouetteCanvas.getContext('2d');
+    if (!silhouetteContext) return;
+
+    silhouetteContext.drawImage(source, 0, 0, size, size);
+    silhouetteContext.globalCompositeOperation = 'source-in';
+    silhouetteContext.fillStyle = '#171322';
+    silhouetteContext.fillRect(0, 0, size, size);
+
+    const outlined = this.textures.createCanvas(
+      'collectible-note-outlined',
+      size + outline * 2,
+      size + outline * 2,
+    );
+    if (!outlined) return;
+
+    for (let x = -outline; x <= outline; x += 1) {
+      for (let y = -outline; y <= outline; y += 1) {
+        if (x === 0 && y === 0) continue;
+        outlined.context.drawImage(silhouetteCanvas, outline + x, outline + y);
+      }
+    }
+    outlined.context.drawImage(source, outline, outline, size, size);
+    outlined.refresh();
   }
 
   private createAnimations(): void {

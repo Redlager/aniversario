@@ -16,8 +16,9 @@ export interface CheckpointConfig extends Point {
 
 export interface CollectibleConfig extends Point {
   id: string;
-  kind: 'notes' | 'heart' | 'star';
+  kind: 'notes' | 'heart' | 'star' | 'burger';
   message?: string;
+  sizeMultiplier?: number;
 }
 
 export interface EnemyConfig extends Point {
@@ -28,12 +29,15 @@ export interface EnemyConfig extends Point {
     | 'cockroach'
     | 'scorpion'
     | 'beetle'
+    | 'chef'
     | 'referee'
     | 'musician'
     | 'singer'
     | 'waitress';
   patrolDistance?: number;
   speed?: number;
+  sizeMultiplier?: number;
+  renderDepth?: number;
 }
 
 export interface NpcConfig extends Point {

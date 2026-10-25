@@ -26,6 +26,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
               ? 'scorpion-alive-sheet'
               : config.kind === 'beetle'
                 ? 'beetle-alive-sheet'
+                : config.kind === 'chef'
+                  ? 'chef-alive-sheet'
                 : config.kind === 'referee'
                   ? 'referee-alive-sheet'
                   : config.kind === 'musician'
@@ -53,6 +55,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       config.kind === 'cockroach' ||
       config.kind === 'scorpion' ||
       config.kind === 'beetle' ||
+      config.kind === 'chef' ||
       config.kind === 'referee' ||
       config.kind === 'musician' ||
       config.kind === 'singer' ||
@@ -63,6 +66,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
         : config.kind === 'cockroach' ||
             config.kind === 'scorpion' ||
             config.kind === 'beetle' ||
+            config.kind === 'chef' ||
             config.kind === 'referee' ||
             config.kind === 'musician' ||
             config.kind === 'singer' ||
@@ -77,18 +81,21 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
         : config.kind === 'cockroach' ||
             config.kind === 'scorpion' ||
             config.kind === 'beetle' ||
+            config.kind === 'chef' ||
             config.kind === 'referee' ||
             config.kind === 'musician' ||
             config.kind === 'singer' ||
             config.kind === 'waitress'
           ? 1.2
           : 1;
-    const displayScale = config.kind === 'referee' ? spriteScale * 1.1 : spriteScale;
+    const sizeMultiplier = config.sizeMultiplier ?? 1;
+    const displayScale = (config.kind === 'referee' ? spriteScale * 1.1 : spriteScale) * sizeMultiplier;
+    const scaledBodyScale = bodyScale * sizeMultiplier;
     this.setScale(displayScale);
-    if (config.kind === 'referee') this.setDepth(3);
-    this.setSize((30 * bodyScale) / displayScale, (34 * bodyScale) / displayScale).setOffset(
-      (3 * bodyScale) / displayScale,
-      (7 * bodyScale) / displayScale,
+    this.setDepth(config.renderDepth ?? (config.kind === 'referee' ? 3 : 0));
+    this.setSize((30 * scaledBodyScale) / displayScale, (34 * scaledBodyScale) / displayScale).setOffset(
+      (3 * scaledBodyScale) / displayScale,
+      (7 * scaledBodyScale) / displayScale,
     );
     this.setCollideWorldBounds(true);
     this.setVelocityX(this.speed);

@@ -10,17 +10,20 @@ import { LevelCompletePanel } from '../ui/LevelCompletePanel';
 import { AudioControls } from '../ui/AudioControls';
 import {
   PlayerProgress,
+  type CollectibleConfig,
   type DecorationConfig,
   type LevelConfig,
   type PetVisual,
 } from '../levels/LevelTypes';
 import { FIRST_LEVEL_ID, levels } from '../levels/levelRegistry';
+import { LEVEL_7_ID } from '../levels/level7';
 
 interface LevelStartData {
   levelId?: string;
 }
 
 type HorizontalControl = 'left' | 'right';
+const LEVEL_7_BURGER_COLLECTIBLE_ID = `${LEVEL_7_ID}:hamburguesa-nivel-7`;
 type ArcadeOverlapObject =
   | Phaser.Types.Physics.Arcade.GameObjectWithBody
   | Phaser.Physics.Arcade.Body
@@ -56,6 +59,8 @@ export abstract class BaseLevelScene extends Phaser.Scene {
   private transitioning = false;
   private exitTriggered = false;
   private jumpscareActive = false;
+  private burgerModeActive = false;
+  private burgerModeGlow?: Phaser.GameObjects.Arc;
 
   protected abstract getLevel(levelId: string): LevelConfig;
 
@@ -73,10 +78,15 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     this.transitioning = false;
     this.exitTriggered = false;
     this.jumpscareActive = false;
+    this.burgerModeActive = false;
+    this.burgerModeGlow = undefined;
   }
 
   create(): void {
     this.progress = this.getProgress();
+    this.burgerModeActive =
+      this.level.id === LEVEL_7_ID &&
+      this.progress.collectedIds.includes(LEVEL_7_BURGER_COLLECTIBLE_ID);
     if (this.progress.currentLevelId !== this.level.id) {
       this.progress.currentLevelId = this.level.id;
       this.progress.checkpoint = {
@@ -124,6 +134,9 @@ export abstract class BaseLevelScene extends Phaser.Scene {
   }
 
   override update(): void {
+    if (this.burgerModeGlow?.active) {
+      this.burgerModeGlow.setPosition(this.player.x, this.player.y);
+    }
     if (
       this.transitioning ||
       this.jumpscareActive ||
@@ -340,12 +353,32 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     for (const item of this.level.collectibles ?? []) {
       const collectibleId = `${this.level.id}:${item.id}`;
       if (this.progress.collectedIds.includes(collectibleId)) continue;
-      const sprite = this.collectibles.create(item.x, item.y, item.kind);
-      sprite.setSize(28, 28).refreshBody();
+      const texture =
+        item.kind === 'burger'
+          ? 'hamburger-power-up'
+          : item.kind === 'notes'
+            ? 'collectible-note-outlined'
+            : item.kind;
+      const sprite = this.collectibles.create(item.x, item.y, texture);
+      if (item.kind === 'burger') {
+        sprite.setDisplaySize(50, 50).refreshBody();
+        const body = sprite.body as Phaser.Physics.Arcade.StaticBody;
+        body.setSize(32, 32);
+        body.updateCenter();
+      } else if (item.kind === 'notes') {
+        const sizeMultiplier = item.sizeMultiplier ?? 1.2;
+        sprite.setDisplaySize(30 * sizeMultiplier, 30 * sizeMultiplier).refreshBody();
+        const body = sprite.body as Phaser.Physics.Arcade.StaticBody;
+        body.setSize(28, 28);
+        body.updateCenter();
+      } else {
+        sprite.setSize(28, 28).refreshBody();
+      }
       sprite.setData('collectibleId', collectibleId);
       sprite.setData('collectibleKind', item.kind);
       if (item.message) sprite.setData('message', item.message);
     }
+    if (this.burgerModeActive) this.createBurgerModeGlow();
 
     this.enemies = (this.level.enemies ?? []).map((enemyConfig) => {
       const enemy = new Enemy(this, enemyConfig, this.player, this.level.platforms);
@@ -478,8 +511,13 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     }
 
     this.exits = this.physics.add.staticGroup();
-    const exit = this.exits.create(this.level.exit.x, this.level.exit.y, 'exit');
-    exit.setSize(38, 54).refreshBody();
+    const exitTexture = this.textures.exists('level-exit-door') ? 'level-exit-door' : 'exit';
+    const exit = this.exits.create(this.level.exit.x, this.level.exit.y + 36, exitTexture);
+    exit
+      .setOrigin(0.5, 1)
+      .setDisplaySize(104, 124)
+      .setSize(38 / exit.scaleX, 54 / exit.scaleY)
+      .refreshBody();
     if (this.level.decorations?.some(({ kind }) => kind === 'terminal')) exit.setAlpha(0);
   }
 
@@ -585,7 +623,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
   private collectItem(_player: ArcadeOverlapObject, item: ArcadeOverlapObject): void {
     if (!(item instanceof Phaser.GameObjects.Sprite)) return;
     const collectibleId = item.getData('collectibleId') as string;
-    const kind = item.getData('collectibleKind') as 'notes' | 'heart' | 'star';
+    const kind = item.getData('collectibleKind') as CollectibleConfig['kind'];
     const message = item.getData('message');
     this.progress.collectedIds.push(collectibleId);
     this.progress.collectibles += 1;
@@ -593,15 +631,58 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     else if (kind === 'heart') {
       this.progress.hearts += 1;
       this.progress.health = Math.min(3, this.progress.health + 1);
-    } else this.progress.stars += 1;
-    if (kind === 'heart' || kind === 'star') {
+    } else if (kind === 'star') this.progress.stars += 1;
+    if (kind === 'heart' || kind === 'star' || kind === 'burger') {
       playSoundEffect(this, 'sfx-collectible', 0.55);
     }
     item.destroy();
+    if (kind === 'burger') {
+      this.burgerModeActive = true;
+      this.createBurgerModeGlow();
+      this.showBurgerModeMessage();
+    }
     this.hud.update(this.level.name, this.level.objective, this.progress);
     if (kind === 'notes' && typeof message === 'string') {
       this.showDialog(message);
     }
+  }
+
+  private createBurgerModeGlow(): void {
+    if (this.burgerModeGlow?.active) return;
+    this.burgerModeGlow = this.add
+      .circle(this.player.x, this.player.y, 32, 0xffc94f, 0.22)
+      .setBlendMode(Phaser.BlendModes.ADD)
+      .setDepth(this.player.depth - 1);
+    this.tweens.add({
+      targets: this.burgerModeGlow,
+      scale: 1.25,
+      alpha: 0.08,
+      duration: 650,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.InOut',
+    });
+  }
+
+  private showBurgerModeMessage(): void {
+    const message = this.add
+      .text(this.player.x, this.player.y - 58, 'MODO HAMBURGUESA!', {
+        fontFamily: 'Trebuchet MS, Arial, sans-serif',
+        fontSize: '16px',
+        fontStyle: 'bold',
+        color: '#fff4c7',
+        stroke: '#5a3024',
+        strokeThickness: 4,
+      })
+      .setOrigin(0.5)
+      .setDepth(12);
+    this.tweens.add({
+      targets: message,
+      y: message.y - 38,
+      alpha: 0,
+      duration: 1500,
+      onComplete: () => message.destroy(),
+    });
   }
 
   private hitEnemy(_player: ArcadeOverlapObject, other: ArcadeOverlapObject): void {
@@ -621,6 +702,32 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     ) {
       const { x, y } = other;
       const enemyKind = other.getData('enemyKind') as string;
+      if (enemyKind === 'chef' && !this.burgerModeActive) {
+        body.setVelocityY(-260);
+        const nextHintAt = Number(other.getData('burgerHintAt') ?? 0);
+        if (this.time.now >= nextHintAt) {
+          other.setData('burgerHintAt', this.time.now + 1200);
+          const hint = this.add
+            .text(x, y - 38, 'NECESITAS LA HAMBURGUESA!', {
+              fontFamily: 'Trebuchet MS, Arial, sans-serif',
+              fontSize: '15px',
+              fontStyle: 'bold',
+              color: '#fff4c7',
+              stroke: '#5a3024',
+              strokeThickness: 4,
+            })
+            .setOrigin(0.5)
+            .setDepth(12);
+          this.tweens.add({
+            targets: hint,
+            y: y - 68,
+            alpha: 0,
+            duration: 1000,
+            onComplete: () => hint.destroy(),
+          });
+        }
+        return;
+      }
       const defeatMessage =
         enemyKind === 'ghost'
           ? '¡FANTASMITA ESPANTADO!'
@@ -628,7 +735,9 @@ export abstract class BaseLevelScene extends Phaser.Scene {
             ? '¡CUCARACHA ESPANTADA!'
             : enemyKind === 'scorpion'
               ? '¡ALACRÁN ESPANTADO!'
-              : '¡APROBADO!';
+                : enemyKind === 'chef'
+                  ? 'BUEN PROVECHO!'
+                  : '';
       other.playDefeatAnimation();
       playSoundEffect(this, 'sfx-enemy-death', 0.58);
       body.setVelocityY(-260);
@@ -886,6 +995,10 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     if (this.transitioning || this.exitTriggered) return;
     this.transitioning = true;
     this.exitTriggered = true;
+    this.burgerModeActive = false;
+    if (this.burgerModeGlow) this.tweens.killTweensOf(this.burgerModeGlow);
+    this.burgerModeGlow?.destroy();
+    this.burgerModeGlow = undefined;
     this.player.resetAt(this.level.exit.x - 210, this.level.exit.y - 27);
     this.player.setDepth(26).playIdleAnimation();
     this.showRenzoScene();
@@ -1138,6 +1251,17 @@ export abstract class BaseLevelScene extends Phaser.Scene {
 
   private drawDecoration({ kind, x, y, label, pet }: DecorationConfig): void {
     const groundOffset = kind === 'university' ? 18 : 0;
+    if (kind === 'university' && this.textures.exists('level-university-building')) {
+      const buildingWidth = 560;
+      const buildingHeight = 210;
+      const buildingX = Math.max(x, buildingWidth / 2 + 8);
+      this.add
+        .image(buildingX, y + groundOffset, 'level-university-building')
+        .setOrigin(0.5, 1)
+        .setDisplaySize(buildingWidth, buildingHeight)
+        .setDepth(1);
+      return;
+    }
     if (kind === 'pigeons') {
       const flock = this.add.container(x, y).setDepth(1.7);
       const birdPositions = [
@@ -1233,6 +1357,45 @@ export abstract class BaseLevelScene extends Phaser.Scene {
         .setOrigin(0.5, 1)
         .setDisplaySize(116, 58)
         .setDepth(1);
+      return;
+    }
+    if (kind === 'sign' && this.textures.exists('level-sign')) {
+      this.add
+        .image(x, y, 'level-sign')
+        .setOrigin(0.5, 1)
+        .setDisplaySize(150, 150)
+        .setDepth(1);
+      this.add
+        .text(x, y - 88, label ?? 'CAMPUS', {
+          fontFamily: 'Trebuchet MS, Arial, sans-serif',
+          fontSize: '11px',
+          fontStyle: 'bold',
+          color: '#513b42',
+          align: 'center',
+          wordWrap: { width: 118 },
+        })
+        .setOrigin(0.5)
+        .setDepth(2);
+      return;
+    }
+    if (kind === 'terminal' && this.textures.exists('level-faceworld-terminal')) {
+      const terminalY = y + 18;
+      this.add
+        .image(x, terminalY, 'level-faceworld-terminal')
+        .setOrigin(0.5, 1)
+        .setDisplaySize(220, 220)
+        .setDepth(1);
+      this.add
+        .text(x, terminalY - 230, label ?? 'RED SOCIAL', {
+          fontFamily: 'Trebuchet MS, Arial, sans-serif',
+          fontSize: '16px',
+          fontStyle: 'bold',
+          color: '#452d4a',
+          stroke: '#fff4df',
+          strokeThickness: 4,
+        })
+        .setOrigin(0.5)
+        .setDepth(2);
       return;
     }
 
