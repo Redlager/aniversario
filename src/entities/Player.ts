@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { playSoundEffect } from '../audio/loopingMusic';
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   private static readonly standardScale = 1.5;
@@ -71,6 +72,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     const body = this.body;
     if (body instanceof Phaser.Physics.Arcade.Body && body.onFloor()) {
       this.setVelocityY(-470);
+      playSoundEffect(this.scene, 'sfx-jump', 0.38);
     }
   }
 

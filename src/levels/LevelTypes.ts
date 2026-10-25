@@ -22,7 +22,14 @@ export interface CollectibleConfig extends Point {
 
 export interface EnemyConfig extends Point {
   id: string;
-  kind?: 'exam' | 'ghost' | 'cockroach' | 'scorpion';
+  kind?:
+    | 'exam'
+    | 'ghost'
+    | 'cockroach'
+    | 'scorpion'
+    | 'musician'
+    | 'singer'
+    | 'waitress';
   patrolDistance?: number;
   speed?: number;
 }

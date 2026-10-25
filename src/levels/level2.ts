@@ -86,6 +86,10 @@ export const level2: LevelConfig = {
     { id: 'recuerdo-2', kind: 'heart', x: 1900, y: 430 },
     { id: 'recuerdo-3', kind: 'heart', x: 2620, y: 550 },
   ],
+  enemies: [
+    { id: 'musico-callejero', kind: 'musician', x: 430, y: 550, patrolDistance: 65, speed: 60 },
+    { id: 'cantante-del-bar', kind: 'singer', x: 1580, y: 550, patrolDistance: 55, speed: 60 },
+  ],
   npcs: [
     {
       id: 'primer-mensaje',

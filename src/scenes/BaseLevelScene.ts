@@ -1,11 +1,13 @@
 import Phaser from 'phaser';
-import { levelMusicUrls } from '../assets/levelMusic';
+import { getLevelMusicTrack } from '../assets/levelMusic';
+import { playLoopingMusic, playSoundEffect } from '../audio/loopingMusic';
 import { Enemy } from '../entities/Enemy';
 import { Player } from '../entities/Player';
 import { DialogBox } from '../ui/DialogBox';
 import { MessageHistory } from '../ui/MessageHistory';
 import { LevelHud } from '../ui/LevelHud';
 import { LevelCompletePanel } from '../ui/LevelCompletePanel';
+import { AudioControls } from '../ui/AudioControls';
 import {
   PlayerProgress,
   type DecorationConfig,
@@ -83,21 +85,22 @@ export abstract class BaseLevelScene extends Phaser.Scene {
         ...this.level.spawn,
       };
     }
-    if (this.level.id === 'level-6-el-mundo-sobrenatural') {
-      this.startLevelMusic();
-    }
+    const musicTrack = getLevelMusicTrack(this.level.id);
+    if (musicTrack) playLoopingMusic(this, musicTrack);
 
     const { width, height } = this.level.world;
     this.physics.world.setBounds(0, 0, width, height);
     this.cameras.main.setBounds(0, 0, width, height);
     this.cameras.main.setBackgroundColor(this.level.world.backgroundColor ?? '#9bdaf4');
     this.drawBackdrop(width, height);
+    this.drawPitGradient(width, height);
     this.createPlatforms();
     this.drawDecorations();
     this.createPlayer();
     this.createLevelObjects();
     this.createControls();
     this.hud = new LevelHud(this);
+    new AudioControls(this);
     this.dialog = new DialogBox(this);
     this.hud.update(this.level.name, this.level.objective, this.progress);
     this.messageHistory = new MessageHistory(
@@ -252,6 +255,22 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     graphics.setScrollFactor(0.25);
   }
 
+  private drawPitGradient(width: number, height: number): void {
+    const platforms = this.level.platforms ?? [];
+    if (platforms.length === 0) return;
+
+    const groundTop = Math.max(
+      ...platforms.map((platform) => platform.y - (platform.height ?? 24) / 2),
+    );
+    const gradientTop = Math.max(0, groundTop - 20);
+    const gradient = this.add.graphics();
+    gradient
+      .fillGradientStyle(0x241b2a, 0x241b2a, 0x241b2a, 0x241b2a, 0, 0, 0.92, 0.92)
+      .fillRect(0, gradientTop, width, height - gradientTop)
+      .setScrollFactor(1)
+      .setDepth(-19);
+  }
+
   private createPlatforms(): void {
     this.platforms = this.physics.add.staticGroup();
     for (const platformConfig of this.level.platforms ?? []) {
@@ -302,35 +321,18 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.player, true, 0.08, 0.08);
   }
 
-  private startLevelMusic(): void {
-    const audioKey = 'level-6-terror-music';
-    const playMusic = (): void => {
-      if (!this.cache.audio.exists(audioKey)) return;
-      const music = this.sound.add(audioKey, { loop: true, volume: 0.45 });
-      music.play();
-      this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => music.stop());
-    };
-
-    if (this.cache.audio.exists(audioKey)) {
-      playMusic();
-      return;
-    }
-
-    const musicUrl = levelMusicUrls['./music/musica nivel terror.mp3'];
-    if (!musicUrl) return;
-    this.load.audio(audioKey, musicUrl);
-    this.load.once(Phaser.Loader.Events.COMPLETE, playMusic);
-    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
-      this.load.off(Phaser.Loader.Events.COMPLETE, playMusic);
-    });
-    this.load.start();
-  }
-
   private createLevelObjects(): void {
     this.checkpoints = this.physics.add.staticGroup();
     for (const checkpoint of this.level.checkpoints ?? []) {
-      const marker = this.checkpoints.create(checkpoint.x, checkpoint.y, 'checkpoint');
-      marker.setSize(34, 48).refreshBody();
+      const isActive =
+        this.progress.checkpoint.levelId === this.level.id &&
+        this.progress.checkpoint.id === checkpoint.id;
+      const marker = this.checkpoints.create(
+        checkpoint.x,
+        checkpoint.y,
+        isActive ? 'checkpoint-on' : 'checkpoint-off',
+      );
+      marker.setFrame(0).setDisplaySize(50, 75).setSize(64, 48).refreshBody();
       marker.setData('checkpointId', checkpoint.id);
     }
 
@@ -568,7 +570,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       x: checkpoint.x,
       y: checkpoint.y - 42,
     };
-    checkpoint.setTint(0xffe7a0);
+    checkpoint.setTexture('checkpoint-on', 0);
     this.hud.update(this.level.name, this.level.objective, this.progress);
     if (this.level.id === 'level-6-el-mundo-sobrenatural') {
       const faceByCheckpoint: Record<string, string> = {
@@ -592,6 +594,9 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       this.progress.hearts += 1;
       this.progress.health = Math.min(3, this.progress.health + 1);
     } else this.progress.stars += 1;
+    if (kind === 'heart' || kind === 'star') {
+      playSoundEffect(this, 'sfx-collectible', 0.55);
+    }
     item.destroy();
     this.hud.update(this.level.name, this.level.objective, this.progress);
     if (kind === 'notes' && typeof message === 'string') {
@@ -600,7 +605,14 @@ export abstract class BaseLevelScene extends Phaser.Scene {
   }
 
   private hitEnemy(_player: ArcadeOverlapObject, other: ArcadeOverlapObject): void {
-    if (this.jumpscareActive || !(other instanceof Enemy) || !other.active) return;
+    if (
+      this.jumpscareActive ||
+      !(other instanceof Enemy) ||
+      !other.active ||
+      other.getData('defeated')
+    ) {
+      return;
+    }
     const body = this.player.body;
     if (
       body instanceof Phaser.Physics.Arcade.Body &&
@@ -618,6 +630,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
               ? '¡ALACRÁN ESPANTADO!'
               : '¡APROBADO!';
       other.playDefeatAnimation();
+      playSoundEffect(this, 'sfx-enemy-death', 0.58);
       body.setVelocityY(-260);
       const approved = this.add
         .text(x, y - 35, defeatMessage, {
@@ -659,6 +672,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     this.hud.update(this.level.name, this.level.objective, this.progress);
 
     if (this.progress.health <= 0) {
+      playSoundEffect(this, 'sfx-game-over', 0.68);
       this.progress.health = 3;
       this.progress.currentLevelId = this.level.id;
       this.progress.checkpoint = {
@@ -732,10 +746,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     this.showDialog(`${label}: ${dialogue}`);
   }
 
-  private showGhostJumpscare(
-    onDismiss: () => void,
-    faceTexture = 'scary-face-jumpscare',
-  ): void {
+  private showGhostJumpscare(onDismiss: () => void, faceTexture = 'scary-face-jumpscare'): void {
     const { width, height } = this.scale.gameSize;
     const body = this.player.body;
     const previousBodyState =
@@ -1135,15 +1146,10 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       ];
 
       for (const position of birdPositions) {
-        const bird = this.add.graphics();
-        bird.fillStyle(0x586775, 0.88);
-        bird.fillEllipse(0, 0, 17, 8);
-        bird.fillCircle(7, -3, 4);
-        bird.fillTriangle(10, -4, 16, -2, 10, -1);
-        bird.fillTriangle(-9, 0, -15, -5, -12, 2);
-        bird.fillTriangle(-2, -1, -10, -12, 4, -4);
-        bird.fillTriangle(0, -1, 10, -11, 5, -2);
-        bird.setPosition(position.x, position.y).setScale(position.scale);
+        const bird = this.add
+          .image(position.x, position.y, 'level-pigeon')
+          .setFrame(0)
+          .setDisplaySize(25 * position.scale, 20 * position.scale);
         flock.add(bird);
 
         this.tweens.add({

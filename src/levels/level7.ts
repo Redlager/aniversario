@@ -69,6 +69,12 @@ export const level7: LevelConfig = {
     },
     { id: 'corazon-final', kind: 'heart', x: 2880, y: 470 },
   ],
+  enemies: [
+    { id: 'moza-1', kind: 'waitress', x: 470, y: 548, patrolDistance: 28, speed: 60 },
+    { id: 'moza-2', kind: 'waitress', x: 1260, y: 548, patrolDistance: 45, speed: 60 },
+    { id: 'moza-3', kind: 'waitress', x: 1940, y: 548, patrolDistance: 35, speed: 60 },
+    { id: 'moza-4', kind: 'waitress', x: 2600, y: 548, patrolDistance: 40, speed: 60 },
+  ],
   npcs: [
     {
       id: 'renzo-llega-a-comer',

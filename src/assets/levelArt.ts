@@ -14,6 +14,7 @@ export type LevelArtAsset =
 export const levelArtUrls = import.meta.glob<string>(
   [
     './ornamentacion/*.png',
+    './ornamentacion/objetos/*.png',
     './ornamentacion/backgroaunds/*.png',
     '!./ornamentacion/backgroaunds/fondo menu principal.png',
   ],
@@ -50,6 +51,27 @@ export const levelArtAssets: LevelArtAsset[] = [
     key: 'level-tree',
     path: './ornamentacion/arbol.png',
     type: 'image',
+  },
+  {
+    key: 'checkpoint-off',
+    path: './ornamentacion/objetos/checkpoint apagado.png',
+    type: 'spritesheet',
+    frameWidth: 512,
+    frameHeight: 768,
+  },
+  {
+    key: 'checkpoint-on',
+    path: './ornamentacion/objetos/checkpoint predido.png',
+    type: 'spritesheet',
+    frameWidth: 512,
+    frameHeight: 768,
+  },
+  {
+    key: 'level-pigeon',
+    path: './ornamentacion/objetos/paloma.png',
+    type: 'spritesheet',
+    frameWidth: 543,
+    frameHeight: 724,
   },
   {
     key: 'level-bench',

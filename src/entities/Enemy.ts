@@ -16,6 +16,12 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
             ? 'cockroach-alive-sheet'
             : config.kind === 'scorpion'
               ? 'scorpion-alive-sheet'
+            : config.kind === 'musician'
+              ? 'musician-alive-sheet'
+              : config.kind === 'singer'
+                ? 'singer-alive-sheet'
+                : config.kind === 'waitress'
+                  ? 'waitress-alive-sheet'
               : 'enemy';
     super(scene, config.x, config.y, texture);
     this.startX = config.x;
@@ -25,11 +31,20 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
     const animatedKind =
-      config.kind === 'ghost' || config.kind === 'cockroach' || config.kind === 'scorpion';
+      config.kind === 'ghost' ||
+      config.kind === 'cockroach' ||
+      config.kind === 'scorpion' ||
+      config.kind === 'musician' ||
+      config.kind === 'singer' ||
+      config.kind === 'waitress';
     const spriteScale =
       config.kind === 'ghost'
         ? 0.11
-        : config.kind === 'cockroach' || config.kind === 'scorpion'
+        : config.kind === 'cockroach' ||
+            config.kind === 'scorpion' ||
+            config.kind === 'musician' ||
+            config.kind === 'singer' ||
+            config.kind === 'waitress'
           ? 0.083
           : config.kind === 'exam'
             ? 1.5
@@ -37,7 +52,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     const bodyScale =
       config.kind === 'exam' || config.kind === 'ghost'
         ? 1.5
-        : config.kind === 'cockroach' || config.kind === 'scorpion'
+        : config.kind === 'cockroach' ||
+            config.kind === 'scorpion' ||
+            config.kind === 'musician' ||
+            config.kind === 'singer' ||
+            config.kind === 'waitress'
           ? 1.2
           : 1;
     this.setScale(spriteScale);

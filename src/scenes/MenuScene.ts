@@ -1,6 +1,9 @@
 import Phaser from 'phaser';
+import { menuMusicTrack } from '../assets/levelMusic';
+import { playLoopingMusic } from '../audio/loopingMusic';
 import { PlayerProgress } from '../levels/LevelTypes';
 import { FIRST_LEVEL_ID, levels } from '../levels/levelRegistry';
+import { AudioControls } from '../ui/AudioControls';
 
 export class MenuScene extends Phaser.Scene {
   constructor() {
@@ -8,6 +11,9 @@ export class MenuScene extends Phaser.Scene {
   }
 
   create(): void {
+    playLoopingMusic(this, menuMusicTrack);
+    new AudioControls(this);
+
     const { width, height } = this.scale.gameSize;
     const centerX = width / 2;
     const levelEntries = Object.entries(levels);

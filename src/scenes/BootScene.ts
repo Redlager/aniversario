@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { characterSpriteSheets, characterSpriteSheetUrls } from '../assets/characterSpriteSheets';
 import { jumpscareImagePaths, jumpscareImageUrls } from '../assets/jumpscareAssets';
 import { levelArtAssets, levelArtUrls } from '../assets/levelArt';
+import { sfxAssets, sfxUrls } from '../assets/sfx';
 import type { PetVisual } from '../levels/LevelTypes';
 
 export class BootScene extends Phaser.Scene {
@@ -10,6 +11,11 @@ export class BootScene extends Phaser.Scene {
   }
 
   preload(): void {
+    for (const asset of sfxAssets) {
+      const url = sfxUrls[asset.path];
+      if (url) this.load.audio(asset.key, url);
+    }
+
     jumpscareImagePaths.forEach((path, index) => {
       const url = jumpscareImageUrls[path];
       if (!url) return;
@@ -57,7 +63,6 @@ export class BootScene extends Phaser.Scene {
     this.createPlaceholderTexture('collectible', 0xffcf5c, 24, 24);
     this.createCollectibleTextures();
     this.createPlaceholderTexture('enemy', 0x7961a8, 36, 42);
-    this.createPlaceholderTexture('checkpoint', 0x6b9ce8, 34, 48);
     this.createPlaceholderTexture('npc', 0xf0a66b, 36, 48);
     this.createPhoneTexture();
     this.createElevatorTexture();
