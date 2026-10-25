@@ -348,7 +348,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     }
 
     this.enemies = (this.level.enemies ?? []).map((enemyConfig) => {
-      const enemy = new Enemy(this, enemyConfig);
+      const enemy = new Enemy(this, enemyConfig, this.player, this.level.platforms);
       enemy.setData('enemyId', enemyConfig.id);
       if (enemyConfig.kind === 'exam') {
         this.add
@@ -669,6 +669,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     if (this.time.now < this.damageAvailableAt || this.transitioning) return;
     this.damageAvailableAt = this.time.now + 900;
     this.progress.health -= 1;
+    if (enemyX !== undefined) playSoundEffect(this, 'sfx-damage-hit', 0.6);
     this.hud.update(this.level.name, this.level.objective, this.progress);
 
     if (this.progress.health <= 0) {

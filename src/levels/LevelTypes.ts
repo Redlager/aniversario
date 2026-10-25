@@ -27,6 +27,8 @@ export interface EnemyConfig extends Point {
     | 'ghost'
     | 'cockroach'
     | 'scorpion'
+    | 'beetle'
+    | 'referee'
     | 'musician'
     | 'singer'
     | 'waitress';

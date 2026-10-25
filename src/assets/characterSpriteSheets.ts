@@ -3,6 +3,7 @@ export interface CharacterSpriteSheet {
   frameCount: number;
   frameHeight: number;
   frameIndices?: number[];
+  frameRegions?: Array<{ x: number; width: number }>;
   frameRate: number;
   frameWidth: number;
   path: string;
@@ -240,6 +241,26 @@ export const characterSpriteSheets: CharacterSpriteSheet[] = [
     repeat: 0,
   },
   {
+    animationKey: 'beetle-alive',
+    textureKey: 'beetle-alive-sheet',
+    path: './characters/enemigos/escarabajo vivo.png',
+    frameWidth: 543,
+    frameHeight: 724,
+    frameCount: 4,
+    frameRate: 7,
+    repeat: -1,
+  },
+  {
+    animationKey: 'beetle-defeat',
+    textureKey: 'beetle-defeat-sheet',
+    path: './characters/enemigos/escarabajo muerto.png',
+    frameWidth: 543,
+    frameHeight: 724,
+    frameCount: 4,
+    frameRate: 8,
+    repeat: 0,
+  },
+  {
     animationKey: 'ghost-alive',
     textureKey: 'ghost-alive-sheet',
     path: './characters/enemigos/Fantasma vivo.png',
@@ -316,6 +337,38 @@ export const characterSpriteSheets: CharacterSpriteSheet[] = [
     frameWidth: 543,
     frameHeight: 724,
     frameCount: 4,
+    frameRate: 8,
+    repeat: 0,
+  },
+  {
+    animationKey: 'referee-alive',
+    textureKey: 'referee-alive-sheet',
+    path: './characters/enemigos/arbitro vivo.png',
+    frameWidth: 543,
+    frameHeight: 724,
+    frameCount: 4,
+    frameRegions: [
+      { x: 0, width: 500 },
+      { x: 500, width: 515 },
+      { x: 1015, width: 465 },
+      { x: 1480, width: 692 },
+    ],
+    frameRate: 7,
+    repeat: -1,
+  },
+  {
+    animationKey: 'referee-defeat',
+    textureKey: 'referee-defeat-sheet',
+    path: './characters/enemigos/arbitro muerto.png',
+    frameWidth: 543,
+    frameHeight: 724,
+    frameCount: 4,
+    frameRegions: [
+      { x: 0, width: 570 },
+      { x: 530, width: 570 },
+      { x: 1130, width: 490 },
+      { x: 1580, width: 592 },
+    ],
     frameRate: 8,
     repeat: 0,
   },

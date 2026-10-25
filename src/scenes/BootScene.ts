@@ -330,12 +330,20 @@ export class BootScene extends Phaser.Scene {
     const loadedAnimations = new Set<string>();
     for (const sheet of characterSpriteSheets) {
       if (!this.textures.exists(sheet.textureKey)) continue;
-      const frames = sheet.frameIndices
-        ? this.anims.generateFrameNumbers(sheet.textureKey, { frames: sheet.frameIndices })
-        : this.anims.generateFrameNumbers(sheet.textureKey, {
-            start: 0,
-            end: sheet.frameCount - 1,
-          });
+      const frames = sheet.frameRegions
+        ? sheet.frameRegions.map((region, index) => {
+            const frameName = `${sheet.animationKey}-frame-${index}`;
+            this.textures
+              .get(sheet.textureKey)
+              .add(frameName, 0, region.x, 0, region.width, sheet.frameHeight);
+            return { key: sheet.textureKey, frame: frameName };
+          })
+        : sheet.frameIndices
+          ? this.anims.generateFrameNumbers(sheet.textureKey, { frames: sheet.frameIndices })
+          : this.anims.generateFrameNumbers(sheet.textureKey, {
+              start: 0,
+              end: sheet.frameCount - 1,
+            });
       this.anims.create({
         key: sheet.animationKey,
         frames,

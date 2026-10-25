@@ -67,6 +67,11 @@ export const level3: LevelConfig = {
     { id: 'corazon-casa-2', kind: 'heart', x: 1650, y: 550 },
     { id: 'corazon-casa-3', kind: 'heart', x: 2710, y: 550 },
   ],
+  enemies: [
+    { id: 'escarabajo-1', kind: 'beetle', x: 500, y: 550, patrolDistance: 40, speed: 65 },
+    { id: 'escarabajo-2', kind: 'beetle', x: 970, y: 550, patrolDistance: 45, speed: 65 },
+    { id: 'escarabajo-3', kind: 'beetle', x: 1940, y: 550, patrolDistance: 55, speed: 65 },
+  ],
   npcs: [
     {
       id: 'bienvenida-casa',

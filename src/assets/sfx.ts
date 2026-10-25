@@ -4,6 +4,7 @@ export const sfxUrls = import.meta.glob<string>(
     './sfx/jump.wav',
     './sfx/deathEnemym4a.m4a',
     './sfx/soundColleccionable.wav',
+    './sfx/damageHit.mp3',
   ],
   { eager: true, query: '?url', import: 'default' },
 );
@@ -13,4 +14,5 @@ export const sfxAssets = [
   { key: 'sfx-jump', path: './sfx/jump.wav' },
   { key: 'sfx-enemy-death', path: './sfx/deathEnemym4a.m4a' },
   { key: 'sfx-collectible', path: './sfx/soundColleccionable.wav' },
+  { key: 'sfx-damage-hit', path: './sfx/damageHit.mp3' },
 ] as const;

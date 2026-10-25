@@ -60,6 +60,9 @@ export const level8: LevelConfig = {
     },
     { id: 'corazon-cierre', kind: 'heart', x: 2780, y: 470 },
   ],
+  enemies: [
+    { id: 'arbitro-perseguidor', kind: 'referee', x: 1450, y: 490, speed: 180 },
+  ],
   npcs: [
     {
       id: 'renzo-discusion',
