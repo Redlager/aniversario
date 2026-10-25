@@ -90,7 +90,7 @@ export const level8: LevelConfig = {
     },
   ],
   decorations: [
-    { kind: 'sign', x: 920, y: 590, label: 'Esto es boca' },
+    { kind: 'sign', x: 920, y: 590, label: 'Esto es boca 🐒' },
     { kind: 'sign', x: 2330, y: 590, label: 'River el mas grande' },
   ],
   exit: {

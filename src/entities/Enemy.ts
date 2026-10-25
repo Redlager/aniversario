@@ -11,11 +11,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       config.kind === 'exam'
         ? 'exam'
         : config.kind === 'ghost'
-          ? 'ghost-enemy'
+          ? 'ghost-alive-sheet'
           : config.kind === 'cockroach'
-            ? 'cockroach-enemy'
+            ? 'cockroach-alive-sheet'
             : config.kind === 'scorpion'
-              ? 'scorpion-enemy'
+              ? 'scorpion-alive-sheet'
               : 'enemy';
     super(scene, config.x, config.y, texture);
     this.startX = config.x;
@@ -24,12 +24,33 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
-    this.setSize(30, 34).setOffset(3, 7);
-    if (config.kind === 'exam' || config.kind === 'ghost') this.setScale(1.5);
-    if (config.kind === 'cockroach' || config.kind === 'scorpion') this.setScale(1.2);
+    const animatedKind =
+      config.kind === 'ghost' || config.kind === 'cockroach' || config.kind === 'scorpion';
+    const spriteScale =
+      config.kind === 'ghost'
+        ? 0.11
+        : config.kind === 'cockroach' || config.kind === 'scorpion'
+          ? 0.083
+          : config.kind === 'exam'
+            ? 1.5
+            : 1;
+    const bodyScale =
+      config.kind === 'exam' || config.kind === 'ghost'
+        ? 1.5
+        : config.kind === 'cockroach' || config.kind === 'scorpion'
+          ? 1.2
+          : 1;
+    this.setScale(spriteScale);
+    this.setSize((30 * bodyScale) / spriteScale, (34 * bodyScale) / spriteScale).setOffset(
+      (3 * bodyScale) / spriteScale,
+      (7 * bodyScale) / spriteScale,
+    );
     this.setCollideWorldBounds(true);
     this.setVelocityX(this.speed);
     if (config.kind === 'exam' && scene.anims.exists('exam-float')) this.play('exam-float');
+    if (animatedKind && scene.anims.exists(`${config.kind}-alive`)) {
+      this.play(`${config.kind}-alive`);
+    }
     if (config.kind === 'ghost') {
       this.setData('enemyKind', 'ghost');
       scene.tweens.add({
@@ -62,15 +83,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.setVelocity(0, 0);
     if (this.body instanceof Phaser.Physics.Arcade.Body) this.body.enable = false;
     this.scene.tweens.killTweensOf(this);
-    if (['ghost', 'cockroach', 'scorpion'].includes(this.getData('enemyKind'))) {
-      this.scene.tweens.add({
-        targets: this,
-        alpha: 0,
-        scale: 0.25,
-        y: this.y - 35,
-        duration: 420,
-        onComplete: () => this.destroy(),
-      });
+    const enemyKind = this.getData('enemyKind') as string;
+    const defeatAnimation = `${enemyKind}-defeat`;
+    if (this.scene.anims.exists(defeatAnimation)) {
+      this.play(defeatAnimation);
+      this.once(`animationcomplete-${defeatAnimation}`, () => this.destroy());
       return;
     }
     if (!this.scene.anims.exists('exam-defeat')) {

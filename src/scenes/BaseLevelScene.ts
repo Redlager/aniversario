@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { levelMusicUrls } from '../assets/levelMusic';
 import { Enemy } from '../entities/Enemy';
 import { Player } from '../entities/Player';
 import { DialogBox } from '../ui/DialogBox';
@@ -81,6 +82,9 @@ export abstract class BaseLevelScene extends Phaser.Scene {
         levelId: this.level.id,
         ...this.level.spawn,
       };
+    }
+    if (this.level.id === 'level-6-el-mundo-sobrenatural') {
+      this.startLevelMusic();
     }
 
     const { width, height } = this.level.world;
@@ -296,6 +300,30 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     this.player = new Player(this, spawn.x, spawn.y);
     this.player.setDepth(2);
     this.cameras.main.startFollow(this.player, true, 0.08, 0.08);
+  }
+
+  private startLevelMusic(): void {
+    const audioKey = 'level-6-terror-music';
+    const playMusic = (): void => {
+      if (!this.cache.audio.exists(audioKey)) return;
+      const music = this.sound.add(audioKey, { loop: true, volume: 0.45 });
+      music.play();
+      this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => music.stop());
+    };
+
+    if (this.cache.audio.exists(audioKey)) {
+      playMusic();
+      return;
+    }
+
+    const musicUrl = levelMusicUrls['./music/musica nivel terror.mp3'];
+    if (!musicUrl) return;
+    this.load.audio(audioKey, musicUrl);
+    this.load.once(Phaser.Loader.Events.COMPLETE, playMusic);
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.load.off(Phaser.Loader.Events.COMPLETE, playMusic);
+    });
+    this.load.start();
   }
 
   private createLevelObjects(): void {
@@ -542,6 +570,14 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     };
     checkpoint.setTint(0xffe7a0);
     this.hud.update(this.level.name, this.level.objective, this.progress);
+    if (this.level.id === 'level-6-el-mundo-sobrenatural') {
+      const faceByCheckpoint: Record<string, string> = {
+        'entrada-sobrenatural': 'scary-face-jumpscare-5',
+        'antes-del-final': 'scary-face-jumpscare-6',
+      };
+      const faceTexture = faceByCheckpoint[id];
+      if (faceTexture) this.showGhostJumpscare(() => undefined, faceTexture);
+    }
   }
 
   private collectItem(_player: ArcadeOverlapObject, item: ArcadeOverlapObject): void {
@@ -564,7 +600,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
   }
 
   private hitEnemy(_player: ArcadeOverlapObject, other: ArcadeOverlapObject): void {
-    if (!(other instanceof Enemy) || !other.active) return;
+    if (this.jumpscareActive || !(other instanceof Enemy) || !other.active) return;
     const body = this.player.body;
     if (
       body instanceof Phaser.Physics.Arcade.Body &&
@@ -600,6 +636,17 @@ export abstract class BaseLevelScene extends Phaser.Scene {
         duration: 1000,
         onComplete: () => approved.destroy(),
       });
+      if (enemyKind === 'ghost') {
+        const faceByGhostId: Record<string, string> = {
+          'fantasmita-entrada': 'scary-face-jumpscare-2',
+          'fantasmita-pasillo': 'scary-face-jumpscare-3',
+          'fantasmita-salida': 'scary-face-jumpscare-4',
+        };
+        const enemyId = other.getData('enemyId') as string;
+        const faceTexture =
+          this.level.id === 'level-6-el-mundo-sobrenatural' ? faceByGhostId[enemyId] : undefined;
+        if (faceTexture) this.showGhostJumpscare(() => undefined, faceTexture);
+      }
       return;
     }
     this.loseLife(other.x);
@@ -685,7 +732,10 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     this.showDialog(`${label}: ${dialogue}`);
   }
 
-  private showGhostJumpscare(onDismiss: () => void): void {
+  private showGhostJumpscare(
+    onDismiss: () => void,
+    faceTexture = 'scary-face-jumpscare',
+  ): void {
     const { width, height } = this.scale.gameSize;
     const body = this.player.body;
     const previousBodyState =
@@ -708,33 +758,8 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(70)
       .setInteractive();
-    const faceGraphics = this.add.graphics();
-    faceGraphics.setPosition(-150, -150);
-    faceGraphics.fillStyle(0xd8d6e5, 1);
-    faceGraphics.fillEllipse(150, 150, 230, 270);
-    faceGraphics.fillStyle(0xa6a3ba, 1);
-    faceGraphics.fillTriangle(55, 93, 82, 5, 116, 83);
-    faceGraphics.fillTriangle(184, 82, 220, 5, 244, 99);
-    faceGraphics.fillStyle(0x170b20, 1);
-    faceGraphics.fillEllipse(105, 133, 48, 72);
-    faceGraphics.fillEllipse(195, 133, 48, 72);
-    faceGraphics.fillStyle(0xff315d, 1);
-    faceGraphics.fillCircle(105, 139, 13);
-    faceGraphics.fillCircle(195, 139, 13);
-    faceGraphics.fillStyle(0xffa2b5, 0.8);
-    faceGraphics.fillCircle(105, 139, 5);
-    faceGraphics.fillCircle(195, 139, 5);
-    faceGraphics.fillStyle(0x2a1024, 1);
-    faceGraphics.fillEllipse(150, 220, 86, 91);
-    faceGraphics.fillStyle(0xfff0e6, 1);
-    faceGraphics.fillTriangle(111, 199, 132, 202, 120, 232);
-    faceGraphics.fillTriangle(135, 200, 156, 200, 145, 231);
-    faceGraphics.fillTriangle(160, 200, 181, 198, 171, 231);
-    faceGraphics.fillStyle(0x9a193b, 1);
-    faceGraphics.fillEllipse(150, 255, 35, 17);
-
     const face = this.add
-      .container(width / 2, height / 2, [faceGraphics])
+      .image(width / 2, height / 2, faceTexture)
       .setScrollFactor(0)
       .setDepth(71)
       .setScale(0.02);
@@ -790,10 +815,11 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     this.input.keyboard?.on('keydown', onKeyDown);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, removeDismissListeners);
 
-    this.cameras.main.shake(420, 0.012);
+    this.cameras.main.flash(140, 210, 0, 35);
+    this.cameras.main.shake(520, 0.016);
     this.tweens.add({
       targets: face,
-      scale: Math.max(width, height) / 230,
+      scale: Math.min((width * 0.76) / face.width, (height * 0.76) / face.height),
       duration: 560,
       ease: 'Back.Out',
       onComplete: () => {
