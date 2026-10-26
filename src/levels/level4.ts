@@ -130,7 +130,7 @@ export const level4: LevelConfig = {
   ],
   exit: {
     x: 2800,
-    y: 548,
+    y: 570,
     nextLevelId: LEVEL_5_ID,
     completionTitle: '¡NUEVA ETAPA, NUEVO HOGAR! ❤️',
     dialogue: [

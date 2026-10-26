@@ -362,7 +362,12 @@ export abstract class BaseLevelScene extends Phaser.Scene {
         checkpoint.y,
         isActive ? 'checkpoint-on' : 'checkpoint-off',
       );
-      marker.setFrame(0).setDisplaySize(50, 75).setSize(64, 48).refreshBody();
+      const sizeMultiplier = checkpoint.sizeMultiplier ?? 1.3;
+      marker
+        .setFrame(0)
+        .setDisplaySize(50 * sizeMultiplier, 75 * sizeMultiplier)
+        .setSize(64, 48)
+        .refreshBody();
       marker.setData('checkpointId', checkpoint.id);
     }
 
@@ -377,6 +382,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
             ? 'collectible-note-outlined'
             : item.kind;
       const sprite = this.collectibles.create(item.x, item.y, texture);
+      if (item.renderDepth !== undefined) sprite.setDepth(item.renderDepth);
       if (item.kind === 'burger') {
         sprite.setDisplaySize(50, 50).refreshBody();
         const body = sprite.body as Phaser.Physics.Arcade.StaticBody;
@@ -400,9 +406,10 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     this.enemies = (this.level.enemies ?? []).map((enemyConfig) => {
       const enemy = new Enemy(this, enemyConfig, this.player, this.level.platforms);
       enemy.setData('enemyId', enemyConfig.id);
+      enemy.setData('defeatMessage', enemyConfig.defeatMessage);
       if (enemyConfig.kind === 'exam') {
         this.add
-          .text(enemyConfig.x, enemyConfig.y - 52, 'EL PARCIAL', {
+          .text(enemyConfig.x, enemyConfig.y - 52, enemyConfig.displayLabel ?? 'EL PARCIAL', {
             fontFamily: 'Trebuchet MS, Arial, sans-serif',
             fontSize: '14px',
             fontStyle: 'bold',
@@ -417,6 +424,9 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     });
     this.npcs = this.physics.add.staticGroup();
     for (const npc of this.level.npcs ?? []) {
+      const persistentNpcId = `${this.level.id}:${npc.id}`;
+      const phoneAlreadyRead =
+        npc.visual === 'phone' && this.progress.readMessageIds.includes(persistentNpcId);
       const texture =
         npc.visual === 'renzo' && this.textures.exists('renzo-idle-sheet')
           ? 'renzo-idle-sheet'
@@ -437,7 +447,9 @@ export abstract class BaseLevelScene extends Phaser.Scene {
                         : npc.visual === 'canelo' && this.textures.exists('canelo-sheet')
                           ? 'canelo-sheet'
                           : npc.visual === 'phone'
-                            ? 'phone-interaction'
+                            ? phoneAlreadyRead
+                              ? 'phone-read-sheet'
+                              : 'phone-unread-sheet'
                             : npc.visual === 'elevator'
                               ? 'elevator-interaction'
                               : npc.visual
@@ -506,6 +518,13 @@ export abstract class BaseLevelScene extends Phaser.Scene {
         sprite.setSize(size.width * 0.8, size.height * 0.8).refreshBody();
       } else if (npc.visual === 'elevator') {
         sprite.setSize(50, 48).refreshBody();
+      } else if (npc.visual === 'phone') {
+        sprite.setFrame(0);
+        const scale = (58 / sprite.height) * (npc.sizeMultiplier ?? 1);
+        sprite
+          .setScale(scale)
+          .setSize(32 / scale, 44 / scale)
+          .refreshBody();
       } else {
         sprite.setSize(32, 44);
         sprite.refreshBody();
@@ -746,7 +765,10 @@ export abstract class BaseLevelScene extends Phaser.Scene {
         return;
       }
       const defeatMessage =
-        enemyKind === 'ghost'
+        (other.getData('defeatMessage') as string | undefined) ??
+        (enemyKind === 'exam'
+          ? '¡APROBADO!'
+          : enemyKind === 'ghost'
           ? '¡FANTASMITA ESPANTADO!'
           : enemyKind === 'cockroach'
             ? '¡CUCARACHA ESPANTADA!'
@@ -754,7 +776,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
               ? '¡ALACRÁN ESPANTADO!'
                 : enemyKind === 'chef'
                   ? 'BUEN PROVECHO!'
-                  : '';
+                  : '');
       other.playDefeatAnimation();
       playSoundEffect(this, 'sfx-enemy-death', 0.58);
       body.setVelocityY(-260);
@@ -830,6 +852,13 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     const id = npc.getData('npcId') as string;
     if (this.visitedNpcs.has(id) || this.dialog.isOpen) return;
     this.visitedNpcs.add(id);
+    if (npc.getData('npcVisual') === 'phone') {
+      const persistentNpcId = `${this.level.id}:${id}`;
+      if (!this.progress.readMessageIds.includes(persistentNpcId)) {
+        this.progress.readMessageIds.push(persistentNpcId);
+      }
+      npc.setTexture('phone-read-sheet', 0);
+    }
     const label = npc.getData('label') as string;
     const dialogue = npc.getData('dialogue') as string;
     if (npc.getData('effect') === 'jumpscare') {
@@ -1266,7 +1295,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     }
   }
 
-  private drawDecoration({ kind, x, y, label, pet }: DecorationConfig): void {
+  private drawDecoration({ kind, x, y, label, pet, sizeMultiplier = 1 }: DecorationConfig): void {
     const groundOffset = kind === 'university' ? 18 : 0;
     if (kind === 'university' && this.textures.exists('level-university-building')) {
       const buildingWidth = 560;
@@ -1280,7 +1309,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       return;
     }
     if (kind === 'pigeons') {
-      const flock = this.add.container(x, y).setDepth(1.7);
+      const flock = this.add.container(x, y).setScale(sizeMultiplier).setDepth(1.7);
       const birdPositions = [
         { x: -24, y: 5, scale: 0.75 },
         { x: 0, y: -6, scale: 1 },

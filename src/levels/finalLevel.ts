@@ -98,7 +98,7 @@ export const finalLevel: LevelConfig = {
   ],
   exit: {
     x: 2700,
-    y: 548,
+    y: 570,
     nextLevelId: null,
     completionTitle: 'VICKY — LA AVENTURA DE 7 AÑOS',
     completionScene: 'family',

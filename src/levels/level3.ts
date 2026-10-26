@@ -29,7 +29,7 @@ export const level3: LevelConfig = {
   ],
   checkpoints: [
     { id: 'despues-de-panchito', x: 1050, y: 548 },
-    { id: 'antes-del-hogar', x: 2460, y: 548 },
+    // { id: 'antes-del-hogar', x: 2460, y: 548 },
   ],
   collectibles: [
     { id: 'recuerdo-casa-1', kind: 'notes', x: 390, y: 550, message: 'Nuestro primer hogar. ❤️' },
@@ -64,7 +64,7 @@ export const level3: LevelConfig = {
     },
     { id: 'recuerdo-casa-7', kind: 'notes', x: 2380, y: 490, message: 'Y nosotros también.' },
     { id: 'corazon-casa-1', kind: 'heart', x: 760, y: 490 },
-    { id: 'corazon-casa-2', kind: 'heart', x: 1650, y: 550 },
+    // { id: 'corazon-casa-2', kind: 'heart', x: 1650, y: 550 },
     { id: 'corazon-casa-3', kind: 'heart', x: 2710, y: 550 },
   ],
   enemies: [
@@ -77,6 +77,7 @@ export const level3: LevelConfig = {
       id: 'bienvenida-casa',
       label: 'NUESTRO HOGAR',
       visual: 'phone',
+      sizeMultiplier: 1.3,
       x: 175,
       y: 550,
       dialogue:
@@ -146,15 +147,15 @@ export const level3: LevelConfig = {
     },
   ],
   decorations: [
-    { kind: 'pet', pet: 'panchito', x: 2540, y: 588 },
-    { kind: 'pet', pet: 'oliver', x: 2595, y: 588 },
-    { kind: 'pet', pet: 'rex', x: 2655, y: 588 },
-    { kind: 'pet', pet: 'silvestre', x: 2720, y: 588 },
-    { kind: 'pet', pet: 'peach', x: 2775, y: 588 },
+    // { kind: 'pet', pet: 'panchito', x: 2540, y: 588 },
+    // { kind: 'pet', pet: 'oliver', x: 2595, y: 588 },
+    // { kind: 'pet', pet: 'rex', x: 2655, y: 588 },
+    // { kind: 'pet', pet: 'silvestre', x: 2720, y: 588 },
+    // { kind: 'pet', pet: 'peach', x: 2775, y: 588 },
   ],
   exit: {
     x: 2700,
-    y: 548,
+    y: 570,
     nextLevelId: LEVEL_4_ID,
     completionTitle: '¡NUESTRO PRIMER HOGAR! ❤️',
     dialogue: [

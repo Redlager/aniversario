@@ -108,7 +108,7 @@ export const level6: LevelConfig = {
   ],
   exit: {
     x: 3000,
-    y: 548,
+    y: 570,
     nextLevelId: LEVEL_7_ID,
     completionTitle: '¡NIVEL COMPLETADO! ❤️',
     dialogue: [

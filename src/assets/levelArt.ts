@@ -79,6 +79,20 @@ export const levelArtAssets: LevelArtAsset[] = [
     frameHeight: 724,
   },
   {
+    key: 'phone-unread-sheet',
+    path: './ornamentacion/objetos/celular_sin_leer.png',
+    type: 'spritesheet',
+    frameWidth: 271,
+    frameHeight: 724,
+  },
+  {
+    key: 'phone-read-sheet',
+    path: './ornamentacion/objetos/celular_leido.png',
+    type: 'spritesheet',
+    frameWidth: 271,
+    frameHeight: 724,
+  },
+  {
     key: 'hamburger-power-up',
     path: './ornamentacion/objetos/hamburguesaPowerUp.png',
     type: 'image',

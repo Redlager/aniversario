@@ -23,9 +23,7 @@ export const level2: LevelConfig = {
     { x: 1565, y: 600, width: 310 },
     { x: 1790, y: 510, width: 160, height: 24 },
     { x: 2025, y: 600, width: 350 },
-    { x: 2265, y: 530, width: 150, height: 24 },
     { x: 2470, y: 600, width: 400 },
-    { x: 2730, y: 520, width: 150, height: 24 },
     { x: 2925, y: 600, width: 350 },
   ],
   checkpoints: [
@@ -88,13 +86,23 @@ export const level2: LevelConfig = {
   ],
   enemies: [
     { id: 'musico-callejero', kind: 'musician', x: 430, y: 550, patrolDistance: 65, speed: 60, sizeMultiplier: 1.3, renderDepth: 4 },
-    { id: 'cantante-del-bar', kind: 'singer', x: 1580, y: 550, patrolDistance: 55, speed: 60, sizeMultiplier: 1.3 },
+    {
+      id: 'cantante-del-bar',
+      kind: 'singer',
+      x: 1580,
+      y: 450,
+      patrolDistance: 55,
+      speed: 60,
+      sizeMultiplier: 1.3,
+      renderDepth: 4,
+    },
   ],
   npcs: [
     {
       id: 'primer-mensaje',
       label: 'MENSAJE',
       visual: 'phone',
+      sizeMultiplier: 1.3,
       x: 180,
       y: 550,
       dialogue:
@@ -132,7 +140,7 @@ export const level2: LevelConfig = {
   ],
   exit: {
     x: 2990,
-    y: 548,
+    y: 570,
     nextLevelId: LEVEL_3_ID,
     completionTitle: '¡NOSOTROS DOS! ❤️',
     dialogue: [

@@ -124,7 +124,7 @@ export const level5: LevelConfig = {
   ],
   exit: {
     x: 3050,
-    y: 548,
+    y: 570,
     nextLevelId: LEVEL_6_ID,
     completionTitle: '¡NUESTRO LUGAR! ❤️',
     completionScene: 'family',

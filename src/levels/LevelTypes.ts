@@ -12,6 +12,7 @@ export interface PlatformConfig {
 
 export interface CheckpointConfig extends Point {
   id: string;
+  sizeMultiplier?: number;
 }
 
 export interface CollectibleConfig extends Point {
@@ -19,6 +20,7 @@ export interface CollectibleConfig extends Point {
   kind: 'notes' | 'heart' | 'star' | 'burger';
   message?: string;
   sizeMultiplier?: number;
+  renderDepth?: number;
 }
 
 export interface EnemyConfig extends Point {
@@ -38,6 +40,8 @@ export interface EnemyConfig extends Point {
   speed?: number;
   sizeMultiplier?: number;
   renderDepth?: number;
+  defeatMessage?: string;
+  displayLabel?: string;
 }
 
 export interface NpcConfig extends Point {
@@ -45,6 +49,7 @@ export interface NpcConfig extends Point {
   label: string;
   dialogue: string;
   visual?: 'renzo' | 'phone' | 'elevator' | PetVisual;
+  sizeMultiplier?: number;
   effect?: 'jumpscare';
 }
 
@@ -90,6 +95,7 @@ export interface DecorationConfig extends Point {
   kind: DecorationKind;
   label?: string;
   pet?: PetVisual;
+  sizeMultiplier?: number;
 }
 
 export interface LevelConfig {
@@ -132,6 +138,7 @@ export class PlayerProgress {
   stars = 0;
   checkpoint: CheckpointState = { id: 'start', levelId: '', x: 0, y: 0 };
   collectedIds: string[] = [];
+  readMessageIds: string[] = [];
   currentLevelId = '';
   messageHistory: MessageHistoryEntry[] = [];
 
@@ -143,6 +150,7 @@ export class PlayerProgress {
     this.stars = 0;
     this.checkpoint = { id: 'start', levelId: '', x: 0, y: 0 };
     this.collectedIds = [];
+    this.readMessageIds = [];
     this.currentLevelId = '';
     this.messageHistory = [];
   }

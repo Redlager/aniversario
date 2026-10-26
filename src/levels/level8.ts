@@ -98,7 +98,7 @@ export const level8: LevelConfig = {
   ],
   exit: {
     x: 2860,
-    y: 548,
+    y: 570,
     nextLevelId: 'final',
     completionTitle: '¿Podemos estar de acuerdo en algo? ❤️',
     dialogue: [

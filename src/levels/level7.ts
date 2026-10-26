@@ -100,7 +100,7 @@ export const level7: LevelConfig = {
   ],
   exit: {
     x: 3100,
-    y: 560,
+    y: 570,
     nextLevelId: LEVEL_8_ID,
     completionTitle: '¡UNA HAMBURGUESA DEL MAC\nNUNCA CAE MAL! ❤️',
     dialogue: [
