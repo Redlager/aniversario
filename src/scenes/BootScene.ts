@@ -63,6 +63,7 @@ export class BootScene extends Phaser.Scene {
     this.createPlaceholderTexture('collectible', 0xffcf5c, 24, 24);
     this.createCollectibleTextures();
     this.createOutlinedNoteTexture();
+    this.createLevelSurfaceFrames();
     this.createPlaceholderTexture('enemy', 0x7961a8, 36, 42);
     this.createPlaceholderTexture('npc', 0xf0a66b, 36, 48);
     this.createPhoneTexture();
@@ -361,6 +362,18 @@ export class BootScene extends Phaser.Scene {
     }
     outlined.context.drawImage(source, outline, outline, size, size);
     outlined.refresh();
+  }
+
+  private createLevelSurfaceFrames(): void {
+    const ground = this.textures.get('level-ground-art');
+    if (ground && !ground.has('ground-strip')) {
+      ground.add('ground-strip', 0, 14, 240, 1746, 474);
+    }
+
+    const platform = this.textures.get('level-platform-art');
+    if (platform && !platform.has('platform-strip')) {
+      platform.add('platform-strip', 0, 124, 136, 1910, 462);
+    }
   }
 
   private createAnimations(): void {

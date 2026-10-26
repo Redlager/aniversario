@@ -286,39 +286,56 @@ export abstract class BaseLevelScene extends Phaser.Scene {
 
   private createPlatforms(): void {
     this.platforms = this.physics.add.staticGroup();
-    for (const platformConfig of this.level.platforms ?? []) {
+    const platformConfigs = this.level.platforms ?? [];
+    const groundLevel = Math.max(...platformConfigs.map(({ y }) => y));
+    for (const platformConfig of platformConfigs) {
       const platform = this.platforms.create(platformConfig.x, platformConfig.y, 'platform');
       platform.setDisplaySize(platformConfig.width, platformConfig.height ?? 24);
       platform.refreshBody();
 
-      const ground = platformConfig.width >= this.level.world.width;
-      const textureKey = ground ? 'level-ground-atlas' : 'level-platform-atlas';
-      if (this.textures.exists(textureKey)) {
+      const ground = platformConfig.y === groundLevel;
+      const surfaceTexture = ground ? 'level-ground-art' : 'level-platform-art';
+      const surfaceFrame = ground ? 'ground-strip' : 'platform-strip';
+      const surfaceHeight = ground ? 474 : 462;
+      if (this.textures.exists(surfaceTexture)) {
+        const bodyHeight = platformConfig.height ?? 24;
+        const visualHeight = 48;
+        const colliderTop = platformConfig.y - bodyHeight / 2;
+        const visualY = colliderTop + visualHeight / 2;
+        const scale = visualHeight / surfaceHeight;
+        const visualWidth = platformConfig.width + (ground ? 12 : 0);
+        this.add
+          .tileSprite(
+            platformConfig.x,
+            visualY,
+            visualWidth,
+            visualHeight,
+            surfaceTexture,
+            surfaceFrame,
+          )
+          .setTileScale(scale)
+          .setDepth(0);
+        platform.setVisible(false);
+      } else {
+        const fallbackTexture = ground ? 'level-ground-atlas' : 'level-platform-atlas';
+        if (!this.textures.exists(fallbackTexture)) continue;
+
         const bodyHeight = platformConfig.height ?? 24;
         const visualHeight = 48;
         const colliderTop = platformConfig.y - bodyHeight / 2;
         const artFrameTop = ground ? 6 / 362 : 9 / 443;
-        const visualTop = colliderTop - artFrameTop * visualHeight;
-        const visualY = visualTop + visualHeight / 2;
-
-        if (ground) {
-          this.add
-            .tileSprite(
-              platformConfig.x,
-              visualY,
-              platformConfig.width,
-              visualHeight,
-              textureKey,
-              9,
-            )
-            .setTileScale(0.9, visualHeight / 362)
-            .setDepth(0);
-        } else {
-          this.add
-            .image(platformConfig.x, visualY, textureKey, 1)
-            .setDisplaySize(platformConfig.width, visualHeight)
-            .setDepth(0);
-        }
+        const visualY = colliderTop - artFrameTop * visualHeight + visualHeight / 2;
+        this.add
+          .tileSprite(
+            platformConfig.x,
+            visualY,
+            platformConfig.width,
+            visualHeight,
+            fallbackTexture,
+            ground ? 9 : 1,
+          )
+          .setTileScale(0.9, visualHeight / (ground ? 362 : 443))
+          .setDepth(0);
         platform.setVisible(false);
       }
     }

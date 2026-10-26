@@ -109,6 +109,16 @@ export const levelArtAssets: LevelArtAsset[] = [
     type: 'image',
   },
   {
+    key: 'level-ground-art',
+    path: './ornamentacion/objetos/piso.png',
+    type: 'image',
+  },
+  {
+    key: 'level-platform-art',
+    path: './ornamentacion/objetos/plataforma.png',
+    type: 'image',
+  },
+  {
     key: 'level-university-background',
     path: './ornamentacion/fodo del juego.png',
     type: 'image',
