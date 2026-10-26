@@ -64,9 +64,9 @@ export class MessageHistory {
       .setDepth(41)
       .setStrokeStyle(3, 0xd34f91);
     this.title = scene.add
-      .text(width / 2, height / 2 - 150, 'MENSAJES LEÍDOS', {
+      .text(width / 2, height / 2 - 150, 'NOTAS Y DIÁLOGOS', {
         fontFamily: 'Trebuchet MS, Arial, sans-serif',
-        fontSize: '22px',
+        fontSize: width < 540 ? '16px' : '22px',
         fontStyle: 'bold',
         color: '#452d4a',
       })
@@ -76,8 +76,11 @@ export class MessageHistory {
     this.counter = scene.add
       .text(width / 2, height / 2 - 115, '', {
         fontFamily: 'Trebuchet MS, Arial, sans-serif',
-        fontSize: '14px',
+        fontSize: '13px',
         color: '#745b78',
+        align: 'center',
+        lineSpacing: 4,
+        wordWrap: { width: Math.min(width - 70, 610) },
       })
       .setOrigin(0.5)
       .setScrollFactor(0)
@@ -164,8 +167,17 @@ export class MessageHistory {
       this.message.setText('');
       return;
     }
-    this.title.setText(entry.levelName);
-    this.counter.setText(`${this.selectedIndex + 1} / ${this.entries.length}`);
+    this.title.setText(
+      entry.category === 'Nota'
+        ? `📜 ${entry.detail ?? 'Nota'}`
+        : `💬 Diálogo${entry.detail ? ` · ${entry.detail}` : ''}`,
+    );
+    const levelEntries = this.entries.filter((candidate) => candidate.levelName === entry.levelName);
+    const entryNumber =
+      levelEntries.findIndex((candidate) => candidate === entry) + 1;
+    this.counter.setText(
+      `${entry.levelName}\nRegistro ${entryNumber} de ${levelEntries.length} de este nivel`,
+    );
     this.message.setText(entry.message);
   }
 

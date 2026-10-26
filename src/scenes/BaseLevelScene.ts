@@ -110,7 +110,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     this.createLevelObjects();
     this.createControls();
     this.hud = new LevelHud(this);
-    new AudioControls(this);
+    new AudioControls(this, 73);
     this.dialog = new DialogBox(this);
     this.hud.update(this.level.name, this.level.objective, this.progress);
     this.messageHistory = new MessageHistory(
@@ -294,9 +294,22 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       platform.refreshBody();
 
       const ground = platformConfig.y === groundLevel;
-      const surfaceTexture = ground ? 'level-ground-art' : 'level-platform-art';
-      const surfaceFrame = ground ? 'ground-strip' : 'platform-strip';
-      const surfaceHeight = ground ? 474 : 462;
+      const interior = this.level.surfaceTheme === 'interior';
+      const surfaceTexture = interior
+        ? ground
+          ? 'level-indoor-ground-art'
+          : 'level-indoor-platform-art'
+        : ground
+          ? 'level-ground-art'
+          : 'level-platform-art';
+      const surfaceFrame = interior
+        ? ground
+          ? 'indoor-ground-strip'
+          : 'indoor-platform-strip'
+        : ground
+          ? 'ground-strip'
+          : 'platform-strip';
+      const surfaceHeight = interior ? (ground ? 240 : 300) : ground ? 474 : 462;
       if (this.textures.exists(surfaceTexture)) {
         const bodyHeight = platformConfig.height ?? 24;
         const visualHeight = 48;
@@ -378,6 +391,10 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       const texture =
         item.kind === 'burger'
           ? 'hamburger-power-up'
+          : item.kind === 'star'
+            ? 'collectible-star-art'
+            : item.kind === 'heart'
+              ? 'collectible-heart-art'
           : item.kind === 'notes'
             ? 'collectible-note-outlined'
             : item.kind;
@@ -393,6 +410,16 @@ export abstract class BaseLevelScene extends Phaser.Scene {
         sprite.setDisplaySize(30 * sizeMultiplier, 30 * sizeMultiplier).refreshBody();
         const body = sprite.body as Phaser.Physics.Arcade.StaticBody;
         body.setSize(28, 28);
+        body.updateCenter();
+      } else if (item.kind === 'star') {
+        sprite.setDisplaySize(60, 40).refreshBody();
+        const body = sprite.body as Phaser.Physics.Arcade.StaticBody;
+        body.setSize(30, 30);
+        body.updateCenter();
+      } else if (item.kind === 'heart') {
+        sprite.setDisplaySize(42, 42).refreshBody();
+        const body = sprite.body as Phaser.Physics.Arcade.StaticBody;
+        body.setSize(30, 30);
         body.updateCenter();
       } else {
         sprite.setSize(28, 28).refreshBody();
@@ -428,7 +455,9 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       const phoneAlreadyRead =
         npc.visual === 'phone' && this.progress.readMessageIds.includes(persistentNpcId);
       const texture =
-        npc.visual === 'renzo' && this.textures.exists('renzo-idle-sheet')
+        npc.effect === 'jumpscare'
+          ? 'level-question-marker'
+          : npc.visual === 'renzo' && this.textures.exists('renzo-idle-sheet')
           ? 'renzo-idle-sheet'
           : npc.visual === 'renzo'
             ? 'renzo'
@@ -456,7 +485,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
                                 ? `pet-${npc.visual}`
                                 : 'npc';
       const sprite = this.npcs.create(npc.x, npc.y, texture);
-      sprite.setDepth(2);
+      sprite.setDepth(npc.effect === 'jumpscare' ? 4 : 2);
       if (npc.visual === 'renzo') {
         const scale = this.textures.get(texture).getSourceImage().height > 50 ? 0.19 : 1.5;
         sprite
@@ -525,6 +554,8 @@ export abstract class BaseLevelScene extends Phaser.Scene {
           .setScale(scale)
           .setSize(32 / scale, 44 / scale)
           .refreshBody();
+      } else if (npc.effect === 'jumpscare') {
+        sprite.setDisplaySize(52, 52).setSize(40, 40).refreshBody();
       } else {
         sprite.setSize(32, 44);
         sprite.refreshBody();
@@ -534,16 +565,18 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       sprite.setData('label', npc.label);
       sprite.setData('npcVisual', npc.visual);
       sprite.setData('effect', npc.effect);
-      this.add
-        .text(npc.x, npc.y - 39, npc.label, {
-          fontFamily: 'Trebuchet MS, Arial, sans-serif',
-          fontSize: '13px',
-          color: '#452d4a',
-          backgroundColor: '#ffffffbb',
-          padding: { x: 4, y: 2 },
-        })
-        .setOrigin(0.5)
-        .setDepth(3);
+      if (npc.label) {
+        this.add
+          .text(npc.x, npc.y - 39, npc.label, {
+            fontFamily: 'Trebuchet MS, Arial, sans-serif',
+            fontSize: '13px',
+            color: '#452d4a',
+            backgroundColor: '#ffffffbb',
+            padding: { x: 4, y: 2 },
+          })
+          .setOrigin(0.5)
+          .setDepth(3);
+      }
     }
 
     this.exits = this.physics.add.staticGroup();
@@ -667,7 +700,10 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     else if (kind === 'heart') {
       this.progress.hearts += 1;
       this.progress.health = Math.min(3, this.progress.health + 1);
-    } else if (kind === 'star') this.progress.stars += 1;
+    } else if (kind === 'star') {
+      this.progress.stars += 1;
+      this.progress.score += 500;
+    }
     if (kind === 'heart' || kind === 'star' || kind === 'burger') {
       playSoundEffect(this, 'sfx-collectible', 0.55);
     }
@@ -679,7 +715,13 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     }
     this.hud.update(this.level.name, this.level.objective, this.progress);
     if (kind === 'notes' && typeof message === 'string') {
-      this.showDialog(message);
+      const notes = this.level.collectibles?.filter((collectible) => collectible.kind === 'notes') ?? [];
+      const noteNumber =
+        notes.findIndex((note) => collectibleId === `${this.level.id}:${note.id}`) + 1;
+      this.showDialog(message, undefined, {
+        category: 'Nota',
+        detail: `Nota ${noteNumber} de ${notes.length}`,
+      });
     }
   }
 
@@ -778,6 +820,8 @@ export abstract class BaseLevelScene extends Phaser.Scene {
                   ? 'BUEN PROVECHO!'
                   : '');
       other.playDefeatAnimation();
+      this.progress.score += 100;
+      this.progress.enemiesDefeated += 1;
       playSoundEffect(this, 'sfx-enemy-death', 0.58);
       body.setVelocityY(-260);
       const approved = this.add
@@ -862,7 +906,12 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     const label = npc.getData('label') as string;
     const dialogue = npc.getData('dialogue') as string;
     if (npc.getData('effect') === 'jumpscare') {
-      this.showGhostJumpscare(() => this.showDialog(`${label}: ${dialogue}`));
+      this.showGhostJumpscare(() =>
+        this.showDialog(label ? `${label}: ${dialogue}` : dialogue, undefined, {
+          category: 'Diálogo',
+          detail: label || 'Personaje',
+        }),
+      );
       return;
     }
     if (npc.getData('npcVisual') === 'panchito' && this.anims.exists('panchito-surprised')) {
@@ -899,7 +948,10 @@ export abstract class BaseLevelScene extends Phaser.Scene {
         if (this.anims.exists('renzo-idle')) npc.play('renzo-idle');
       });
     }
-    this.showDialog(`${label}: ${dialogue}`);
+    this.showDialog(label ? `${label}: ${dialogue}` : dialogue, undefined, {
+      category: 'Diálogo',
+      detail: label || 'Personaje',
+    });
   }
 
   private showGhostJumpscare(onDismiss: () => void, faceTexture = 'scary-face-jumpscare'): void {
@@ -1003,10 +1055,15 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     });
   }
 
-  private showDialog(message: string, onDismiss?: () => void): void {
+  private showDialog(
+    message: string,
+    onDismiss?: () => void,
+    history: { category: 'Nota' | 'Diálogo'; detail?: string } = { category: 'Diálogo' },
+  ): void {
     this.progress.messageHistory.push({
       levelName: this.level.name,
       message,
+      ...history,
     });
     this.messageHistory.refresh();
     const body = this.player.body;
@@ -1100,7 +1157,10 @@ export abstract class BaseLevelScene extends Phaser.Scene {
     if (lines[index] === '❤️ MATCH') {
       this.showMatchEffect();
     }
-    this.showDialog(lines[index], () => this.playExitDialogue(index + 1));
+    this.showDialog(lines[index], () => this.playExitDialogue(index + 1), {
+      category: 'Diálogo',
+      detail: 'Cierre del nivel',
+    });
   }
 
   private showRenzoScene(): void {
@@ -1137,12 +1197,7 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       return;
     }
 
-    const graphics = this.add.graphics().setDepth(4);
     if (this.level.world.backgroundStyle === 'apartment') {
-      graphics.fillStyle(0x936e78);
-      graphics.fillRoundedRect(x - 160, y + 7, 120, 34, 9);
-      graphics.fillStyle(0xb18b94);
-      graphics.fillRoundedRect(x - 150, y - 7, 48, 25, 7);
       const chocolatinTexture = this.textures.exists('chocolatin-sheet')
         ? 'chocolatin-sheet'
         : 'pet-chocolatin';
@@ -1152,36 +1207,6 @@ export abstract class BaseLevelScene extends Phaser.Scene {
         .setDisplaySize(54, 40)
         .setDepth(26);
       if (this.anims.exists('chocolatin-idle')) chocolatin.play('chocolatin-idle');
-      this.add
-        .text(x - 35, y - 34, 'CHOCOLATÍN', {
-          fontFamily: 'Trebuchet MS, Arial, sans-serif',
-          fontSize: '12px',
-          fontStyle: 'bold',
-          color: '#452d4a',
-          backgroundColor: '#ffffffcc',
-          padding: { x: 5, y: 3 },
-        })
-        .setOrigin(0.5)
-        .setDepth(27);
-    } else {
-      graphics.fillStyle(0x443d52);
-      graphics.fillRect(x - 155, y + 10, 92, 12);
-      graphics.fillRect(x - 120, y + 22, 22, 33);
-      graphics.fillStyle(0xa9dcdf);
-      graphics.fillRect(x - 149, y - 31, 80, 42);
-      graphics.fillStyle(0x566878);
-      graphics.fillRect(x - 158, y + 11, 98, 6);
-      this.add
-        .text(x - 105, y - 88, 'RENZO', {
-          fontFamily: 'Trebuchet MS, Arial, sans-serif',
-          fontSize: '12px',
-          fontStyle: 'bold',
-          color: '#452d4a',
-          backgroundColor: '#ffffffcc',
-          padding: { x: 5, y: 3 },
-        })
-        .setOrigin(0.5)
-        .setDepth(27);
     }
     this.tweens.add({
       targets: renzo,
@@ -1202,9 +1227,6 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       'chocolatin',
       'canelo',
     ];
-    const graphics = this.add.graphics().setDepth(4);
-    graphics.fillStyle(0x79b976, 0.9);
-    graphics.fillEllipse(x + 145, y + 14, 390, 48);
     pets.forEach((pet, index) => {
       const size = this.petDisplaySize(pet);
       const animatedTexture =
@@ -1750,9 +1772,9 @@ export abstract class BaseLevelScene extends Phaser.Scene {
       case 'oliver':
         return { width: 48, height: 36 };
       case 'silvestre':
-        return { width: 44, height: 36 };
+        return { width: 44, height: 43 };
       case 'peach':
-        return { width: 48, height: 36 };
+        return { width: 48, height: 40 };
       case 'rex':
         return this.textures.exists('rex-sheet')
           ? { width: 72, height: 48 }

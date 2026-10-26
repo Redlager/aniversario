@@ -2,10 +2,10 @@ import Phaser from 'phaser';
 import { isAudioEnabled, toggleAudio, type AudioChannel } from '../audio/audioSettings';
 
 export class AudioControls {
-  constructor(scene: Phaser.Scene) {
+  constructor(scene: Phaser.Scene, top = 23) {
     const right = scene.scale.gameSize.width - 12;
-    this.createButton(scene, 'music', right - 54, 23);
-    this.createButton(scene, 'sfx', right - 54, 57);
+    this.createButton(scene, 'music', right - 54, top);
+    this.createButton(scene, 'sfx', right - 54, top + 34);
   }
 
   private createButton(scene: Phaser.Scene, channel: AudioChannel, x: number, y: number): void {

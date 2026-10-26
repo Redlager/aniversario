@@ -17,17 +17,12 @@ export const level5: LevelConfig = {
   spawn: { x: 70, y: 548 },
   platforms: [
     { x: 1700, y: 600, width: 3400 },
-    { x: 570, y: 535, width: 130, height: 24 },
-    { x: 1120, y: 520, width: 150, height: 24 },
-    { x: 1530, y: 545, width: 135, height: 24 },
-    { x: 1900, y: 525, width: 150, height: 24 },
-    { x: 2580, y: 525, width: 145, height: 24 },
   ],
   enemies: [
-    { id: 'cucaracha-mudanza', kind: 'cockroach', x: 820, y: 558, patrolDistance: 38, speed: 48 },
-    { id: 'alacran-patio', kind: 'scorpion', x: 1320, y: 558, patrolDistance: 42, speed: 42 },
-    { id: 'cucaracha-cajas', kind: 'cockroach', x: 2180, y: 558, patrolDistance: 38, speed: 50 },
-    { id: 'alacran-salida', kind: 'scorpion', x: 2780, y: 558, patrolDistance: 42, speed: 44 },
+    { id: 'cucaracha-mudanza', kind: 'cockroach', x: 820, y: 558, patrolDistance: 38, speed: 48, renderDepth: 4, },
+    { id: 'alacran-patio', kind: 'scorpion', x: 1320, y: 558, patrolDistance: 42, speed: 42, renderDepth: 4, },
+    { id: 'cucaracha-cajas', kind: 'cockroach', x: 2180, y: 558, patrolDistance: 38, speed: 50, renderDepth: 4 },
+    { id: 'alacran-salida', kind: 'scorpion', x: 2780, y: 558, patrolDistance: 42, speed: 44, renderDepth: 4 },
   ],
   checkpoints: [
     { id: 'llegada-al-patio', x: 760, y: 548 },
@@ -54,12 +49,13 @@ export const level5: LevelConfig = {
     {
       id: 'recuerdo-familia',
       kind: 'notes',
-      x: 1690,
+      x: 1600,
       y: 550,
       message:
         'Panchito, Oliver, Rex, Silvestre, Peach y Chocolatín. La casa ya estaba bastante llena. ❤️',
     },
     { id: 'corazon-canelo', kind: 'heart', x: 2645, y: 475 },
+    { id: 'estrella-patio', kind: 'star', x: 1700, y: 455 },
   ],
   npcs: [
     {

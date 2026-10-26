@@ -183,9 +183,10 @@ export class LevelCompletePanel {
         const animationKey = portrait.label === 'Vicky' ? 'vicky-idle' : 'renzo-idle';
         if (this.scene.anims.exists(animationKey)) sprite.play(animationKey);
       } else {
+        const displayWidth = portrait.label === 'Silvestre' ? 45 : 54;
         this.scene.add
           .image(x, y, portrait.textureKey, portrait.frame)
-          .setDisplaySize(54, 44)
+          .setDisplaySize(displayWidth, 44)
           .setScrollFactor(0)
           .setDepth(43);
       }
@@ -250,7 +251,7 @@ export class LevelCompletePanel {
       .setDepth(42);
 
     this.scene.add
-      .text(width / 2, height / 2 + 57, '“Y todavía nos queda muchísimo por vivir.”', {
+      .text(width / 2, height / 2 + 83, '“Y todavía nos queda muchísimo por vivir.”', {
         fontFamily: 'Trebuchet MS, Arial, sans-serif',
         fontSize: width < 540 ? '13px' : '16px',
         fontStyle: 'italic',
@@ -261,12 +262,28 @@ export class LevelCompletePanel {
       .setDepth(42);
 
     this.scene.add
-      .text(width / 2, height / 2 + 84, 'Feliz aniversario, Vicky. ❤️', {
+      .text(width / 2, height / 2 + 107, 'Feliz aniversario, Vicky. ❤️', {
         fontFamily: 'Trebuchet MS, Arial, sans-serif',
         fontSize: width < 540 ? '14px' : '17px',
         fontStyle: 'bold',
         color: '#a34279',
       })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(42);
+
+    this.scene.add
+      .text(
+        width / 2,
+        height / 2 + 55,
+        `Puntaje: ${progress.score.toLocaleString('es-AR')} puntos   ·   Enemigos derrotados: ${progress.enemiesDefeated}`,
+        {
+          fontFamily: 'Trebuchet MS, Arial, sans-serif',
+          fontSize: width < 540 ? '9px' : '14px',
+          fontStyle: 'bold',
+          color: '#a34279',
+        },
+      )
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(42);
@@ -451,7 +468,7 @@ export class LevelCompletePanel {
       { label: 'Panchito', key: 'panchito', frame: 0 },
       { label: 'Oliver', key: 'oliver', frame: 0 },
       { label: 'Rex', key: 'rex', frame: 0 },
-      { label: 'Silvestre', key: 'silvestre', frame: 1 },
+      { label: 'Silvestre', key: 'silvestre', frame: 0 },
       { label: 'Peach', key: 'peach', frame: 0 },
       { label: 'Chocolatín', key: 'chocolatin', frame: 0 },
       { label: 'Canelo', key: 'canelo', frame: 0 },
@@ -588,10 +605,17 @@ export class LevelCompletePanel {
     ctx.fillStyle = '#452d4a';
     ctx.font = '700 42px Trebuchet MS, Arial, sans-serif';
     ctx.fillText(`Coleccionables: ${progress.collectibles} / ${totalCollectibles}`, 540, 855);
-    ctx.font = '600 27px Trebuchet MS, Arial, sans-serif';
-    ctx.fillText(`📚 ${progress.notes} notas`, 300, 925);
-    ctx.fillText(`♥ ${progress.hearts} corazones`, 540, 925);
-    ctx.fillText(`★ ${progress.stars} estrellas`, 780, 925);
+    ctx.fillStyle = '#a34279';
+    ctx.font = '700 24px Trebuchet MS, Arial, sans-serif';
+    ctx.fillText(
+      `Puntaje: ${progress.score.toLocaleString('es-AR')} puntos  ·  Enemigos derrotados: ${progress.enemiesDefeated}`,
+      540,
+      892,
+    );
+    ctx.font = '600 23px Trebuchet MS, Arial, sans-serif';
+    ctx.fillText(`📚 ${progress.notes} notas`, 300, 955);
+    ctx.fillText(`♥ ${progress.hearts} corazones`, 540, 955);
+    ctx.fillText(`★ ${progress.stars} estrellas`, 780, 955);
 
     ctx.font = 'italic 30px Trebuchet MS, Arial, sans-serif';
     ctx.fillStyle = '#7f4d61';

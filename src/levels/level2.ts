@@ -14,6 +14,7 @@ export const level2: LevelConfig = {
     backgroundStyle: 'sunset',
     backgroundImage: 'level-2-background',
   },
+  surfaceTheme: 'interior',
   spawn: { x: 70, y: 548 },
   platforms: [
     { x: 320, y: 600, width: 640 },
@@ -83,6 +84,7 @@ export const level2: LevelConfig = {
     { id: 'recuerdo-1', kind: 'heart', x: 820, y: 460 },
     { id: 'recuerdo-2', kind: 'heart', x: 1900, y: 430 },
     { id: 'recuerdo-3', kind: 'heart', x: 2620, y: 550 },
+    { id: 'estrella-plataforma-1', kind: 'star', x: 700, y: 390 },
   ],
   enemies: [
     { id: 'musico-callejero', kind: 'musician', x: 430, y: 550, patrolDistance: 65, speed: 60, sizeMultiplier: 1.3, renderDepth: 4 },

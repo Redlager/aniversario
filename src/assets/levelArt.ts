@@ -98,6 +98,21 @@ export const levelArtAssets: LevelArtAsset[] = [
     type: 'image',
   },
   {
+    key: 'collectible-star-art',
+    path: './ornamentacion/objetos/estrella.png',
+    type: 'image',
+  },
+  {
+    key: 'collectible-heart-art',
+    path: './ornamentacion/objetos/corazon.png',
+    type: 'image',
+  },
+  {
+    key: 'level-question-marker',
+    path: './ornamentacion/objetos/pregunta.png',
+    type: 'image',
+  },
+  {
     key: 'collectible-note',
     path: './ornamentacion/objetos/notas.png',
     type: 'image',
@@ -128,8 +143,18 @@ export const levelArtAssets: LevelArtAsset[] = [
     type: 'image',
   },
   {
+    key: 'level-indoor-ground-art',
+    path: './ornamentacion/objetos/piso interior.png',
+    type: 'image',
+  },
+  {
     key: 'level-platform-art',
     path: './ornamentacion/objetos/plataforma.png',
+    type: 'image',
+  },
+  {
+    key: 'level-indoor-platform-art',
+    path: './ornamentacion/objetos/plataforma interior.png',
     type: 'image',
   },
   {
@@ -179,7 +204,7 @@ export const levelArtAssets: LevelArtAsset[] = [
   },
   {
     key: 'main-menu-background',
-    path: './ornamentacion/backgroaunds/nuevo fondo de nivel de menu principal.png',
+    path: './ornamentacion/backgroaunds/menuUltimaVersion.png',
     type: 'image',
   },
 ];

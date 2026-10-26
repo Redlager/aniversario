@@ -15,6 +15,7 @@ export const level4: LevelConfig = {
     backgroundImage: 'level-4-background',
     backgroundMode: 'repeat',
   },
+  surfaceTheme: 'interior',
   spawn: { x: 70, y: 548 },
   platforms: [
     { x: 285, y: 600, width: 570 },
@@ -67,13 +68,13 @@ export const level4: LevelConfig = {
       y: 485,
       message: 'Y aunque cambiara el lugar, había algo que seguía igual: estábamos juntos. ❤️',
     },
-    {
-      id: 'chocolatin-recuerdo',
-      kind: 'notes',
-      x: 2160,
-      y: 550,
-      message: 'Y entonces apareció Chocolatín. Sí... otro integrante para la familia. 🐶',
-    },
+    // {
+    //   id: 'chocolatin-recuerdo',
+    //   kind: 'notes',
+    //   x: 2160,
+    //   y: 550,
+    //   message: 'Y entonces apareció Chocolatín. Sí... otro integrante para la familia. 🐶',
+    // },
     {
       id: 'hogar-recuerdo',
       kind: 'notes',
@@ -85,6 +86,7 @@ export const level4: LevelConfig = {
     { id: 'corazon-departamento-1', kind: 'heart', x: 780, y: 485 },
     { id: 'corazon-departamento-2', kind: 'heart', x: 1850, y: 485 },
     { id: 'corazon-departamento-3', kind: 'heart', x: 2400, y: 480 },
+    { id: 'estrella-balcon', kind: 'star', x: 1190, y: 400 },
   ],
   npcs: [
     {
@@ -125,7 +127,6 @@ export const level4: LevelConfig = {
     },
   ],
   decorations: [
-    { kind: 'family-photo', x: 1570, y: 438, label: 'Panchito · Oliver · Rex · Silvestre · Peach' },
     { kind: 'pet', pet: 'chocolatin', x: 2660, y: 588 },
   ],
   exit: {

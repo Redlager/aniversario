@@ -110,6 +110,7 @@ export interface LevelConfig {
     backgroundImage?: string;
     backgroundMode?: 'stretch' | 'repeat';
   };
+  surfaceTheme?: 'interior';
   spawn: Point;
   platforms?: PlatformConfig[];
   checkpoints?: CheckpointConfig[];
@@ -128,6 +129,8 @@ export interface CheckpointState extends Point {
 export interface MessageHistoryEntry {
   levelName: string;
   message: string;
+  category: 'Nota' | 'Diálogo';
+  detail?: string;
 }
 
 export class PlayerProgress {
@@ -136,6 +139,8 @@ export class PlayerProgress {
   notes = 0;
   hearts = 0;
   stars = 0;
+  score = 0;
+  enemiesDefeated = 0;
   checkpoint: CheckpointState = { id: 'start', levelId: '', x: 0, y: 0 };
   collectedIds: string[] = [];
   readMessageIds: string[] = [];
@@ -148,6 +153,8 @@ export class PlayerProgress {
     this.notes = 0;
     this.hearts = 0;
     this.stars = 0;
+    this.score = 0;
+    this.enemiesDefeated = 0;
     this.checkpoint = { id: 'start', levelId: '', x: 0, y: 0 };
     this.collectedIds = [];
     this.readMessageIds = [];

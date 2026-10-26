@@ -72,6 +72,7 @@ export const level6: LevelConfig = {
       message: 'Después de todo, hasta los fantasmas pueden necesitar un poquito de compañía.',
     },
     { id: 'corazon-salida', kind: 'heart', x: 2840, y: 475 },
+    { id: 'estrella-sombra', kind: 'star', x: 1425, y: 390 },
   ],
   npcs: [
     {
@@ -85,7 +86,7 @@ export const level6: LevelConfig = {
     },
     {
       id: 'fantasma-sala',
-      label: 'FANTASMA',
+      label: '',
       x: 1700,
       y: 560,
       effect: 'jumpscare',

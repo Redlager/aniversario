@@ -19,13 +19,13 @@ export const level8: LevelConfig = {
   platforms: [
     //x posicion horizontal, y posicion vertical, width ancho, height alto
     { x: 220, y: 600, width: 340 },
-    { x: 620, y: 560, width: 220, height: 24 },
+    { x: 620, y: 560, width: 200, height: 24 },
     { x: 900, y: 600, width: 360 },
-    { x: 1360, y: 540, width: 320, height: 24 },
+    { x: 1360, y: 540, width: 200, height: 24 },
     { x: 1600, y: 600, width: 360 },
-    { x: 2050, y: 540, width: 320, height: 24 },
+    { x: 2050, y: 540, width: 200, height: 24 },
     { x: 2280, y: 600, width: 420 },
-    { x: 2770, y: 540, width: 320, height: 24 },
+    { x: 2770, y: 540, width: 200, height: 24 },
     { x: 2970, y: 600, width: 220 },
   ],
   checkpoints: [
@@ -45,7 +45,7 @@ export const level8: LevelConfig = {
     {
       id: 'nota-territorio-vicky',
       kind: 'notes',
-      x: 1180,
+      x: 1010,
       y: 548,
       message: 'Territorio de Vicky: azul y amarillo.\nEntrar bajo su propio riesgo. 😏',
     },
@@ -59,6 +59,7 @@ export const level8: LevelConfig = {
         'Después de tantos años juntos, algunas cosas nunca cambiaron.\nElla sigue siendo de Boca.\nY yo sigo creyendo que algún día va a entrar en razón. 😂',
     },
     { id: 'corazon-cierre', kind: 'heart', x: 2780, y: 470 },
+    { id: 'estrella-partido', kind: 'star', x: 2050, y: 400 },
   ],
   enemies: [
     { id: 'arbitro-perseguidor', kind: 'referee', x: 1450, y: 490, speed: 180 },
@@ -68,7 +69,7 @@ export const level8: LevelConfig = {
       id: 'renzo-discusion',
       label: 'RENZO',
       visual: 'renzo',
-      x: 420,
+      x: 370,
       y: 548,
       dialogue:
         'No voy a discutir de fútbol con vos.\nTenemos demasiados años juntos como para caer en esa trampa. 😂',
@@ -86,18 +87,18 @@ export const level8: LevelConfig = {
       id: 'renzo-cierre',
       label: 'RENZO',
       visual: 'renzo',
-      x: 2560,
+      x: 2470,
       y: 548,
       dialogue:
         'Eso es exactamente lo que diría alguien que sabe que está equivocada.\nPero bueno...\nte voy a dejar disfrutar esta pequeña victoria. 😏',
     },
   ],
   decorations: [
-    { kind: 'sign', x: 920, y: 590, label: 'Esto es boca 🐒' },
-    { kind: 'sign', x: 2330, y: 590, label: 'River el mas grande' },
+    { kind: 'sign', x: 810, y: 590, label: 'Esto es boca 🐒' },
+    { kind: 'sign', x: 2230, y: 590, label: 'River el mas grande' },
   ],
   exit: {
-    x: 2860,
+    x: 2890,
     y: 570,
     nextLevelId: 'final',
     completionTitle: '¿Podemos estar de acuerdo en algo? ❤️',

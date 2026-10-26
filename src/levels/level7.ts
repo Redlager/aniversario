@@ -69,6 +69,7 @@ export const level7: LevelConfig = {
         'Pan, carne, queso, papas... técnicamente no hacía falta nada más. Aunque siempre se puede pedir algo más. 😏',
     },
     { id: 'corazon-final', kind: 'heart', x: 2880, y: 470 },
+    { id: 'estrella-cocina', kind: 'star', x: 1510, y: 390 },
   ],
   enemies: [
     { id: 'moza-1', kind: 'waitress', x: 470, y: 548, patrolDistance: 28, speed: 60, sizeMultiplier: 1.2 },

@@ -374,6 +374,16 @@ export class BootScene extends Phaser.Scene {
     if (platform && !platform.has('platform-strip')) {
       platform.add('platform-strip', 0, 124, 136, 1910, 462);
     }
+
+    const indoorGround = this.textures.get('level-indoor-ground-art');
+    if (indoorGround && !indoorGround.has('indoor-ground-strip')) {
+      indoorGround.add('indoor-ground-strip', 0, 600, 290, 1000, 240);
+    }
+
+    const indoorPlatform = this.textures.get('level-indoor-platform-art');
+    if (indoorPlatform && !indoorPlatform.has('indoor-platform-strip')) {
+      indoorPlatform.add('indoor-platform-strip', 0, 600, 240, 1000, 300);
+    }
   }
 
   private createAnimations(): void {

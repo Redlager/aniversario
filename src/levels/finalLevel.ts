@@ -17,13 +17,13 @@ export const finalLevel: LevelConfig = {
   spawn: { x: 70, y: 548 },
   platforms: [
     { x: 260, y: 600, width: 420 },
-    { x: 780, y: 540, width: 340, height: 24 },
+    { x: 780, y: 540, width: 200, height: 24 },
     { x: 1040, y: 600, width: 380 },
-    { x: 1480, y: 520, width: 320, height: 24 },
+    { x: 1480, y: 520, width: 200, height: 24 },
     { x: 1760, y: 600, width: 330 },
-    { x: 2140, y: 540, width: 340, height: 24 },
+    { x: 2140, y: 540, width: 200, height: 24 },
     { x: 2400, y: 600, width: 420 },
-    { x: 2750, y: 540, width: 370, height: 24 },
+    { x: 2750, y: 540, width: 200, height: 24 },
   ],
   collectibles: [
     {
@@ -38,12 +38,13 @@ export const finalLevel: LevelConfig = {
     {
       id: 'recuerdo-historias',
       kind: 'notes',
-      x: 1810,
+      x: 1890,
       y: 548,
       message:
         'Hubo casas, mudanzas, animales, risas, sustos, discusiones y muchísimos momentos compartidos.\nTodo eso terminó formando nuestra historia.',
     },
-    { id: 'recuerdo-futuro', kind: 'heart', x: 2540, y: 548 },
+    // { id: 'recuerdo-futuro', kind: 'heart', x: 2540, y: 548 },
+    { id: 'estrella-siete-anos', kind: 'star', x: 1480, y: 380 },
   ],
   npcs: [
     {
@@ -59,7 +60,7 @@ export const finalLevel: LevelConfig = {
       id: 'renzo-cierre',
       label: 'RENZO',
       visual: 'renzo',
-      x: 2280,
+      x: 2610,
       y: 548,
       dialogue:
         'Pasaron un montón de cosas desde aquel “Holis”.\nCambiamos de casa, llenamos todo de animales, nos casamos...\ny todavía seguimos haciendo planes juntos. ❤️',
@@ -82,26 +83,54 @@ export const finalLevel: LevelConfig = {
       dialogue:
         'Siete años después, seguimos acá.\nBueno... yo principalmente sigo acá para asegurarme de que ninguna caja quede sin dueño. 😂',
     },
+    {
+      id: 'rex-final',
+      label: 'REX',
+      visual: 'rex',
+      x: 2190,
+      y: 510,
+      dialogue: 'Los quiero un montón. Gracias por hacerme parte de esta familia. ❤️',
+    },
+    {
+      id: 'silvestre-final',
+      label: 'SILVESTRE',
+      visual: 'silvestre',
+      x: 2285,
+      y: 566,
+      dialogue: 'Los quiero mucho. Gracias por cuidarme y darme un hogar calentito. ❤️',
+    },
+    {
+      id: 'peach-final',
+      label: 'PEACH',
+      visual: 'peach',
+      x: 2365,
+      y: 566,
+      dialogue: 'Gracias por tantos mimos. Yo también los quiero con todo mi corazón. ❤️',
+    },
+    {
+      id: 'chocolatin-final',
+      label: 'CHOCOLATÍN',
+      visual: 'chocolatin',
+      x: 2445,
+      y: 566,
+      dialogue: 'Los quiero muchísimo. Gracias por hacer cada día un poquito más dulce. ❤️',
+    },
+    {
+      id: 'canelo-recuerdo-final',
+      label: 'CANELO',
+      visual: 'canelo',
+      x: 2525,
+      y: 566,
+      dialogue:
+        'Gracias por quererme tanto. Fui muy feliz con ustedes.\nAunque ya no esté a su lado, siempre voy a ser parte de esta familia y voy a vivir en sus recuerdos.\nLos quiero mucho. ❤️',
+    },
   ],
-  decorations: [
-    { kind: 'family-photo', x: 700, y: 480 },
-    { kind: 'bench', x: 980, y: 588 },
-    { kind: 'family-photo', x: 2680, y: 470 },
-    { kind: 'pet', pet: 'panchito', x: 1680, y: 588 },
-    { kind: 'pet', pet: 'oliver', x: 1750, y: 588 },
-    { kind: 'pet', pet: 'rex', x: 1820, y: 588 },
-    { kind: 'pet', pet: 'silvestre', x: 1890, y: 588 },
-    { kind: 'pet', pet: 'peach', x: 1960, y: 588 },
-    { kind: 'pet', pet: 'chocolatin', x: 2030, y: 588 },
-    { kind: 'pet', pet: 'canelo', x: 2100, y: 588 },
-    { kind: 'bench', x: 2840, y: 588 },
-  ],
+  decorations: [],
   exit: {
-    x: 2700,
-    y: 570,
+    x: 2770,
+    y: 510,
     nextLevelId: null,
     completionTitle: 'VICKY — LA AVENTURA DE 7 AÑOS',
-    completionScene: 'family',
     dialogue: [
       'Renzo: 7 años juntos.',
       'Vicky: 5 años de casados.',

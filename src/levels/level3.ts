@@ -15,6 +15,7 @@ export const level3: LevelConfig = {
     backgroundImage: 'level-3-background',
     backgroundMode: 'repeat',
   },
+  surfaceTheme: 'interior',
   spawn: { x: 70, y: 548 },
   platforms: [
     { x: 280, y: 600, width: 560 },
@@ -66,6 +67,7 @@ export const level3: LevelConfig = {
     { id: 'corazon-casa-1', kind: 'heart', x: 760, y: 490 },
     // { id: 'corazon-casa-2', kind: 'heart', x: 1650, y: 550 },
     { id: 'corazon-casa-3', kind: 'heart', x: 2710, y: 550 },
+    { id: 'estrella-casa-alta', kind: 'star', x: 1220, y: 405 },
   ],
   enemies: [
     { id: 'escarabajo-1', kind: 'beetle', x: 500, y: 550, patrolDistance: 40, speed: 65 },
@@ -147,11 +149,6 @@ export const level3: LevelConfig = {
     },
   ],
   decorations: [
-    // { kind: 'pet', pet: 'panchito', x: 2540, y: 588 },
-    // { kind: 'pet', pet: 'oliver', x: 2595, y: 588 },
-    // { kind: 'pet', pet: 'rex', x: 2655, y: 588 },
-    // { kind: 'pet', pet: 'silvestre', x: 2720, y: 588 },
-    // { kind: 'pet', pet: 'peach', x: 2775, y: 588 },
   ],
   exit: {
     x: 2700,
